@@ -233,7 +233,8 @@ Secrets (git token, wrapped vault key) are **not** in `Settings`; see §8.3 and 
 - Fonts in `res/font`: Doto, Space Grotesk, Space Mono (TTF, not woff2).
 - **Dark and light are both supported** and follow the phone's setting (`KuNotesTheme(dark = isSystemInDarkTheme())`); a System / Light / Dark choice in Settings comes later. Dark is the design reference: every screen is designed dark first, then checked in light. The window background before Compose draws comes from `res/values{,-night}/`, and system-bar icons follow the theme (`SystemBarStyle.auto`). Every component `@Preview` is shown in both themes.
 - Rules enforced in review: red (`accent`) at most once or twice per screen; Doto never under 24 sp; `tonalElevation = 0` and `shadowElevation = 0` everywhere; touch targets ≥ 48 dp; press = scale 0.97 in 120–160 ms, no bounce.
-- Icons: 24 dp line icons, 1.5 dp stroke, square caps, as `ImageVector`s in `ui/dotline/Icons.kt`. No filled icons, no emoji.
+- Icons: 24 dp line icons, 1.5 dp stroke, square caps, as `ImageVector`s in `ui/dotline/DotlineIcons.kt` (path data copied from the mockups). No filled icons, no emoji.
+- Components live in `ui/dotline/` (SPEC §3), one per file, each with dark and light `@Preview`s. Press feedback (`pressScale`) and the focus ring (`focusRing`) are shared in `Interaction.kt`. A debug-only gallery (`adb shell am start -n com.kunotes.android/com.kunotes.gallery.GalleryActivity`) shows them all.
 
 ---
 

@@ -47,15 +47,17 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 
 ---
 
-## Phase 2: Theme and Dotline components (SPEC §2–3)
+## Phase 2: Theme and Dotline components (SPEC §2–3) ✅
 
 - [x] Fonts in `res/font` (Doto, Space Grotesk, Space Mono, TTF; Doto and Space Grotesk are variable fonts).
 - [x] `ui/theme/` from `DotlineTheme.kt`; `KuNotesTheme` mapped onto `MaterialTheme`, no elevation.
 - [x] Dark and light theme, following the system setting (window background and system bars too).
 - [ ] Theme choice (System / Light / Dark) in Settings.
-- [ ] Icons (`ui/dotline/Icons.kt`), 24 dp line style.
-- [ ] Components: `ScreenTitle`, `BottomNav`, `ListGroup`/`ListRow`, `TreeRow`, `OpenNoteCard`, `BottomSheet` + `SheetHeader`, `QuickActionTile`, `PrimaryButton`/`SecondaryButton`/`DestructiveButton`, `SegmentedControl`, `TextField`, `DotMeter`, `DotArt`, `Snackbar`, `KuSwitch`, `RadioDot`, `DropdownMenu`, `FormatterBar` (shell).
-- [ ] A debug-only gallery screen with every component, checked against the screen files.
+- [x] Icons (`ui/dotline/DotlineIcons.kt`): the 36 line icons from the mockups (+ `EyeOff`), 24 dp, 1.5 dp stroke.
+- [x] Shared press scale and focus ring (`ui/dotline/Interaction.kt`).
+- [x] Components: `ScreenTitle`, `BottomNav`, `ListGroup`/`ListRow`, `TreeRow`, `OpenNoteCard`, `BottomSheet` + `SheetHeader`, `QuickActionTile`, `PrimaryButton`/`SecondaryButton`/`DestructiveButton`, `SegmentedControl`, `TextField`, `DotMeter`, `DotArt`, `Snackbar`, `KuSwitch`, `RadioDot`, `DropdownMenu`, `FormatterBar` (shell).
+- [x] A debug-only gallery screen (`app/src/debug/.../GalleryActivity`) with every component, checked on the emulator in dark and light.
+- [ ] Move user-facing strings (button labels, content descriptions) into `strings.xml` when the screens are built.
 
 **Done when:** every component has a dark and a light `@Preview` and matches the mockups side by side.
 
