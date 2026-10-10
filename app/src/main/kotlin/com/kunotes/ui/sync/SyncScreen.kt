@@ -144,7 +144,16 @@ private fun LastSyncWidget(
             horizontalArrangement = Arrangement.spacedBy(Dotline.space.s2),
         ) {
             // alignByBaseline: the small unit sits on the same text line as the big number.
-            Text(ui.heroNumber, style = Dotline.type.dotXl, color = Dotline.colors.ink, modifier = Modifier.alignByBaseline())
+            // At weight 900 Doto's dots merge into bars for "--"; a lighter weight keeps them dots.
+            val heroStyle =
+                if (ui.heroUnit ==
+                    "NEVER"
+                ) {
+                    Dotline.type.dotXl.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.Normal)
+                } else {
+                    Dotline.type.dotXl
+                }
+            Text(ui.heroNumber, style = heroStyle, color = Dotline.colors.ink, modifier = Modifier.alignByBaseline())
             Text(ui.heroUnit, style = Dotline.type.data, color = Dotline.colors.inkMuted, modifier = Modifier.alignByBaseline())
         }
         if (ui.summary != null) Text(ui.summary, style = Dotline.type.data, color = Dotline.colors.inkMuted)

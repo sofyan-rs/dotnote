@@ -84,6 +84,18 @@ object GitSync {
     ): SyncReport {
         val address = url.trim()
         if (address.isEmpty()) throw CoreError.Git("Enter the address of a git repository.")
+        configure(root, address)
+        return sync(root, credentials)
+    }
+
+    /**
+     * Makes [root] a repository that syncs with [address]: `git init` if needed, desktop's
+     * `.gitignore` if there is none, `.trash/` in the local exclude file, and the remote.
+     */
+    private fun configure(
+        root: File,
+        address: String,
+    ) {
         runGit {
             if (!File(root, ".git").exists()) {
                 // A new repository starts on `main`, whatever the default is.
@@ -123,7 +135,6 @@ object GitSync {
                 }
             }
         }
-        return sync(root, credentials)
     }
 
     /**
@@ -151,7 +162,10 @@ object GitSync {
                 .call()
                 .close()
         }
-        return connect(root, address, credentials)
+        // Only set up, don't sync yet: a first push needs sign-in, and a read-only (public)
+        // repository should still clone fine. The next sync commits and pushes, and shows any error.
+        configure(root, address)
+        return SyncReport()
     }
 
     /** Stops syncing: removes the remote. The history in `.git` stays. */
