@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.kunotes.ui.editor.EditorScreen
 import com.kunotes.ui.files.FilesScreen
 import com.kunotes.ui.files.MoveToScreen
 import com.kunotes.ui.welcome.WelcomeScreen
@@ -48,7 +49,13 @@ fun KuNotesNavHost(start: StartScreen) {
         composable<Sync> { PlaceholderTab(com.kunotes.ui.dotline.MainTab.Sync, navController::navigateToTab) }
         composable<Vaults> { PlaceholderTab(com.kunotes.ui.dotline.MainTab.Vaults, navController::navigateToTab) }
         composable<Editor> { entry ->
-            PlaceholderEditor(path = entry.toRoute<Editor>().path, onBack = { navController.popBackStack() })
+            EditorScreen(
+                path = entry.toRoute<Editor>().path,
+                onBack = { navController.popBackStack() },
+                onMove = { path -> navController.navigate(MoveTo(path.value)) },
+                onNeedsUnlock = { /* Phase 8: locked notes route to the unlock screen */ },
+                onLockNote = { /* Phase 8: locked notes */ },
+            )
         }
     }
 }
