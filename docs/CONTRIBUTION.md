@@ -34,7 +34,7 @@ For manual testing, copy desktop's `fixtures/sample-vault/` (from the kunotes-gp
 
 ### Release builds
 
-`./gradlew :app:bundleRelease` makes an `.aab` for the Play Store. Signing config comes from environment variables / `~/.gradle/gradle.properties`, never from the repo.
+`./gradlew :app:assembleRelease` makes a signed APK, `./gradlew :app:bundleRelease` an `.aab` for the Play Store. Signing comes from `keystore.properties` in the project root (git-ignored), with `storeFile`, `storePassword`, `keyAlias`, `keyPassword`. Without it, release builds are unsigned. Back up the keystore and its password: without them no update can be published for the same app.
 
 ---
 
