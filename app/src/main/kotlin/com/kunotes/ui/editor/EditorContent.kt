@@ -137,14 +137,17 @@ private fun PreviewPane(
 ) {
     val current = text.text.toString()
     val chars = remember(current) { Cursor.charCount(current) }
+    // The footer sits under the scrolling note (not on top of it); the Edit pill floats above both.
     Box(Modifier.fillMaxSize()) {
-        MarkdownPreview(current, actions.readImage, Modifier.fillMaxSize())
-        Text(
-            "READ ONLY · $chars CHARS",
-            style = Dotline.type.label,
-            color = Dotline.colors.inkFaint,
-            modifier = Modifier.align(Alignment.BottomStart).padding(start = Dotline.space.s4, bottom = Dotline.space.s5),
-        )
+        androidx.compose.foundation.layout.Column(Modifier.fillMaxSize()) {
+            MarkdownPreview(current, actions.readImage, Modifier.weight(1f).fillMaxWidth())
+            Text(
+                "READ ONLY · $chars CHARS",
+                style = Dotline.type.label,
+                color = Dotline.colors.inkFaint,
+                modifier = Modifier.padding(horizontal = Dotline.space.s4, vertical = Dotline.space.s4),
+            )
+        }
         EditPill(
             onClick = { actions.onMode(ViewMode.Live) },
             modifier = Modifier.align(Alignment.BottomEnd).padding(end = Dotline.space.s4, bottom = 56.dp),

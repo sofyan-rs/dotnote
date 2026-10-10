@@ -320,7 +320,8 @@ class EditorViewModel(
     }
 
     private fun location(path: VaultPath): String =
-        listOf(backend.vaultName, path.name)
+        // "NOTES / JOURNAL / EXAMPLE.MD": vault, folders, file (SPEC 3.1).
+        (listOf(backend.vaultName) + path.segments)
             .filter {
                 it.isNotEmpty()
             }.joinToString(" / ")
