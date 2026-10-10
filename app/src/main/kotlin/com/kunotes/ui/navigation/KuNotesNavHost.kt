@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.kunotes.ui.dotline.MainTab
+import com.kunotes.ui.editor.EditorScreen
 import com.kunotes.ui.files.FilesScreen
 import com.kunotes.ui.files.MoveToScreen
 import com.kunotes.ui.kuNotesViewModel
@@ -125,7 +126,24 @@ fun KuNotesNavHost(start: StartScreen) {
             )
         }
         composable<Editor> { entry ->
-            PlaceholderEditor(path = entry.toRoute<Editor>().path, onBack = { navController.popBackStack() })
+            val lockActions = kuNotesViewModel { LockActionsViewModel(it) }
+            EditorScreen(
+                path = entry.toRoute<Editor>().path,
+                onBack = { navController.popBackStack() },
+                onMove = { path -> navController.navigate(MoveTo(path.value)) },
+                onNeedsUnlock = { path ->
+                    navController.navigate(Unlock(path.value)) { popUpTo<Editor> { inclusive = true } }
+                },
+                onLockNote = { path ->
+                    lockActions.toggleLock(
+                        path,
+                        onNeedsPassword = { navController.navigate(SetPassword(path.value)) },
+                        onNeedsUnlock = { navController.navigate(Unlock(path.value, toggleLock = true)) },
+                        // Locked or unlocked: the file has a new name, so reopen the editor on it.
+                        onDone = { newPath -> navController.navigate(Editor(newPath.value)) { popUpTo<Editor> { inclusive = true } } },
+                    )
+                },
+            )
         }
     }
 }

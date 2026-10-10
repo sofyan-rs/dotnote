@@ -35,3 +35,13 @@ inline fun <reified VM : ViewModel> kuNotesViewModel(
                 }
             },
     )
+
+/**
+ * The app's shared stores, for composables that only need to read a flow (no ViewModel).
+ * Prefer a ViewModel for anything that changes state.
+ */
+@Composable
+fun rememberAppContainer(): AppContainer {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    return androidx.compose.runtime.remember(context) { (context.applicationContext as KuNotesApp).container }
+}

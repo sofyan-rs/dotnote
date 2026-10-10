@@ -36,6 +36,8 @@ android {
     testOptions {
         // JVM unit tests run on JUnit 5 (Jupiter), like `:core`.
         unitTests.all { it.useJUnitPlatform() }
+        // JVM unit tests: Android framework calls return defaults instead of throwing.
+        unitTests.isReturnDefaultValues = true
     }
 
     lint {
@@ -59,6 +61,10 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.commonmark)
+    implementation(libs.commonmark.gfm.tables)
+    implementation(libs.commonmark.gfm.strikethrough)
+    implementation(libs.commonmark.task.list.items)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)

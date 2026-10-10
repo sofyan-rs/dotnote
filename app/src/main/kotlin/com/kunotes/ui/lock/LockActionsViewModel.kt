@@ -32,12 +32,14 @@ class LockActionsViewModel(
         path: VaultPath,
         onNeedsPassword: () -> Unit,
         onNeedsUnlock: () -> Unit,
+        onDone: (newPath: VaultPath) -> Unit = {},
     ) {
         viewModelScope.launch {
-            when (container.noteLocker.toggle(path)) {
+            when (val result = container.noteLocker.toggle(path)) {
                 LockToggle.NeedsPassword -> onNeedsPassword()
                 LockToggle.NeedsUnlock -> onNeedsUnlock()
-                is LockToggle.Done, LockToggle.Failed -> Unit
+                is LockToggle.Done -> onDone(result.path)
+                LockToggle.Failed -> Unit
             }
         }
     }
