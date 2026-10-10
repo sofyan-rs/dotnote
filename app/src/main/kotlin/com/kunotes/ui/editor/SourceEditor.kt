@@ -99,6 +99,7 @@ fun SourceEditor(
                     modifier = Modifier.weight(1f).heightIn(min = (viewport - 40.dp).coerceAtLeast(0.dp)),
                     textStyle = styles.source,
                     cursorBrush = SolidColor(colors.accent),
+                    inputTransformation = ContinueLists,
                     outputTransformation = transformation,
                     onTextLayout = { getResult -> layout = getResult() },
                 )

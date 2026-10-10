@@ -11,7 +11,7 @@ data class TaskToggle(
 )
 
 /** For a list line: how long its marker is (indent included) and the marker for the next line. */
-internal data class ListContinuation(
+data class ListContinuation(
     val markerLength: Int,
     val nextMarker: String,
 )
@@ -61,7 +61,7 @@ object LiveLists {
     }
 
     /** For a list [line]: its marker length and the marker for the next line, or null if it isn't a list item. */
-    internal fun continuation(line: String): ListContinuation? {
+    fun continuation(line: String): ListContinuation? {
         val indent = line.substring(0, LiveText.leadingWhitespace(line))
         val rest = line.substring(indent.length)
         val first = rest.firstOrNull() ?: return null

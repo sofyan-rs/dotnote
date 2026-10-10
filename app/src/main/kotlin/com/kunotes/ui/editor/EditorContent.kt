@@ -125,6 +125,7 @@ private fun StatusAndFormatter(
         column = position.column,
         chars = chars,
         activeActions = EditorFormatting.activeActions(current, cursor),
+        headingLevel = EditorFormatting.headingLevel(current, cursor),
         lineEnding = if (source) ui.lineEnding.name else null,
     )
 }

@@ -209,7 +209,14 @@ class VaultStore(
         select(note)
     }
 
-    fun togglePin(note: VaultPath) = updateOpenNotes { it.togglePin(note) }
+    /**
+     * Pins [note] to the front of the open-notes row, or unpins it. A note that isn't in the row
+     * yet is added (pinned), so "Pin" from the note's ⋮ sheet always does something.
+     */
+    fun togglePin(note: VaultPath) =
+        updateOpenNotes { notes ->
+            if (notes.entries.none { it.path == note }) notes.open(note).pin(note) else notes.togglePin(note)
+        }
 
     /** Removes [note] from the open-notes row (the file is untouched). */
     fun closeNote(note: VaultPath) = updateOpenNotes { it.close(note) }

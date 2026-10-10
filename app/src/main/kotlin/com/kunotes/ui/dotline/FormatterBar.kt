@@ -127,6 +127,8 @@ object FormatterBarDefaults {
  * @param activeActions buttons drawn as "on" (e.g. Heading while the cursor is in a heading).
  * @param line 1-based cursor line, [column] 1-based cursor column, [chars] character count.
  * @param lineEnding shown after the count in Source mode, e.g. "LF" or "CRLF". Null hides it.
+ * @param headingLevel the heading level (1–6) of the cursor's line, 0 if it isn't a heading:
+ *   the Heading button then reads "H2", "H3", ... instead of "H1".
  */
 @Composable
 fun FormatterBar(
@@ -138,6 +140,7 @@ fun FormatterBar(
     modifier: Modifier = Modifier,
     activeActions: Set<FormatAction> = emptySet(),
     lineEnding: String? = null,
+    headingLevel: Int = 0,
 ) {
     Column(modifier.fillMaxWidth().background(Dotline.colors.surface)) {
         // 1 dp hairline on top (mockups: `border-top: 1px solid line`).
@@ -155,7 +158,12 @@ fun FormatterBar(
                 if (index > 0 && actions[index - 1].group != action.group) {
                     Separator()
                 }
-                FormatButton(action = action, active = action in activeActions, onClick = { onAction(action) })
+                FormatButton(
+                    action = action,
+                    active = action in activeActions,
+                    onClick = { onAction(action) },
+                    glyph = if (action == FormatAction.Heading && headingLevel in 1..6) "H$headingLevel" else glyphFor(action),
+                )
             }
         }
         StatusLine(line = line, column = column, chars = chars, lineEnding = lineEnding)
@@ -168,6 +176,7 @@ private fun FormatButton(
     action: FormatAction,
     active: Boolean,
     onClick: () -> Unit,
+    glyph: String,
 ) {
     // One InteractionSource shared by clickable, focusRing and our pressed look, so they
     // all react to the same touch. `remember` keeps the same object across recompositions.
@@ -195,7 +204,7 @@ private fun FormatButton(
         } else {
             // clearAndSetSemantics {}: the glyph "B" is decoration; TalkBack reads "Bold" instead.
             Text(
-                text = glyphFor(action),
+                text = glyph,
                 style = glyphStyle(action),
                 color = Dotline.colors.ink,
                 modifier = Modifier.clearAndSetSemantics {},

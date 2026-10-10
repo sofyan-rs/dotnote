@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.kunotes.core.LineKind
 import com.kunotes.ui.dotline.DotlineIcons
+import com.kunotes.ui.editor.ContinueLists
 import com.kunotes.ui.editor.ImageReader
 import com.kunotes.ui.editor.rememberMarkdownStyles
 import com.kunotes.ui.editor.rememberNoteImage
@@ -93,6 +94,7 @@ fun LiveEditor(
                     modifier = Modifier.fillMaxWidth().heightIn(min = (viewport - 48.dp).coerceAtLeast(0.dp)),
                     textStyle = styles.body,
                     cursorBrush = SolidColor(Dotline.colors.accent),
+                    inputTransformation = ContinueLists,
                     outputTransformation = transformation,
                     onTextLayout = { getResult -> layout = getResult() },
                 )
