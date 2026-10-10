@@ -324,7 +324,7 @@ Android has no system trash for SAF trees. Deleting moves the item into **`.tras
 
 There is no reliable change notification for SAF trees (other apps write through the media provider or raw paths). So:
 - Rescan on `ON_START`, after our own ops, after a sync, and on pull-to-refresh.
-- While the Files screen is visible, a light poll every 10 s compares folder listings (cheap metadata only).
+- While the Files screen is visible, it rescans every 10 s, or every 3× the last scan time on big vaults (see Q5).
 - `FileVaultFs` vaults use `FileObserver` instead of polling.
 - Scans run on `Dispatchers.IO` and are debounced (500 ms, desktop `DEBOUNCE`). The open note is reloaded only after a sync, or on `ON_START` when it has no unsaved edits (desktop ARCHITECTURE §7.3).
 
@@ -421,6 +421,6 @@ Each is answered in the Phase 0 spike or before the phase that needs it. Record 
 - **Q2. Live editor API.** ✅ Mostly answered: Compose foundation 1.12 lets an `OutputTransformation` add `SpanStyle`/`ParagraphStyle` (`TextFieldBuffer.addStyle`) and hide characters (`replace(start, end, "")`); the Phase 0 spike screen shows headings at 30/22 sp, bold/italic/strike/code styled, and markers hidden off the cursor line. Still to check in Phase 5: cursor movement across hidden markers, IME (Gboard, Samsung, CJK), and inline-code background height.
 - **Q3. kage compatibility.** ✅ kage 0.8 does scrypt and armor. Desktop-made key + note decrypt in JVM tests and on the emulator (bytes match); a Kotlin-made vault opens in desktop `kunotes-core`. Follow-up in Q7.
 - **Q4. JGit on Android.** ✅ JGit 7 crashes on API 30 (`InputStream.readNBytes`, Java 11). JGit 5.13.5 works: two-device sync through a bare repo with a conflict copy passes on the emulator. HTTPS token auth still to try against a real host (Phase 9).
-- **Q5. SAF performance.** Scan time for ~2,000 notes with `DocumentsContract` queries; whether the 10 s poll is cheap enough. Deferred to Phase 3, when `SafVaultFs` exists.
+- **Q5. SAF performance.** ✅ Measured on the API 30 emulator: a full scan of 2,008 notes in 41 folders takes 0.7–8 s (off the main thread). So scans never overlap (one queued rescan at most), polling waits at least 3× the last scan time (10 s minimum), and character counts are read only for notes visible in the tree (cached by modification time). A faster scan (only expanded folders) is a later optimization if real vaults need it.
 - **Q6. Package and application id.** ✅ Decided: application id `com.kunotes.android`. Kotlin packages stay under `com.kunotes` (`com.kunotes.core`, `com.kunotes.ui.theme`, …), and the `:app` namespace is `com.kunotes`.
 - **Q7. scrypt work factor across devices.** Desktop's `age` crate picks the factor by timing the computer (~1 s), so a fast desktop may write 2^19–2^20, which needs 512 MiB–1 GiB to unlock: more than a phone gives an app even with `largeHeap`. Recommended fix on desktop: pin the factor (e.g. 18) when saving `.kunotes-lock.age`. Android side: pick 2^17 or 2^18 for new keys after testing on a low-end phone (Phase 8).

@@ -92,6 +92,9 @@ class VaultStore(
 
     private val fileLock = Mutex()
     private var pollJob: Job? = null
+    private var refreshJob: Job? = null
+    private var refreshAgain = false
+    private var lastScanMillis = 0L
 
     /** Remembers counted notes so a rescan only reads files that changed. */
     private val countCache = java.util.concurrent.ConcurrentHashMap<VaultPath, Pair<Long, Int>>()
@@ -124,27 +127,48 @@ class VaultStore(
         _state.value = VaultState()
     }
 
-    /** Scans the vault again and updates the tree. Safe to call often. */
+    /**
+     * Scans the vault again and updates the tree. Safe to call often: while a scan runs, more
+     * calls only ask for one more scan after it (scans never overlap).
+     */
     fun refresh() {
+        if (refreshJob?.isActive == true) {
+            refreshAgain = true
+            return
+        }
         val vaultFs = fs ?: return
         val vaultId = _state.value.vault?.id
-        scope.launch {
-            val root = withContext(Dispatchers.IO) { VaultNode.scan(vaultFs) }
-            if (_state.value.vault?.id != vaultId) return@launch // another vault was opened meanwhile
-            _state.update { state ->
-                state.copy(root = root, openNotes = keepExisting(state.openNotes, root))
+        refreshJob =
+            scope.launch {
+                val started = System.currentTimeMillis()
+                val root = withContext(Dispatchers.IO) { VaultNode.scan(vaultFs) }
+                lastScanMillis = System.currentTimeMillis() - started
+                android.util.Log.d("VaultStore", "Scanned ${Search.flattenFiles(root).size} notes in $lastScanMillis ms")
+                if (_state.value.vault?.id != vaultId) return@launch // another vault was opened meanwhile
+                _state.update { state ->
+                    state.copy(root = root, openNotes = keepExisting(state.openNotes, root))
+                }
+                countCharacters(vaultFs)
             }
-            countCharacters(vaultFs, root)
+        refreshJob?.invokeOnCompletion {
+            if (refreshAgain) {
+                refreshAgain = false
+                scope.launch { refresh() }
+            }
         }
     }
 
-    /** Rescans every 10 s while a screen showing the tree is visible (ARCHITECTURE §7.4). */
+    /**
+     * Rescans while a screen showing the tree is visible (ARCHITECTURE §7.4): every 10 s, or
+     * less often on big vaults (at least 3× the last scan time), so polling never keeps the
+     * phone busy.
+     */
     fun startPolling() {
         if (pollJob?.isActive == true) return
         pollJob =
             scope.launch {
                 while (isActive) {
-                    delay(POLL_MILLIS)
+                    delay(maxOf(POLL_MILLIS, lastScanMillis * 3))
                     refresh()
                 }
             }
@@ -162,6 +186,8 @@ class VaultStore(
             val expanded = if (folder in state.expanded) state.expanded - folder else state.expanded + folder
             state.copy(expanded = expanded)
         }
+        // Notes that just became visible need their character counts.
+        fs?.let { vaultFs -> scope.launch { countCharacters(vaultFs) } }
     }
 
     fun select(path: VaultPath?) {
@@ -314,15 +340,25 @@ class VaultStore(
         return OpenNotes(openNotes.entries.filter { it.path in existing })
     }
 
-    /** Counts characters of the notes that changed since the last scan (for "645 chars"). */
-    private suspend fun countCharacters(
-        vaultFs: VaultFs,
-        root: VaultNode,
-    ) {
+    /**
+     * Counts characters of the notes visible in the tree (for "645 chars"). Only visible notes,
+     * because reading every note of a big vault on each scan costs too much; counts are cached
+     * by modification time, so unchanged notes aren't read again.
+     */
+    private suspend fun countCharacters(vaultFs: VaultFs) {
+        val state = _state.value
+        val root = state.root ?: return
+        val visible =
+            Search
+                .visibleRows(root, state.expanded)
+                .filter { !it.isDir }
+                .map { it.path }
+                .toSet()
+        val notes = Search.flattenFiles(root).filter { it.path in visible }
         val counts =
             withContext(Dispatchers.IO) {
                 val result = mutableMapOf<VaultPath, Int>()
-                for (note in Search.flattenFiles(root)) {
+                for (note in notes) {
                     if (NoteNames.isLockedNote(note.path) || note.size > MAX_COUNTED_BYTES) continue
                     val cached = countCache[note.path]
                     if (cached != null && cached.first == note.lastModified) {
@@ -341,7 +377,7 @@ class VaultStore(
                 }
                 result
             }
-        _state.update { it.copy(charCounts = counts) }
+        _state.update { it.copy(charCounts = it.charCounts + counts) }
     }
 
     private companion object {

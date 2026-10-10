@@ -67,7 +67,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 
 - [x] `SettingsStore` (DataStore + kotlinx.serialization) and `VaultRegistry`.
 - [x] `SafVaultFs` with id cache and safe write (§7.1–7.2). Verified on the emulator against `Documents/Notes`.
-- [ ] Spike Q5: scan time for ~2,000 notes on SAF.
+- [x] Spike Q5: scan time for ~2,000 notes on SAF (0.7–8 s; polling adapts, see ARCHITECTURE §12).
 - [x] Welcome (1.1) → Open folder sheet (1.2) → `OpenDocumentTree` + persisted permission; cancelled pick; revoked permission.
 - [x] Reopen the last vault at launch.
 - [x] Empty vault (1.3).
