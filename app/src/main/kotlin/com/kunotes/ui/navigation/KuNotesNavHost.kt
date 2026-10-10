@@ -15,6 +15,11 @@ import androidx.navigation.toRoute
 import com.kunotes.ui.dotline.MainTab
 import com.kunotes.ui.files.FilesScreen
 import com.kunotes.ui.files.MoveToScreen
+import com.kunotes.ui.kuNotesViewModel
+import com.kunotes.ui.lock.ChangePasswordScreen
+import com.kunotes.ui.lock.LockActionsViewModel
+import com.kunotes.ui.lock.SetPasswordScreen
+import com.kunotes.ui.lock.UnlockScreen
 import com.kunotes.ui.search.SearchScreen
 import com.kunotes.ui.vaults.VaultNavigation
 import com.kunotes.ui.vaults.VaultsScreen
@@ -36,23 +41,58 @@ fun KuNotesNavHost(start: StartScreen) {
             )
         }
         composable<Files> {
+            val lockActions = kuNotesViewModel { LockActionsViewModel(it) }
             FilesScreen(
                 onTabClick = navController::navigateToTab,
-                onOpenNote = { path -> navController.navigate(Editor(path.value)) },
+                onOpenNote = { path ->
+                    // A locked note while the vault is locked asks for the password first (5.2).
+                    navController.navigate(if (lockActions.needsUnlock(path)) Unlock(path.value) else Editor(path.value))
+                },
                 onMoveItem = { path -> navController.navigate(MoveTo(path.value)) },
                 onManageVaults = { navController.navigateToTab(MainTab.Vaults) },
                 onCloneFromGit = { navController.navigateToTab(MainTab.Sync) },
                 onSearch = { navController.navigateToTab(MainTab.Search) },
-                onLockNote = { /* Phase 8: locked notes */ },
+                onLockNote = { path ->
+                    lockActions.toggleLock(
+                        path,
+                        onNeedsPassword = { navController.navigate(SetPassword(path.value)) },
+                        onNeedsUnlock = { navController.navigate(Unlock(path.value, toggleLock = true)) },
+                    )
+                },
             )
         }
         composable<MoveTo> { entry ->
             MoveToScreen(path = entry.toRoute<MoveTo>().path, onDone = { navController.popBackStack() })
         }
+        composable<Unlock> { entry ->
+            val route = entry.toRoute<Unlock>()
+            UnlockScreen(
+                path = route.path,
+                toggleLock = route.toggleLock,
+                onDone = {
+                    if (route.toggleLock) {
+                        navController.popBackStack()
+                    } else {
+                        // Replace the unlock screen, so Back from the editor returns to Files.
+                        navController.navigate(Editor(route.path)) { popUpTo<Unlock> { inclusive = true } }
+                    }
+                },
+                onCancel = { navController.popBackStack() },
+            )
+        }
+        composable<SetPassword> { entry ->
+            SetPasswordScreen(notePath = entry.toRoute<SetPassword>().path, onDone = { navController.popBackStack() })
+        }
+        composable<ChangePassword> {
+            ChangePasswordScreen(onDone = { navController.popBackStack() })
+        }
         composable<Search> {
+            val lockActions = kuNotesViewModel { LockActionsViewModel(it) }
             SearchScreen(
                 onTabClick = navController::navigateToTab,
-                onOpenNote = { path -> navController.navigate(Editor(path.value)) },
+                onOpenNote = { path ->
+                    navController.navigate(if (lockActions.needsUnlock(path)) Unlock(path.value) else Editor(path.value))
+                },
             )
         }
         composable<Sync> { PlaceholderTab(MainTab.Sync, navController::navigateToTab) }
@@ -64,7 +104,9 @@ fun KuNotesNavHost(start: StartScreen) {
                         onOpenFiles = { navController.navigateToTab(MainTab.Files) },
                         onCloneFromGit = { navController.navigateToTab(MainTab.Sync) },
                         onSyncSettings = { navController.navigateToTab(MainTab.Sync) },
-                        onNotesPassword = { /* Phase 8: notes password screens */ },
+                        onNotesPassword = { hasPassword ->
+                            navController.navigate(if (hasPassword) ChangePassword else SetPassword(null))
+                        },
                         onNoVaultLeft = {
                             navController.navigate(Welcome()) { popUpTo(navController.graph.id) { inclusive = true } }
                         },
