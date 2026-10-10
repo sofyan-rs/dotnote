@@ -15,6 +15,10 @@ data class VaultNode(
     val name: String,
     val isDir: Boolean,
     val children: List<VaultNode> = emptyList(),
+    /** Size in bytes (0 for folders), from the scan. */
+    val size: Long = 0,
+    /** Last change time in milliseconds since 1970 (0 if unknown), from the scan. */
+    val lastModified: Long = 0,
 ) {
     companion object {
         /** Folders first, then natural, case-insensitive name order. */
@@ -58,7 +62,8 @@ data class VaultNode(
             when {
                 entry.name.startsWith('.') -> null
                 entry.isDir -> VaultNode(entry.path, entry.name, isDir = true, children = scanChildren(fs, entry.path))
-                NoteNames.isNote(entry.path) -> VaultNode(entry.path, entry.name, isDir = false)
+                NoteNames.isNote(entry.path) ->
+                    VaultNode(entry.path, entry.name, isDir = false, size = entry.size, lastModified = entry.lastModified)
                 else -> null
             }
     }

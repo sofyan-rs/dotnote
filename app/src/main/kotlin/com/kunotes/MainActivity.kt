@@ -9,9 +9,20 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kunotes.settings.ThemeMode
+import com.kunotes.ui.kuNotesViewModel
+import com.kunotes.ui.navigation.AppViewModel
+import com.kunotes.ui.navigation.KuNotesNavHost
+import com.kunotes.ui.navigation.StartScreen
+import com.kunotes.ui.theme.Dotline
 import com.kunotes.ui.theme.KuNotesTheme
-import com.kunotes.ui.welcome.SplashScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,9 +33,22 @@ class MainActivity : ComponentActivity() {
             navigationBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
         )
         setContent {
-            // Follows the phone's dark/light setting. A Settings choice comes later (PLAN).
-            KuNotesTheme(dark = isSystemInDarkTheme()) {
-                SplashScreen()
+            val appViewModel = kuNotesViewModel { AppViewModel(it) }
+            val theme by appViewModel.theme.collectAsStateWithLifecycle()
+            val start by appViewModel.start.collectAsStateWithLifecycle()
+            val dark =
+                when (theme) {
+                    ThemeMode.System -> isSystemInDarkTheme()
+                    ThemeMode.Light -> false
+                    ThemeMode.Dark -> true
+                }
+            KuNotesTheme(dark = dark) {
+                // Settings load in a few milliseconds; show the plain background until then.
+                if (start == StartScreen.Loading) {
+                    Box(Modifier.fillMaxSize().background(Dotline.colors.bg))
+                } else {
+                    KuNotesNavHost(start)
+                }
             }
         }
     }

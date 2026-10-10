@@ -108,6 +108,8 @@ fun DotlineTextField(
     enabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onKeyboardAction: KeyboardActionHandler? = null,
+    /** Applied to the editable text itself, e.g. `Modifier.focusRequester(...)` to focus it. */
+    textFieldModifier: Modifier = Modifier,
 ) {
     // We create the InteractionSource so we can read "is focused" for the border colour.
     val interactionSource = remember { MutableInteractionSource() }
@@ -118,7 +120,7 @@ fun DotlineTextField(
         WithDotlineSelectionColors {
             BasicTextField(
                 state = state,
-                modifier = Modifier.fillMaxWidth().fieldSemantics(label, errorText),
+                modifier = Modifier.fillMaxWidth().then(textFieldModifier).fieldSemantics(label, errorText),
                 enabled = enabled,
                 textStyle = textStyle.copy(color = if (enabled) Dotline.colors.ink else Dotline.colors.inkMuted),
                 keyboardOptions = keyboardOptions,
