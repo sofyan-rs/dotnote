@@ -276,7 +276,7 @@ The editor has one buffer and 3 modes. The mode choice is remembered per app.
 - Widget (`surface`, r28): LAST SYNC label, ✓ Up to date (`positive`), hero `2` (dot-xl) + `MIN AGO`, `main · 3 files pushed · 0 pulled`, **Sync now**.
 - **REPOSITORY** group: Remote (URL in mono, truncated), Sign-in (Access token), Auto-sync switch ("After edits and when you open the app").
 - Note: "A note changed on two devices keeps both versions, so nothing is overwritten."
-- Android has no system git: use **JGit** (`org.eclipse.jgit`) with an HTTPS token stored in EncryptedSharedPreferences / Keystore. Run sync in WorkManager.
+- Android has no system git: use **JGit** (`org.eclipse.jgit`) with an HTTPS token encrypted with an Android Keystore key. Run sync in WorkManager.
 - Not designed yet: the clone flow, the error state and the conflict list.
 
 ---
