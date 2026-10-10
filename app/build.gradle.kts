@@ -52,6 +52,17 @@ android {
         compose = true
     }
 
+    // One APK per CPU type (smaller downloads for GitHub releases), plus a universal APK that
+    // runs everywhere. The Play Store uses the .aab instead, which splits by itself.
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
+            isUniversalApk = true
+        }
+    }
+
     testOptions {
         // JVM unit tests run on JUnit 5 (Jupiter), like `:core`.
         unitTests.all { it.useJUnitPlatform() }
