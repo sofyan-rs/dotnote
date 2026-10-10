@@ -70,7 +70,7 @@ class GitSyncTest {
         assertEquals(emptyList<VaultPath>(), report.conflicts)
 
         // Nothing new: nothing changed.
-        assertEquals(SyncReport(), GitSync.sync(laptop, null))
+        assertEquals(SyncReport(branch = "main"), GitSync.sync(laptop, null))
     }
 
     @Test
@@ -174,7 +174,8 @@ class GitSyncTest {
         val a = vault("a")
         a.write("First.md", "first\n")
         val report = GitSync.connect(a, url, null)
-        assertEquals(SyncReport(), report)
+        assertEquals(listOf(".gitignore", "First.md"), report.pushed.map { it.value }.sorted())
+        assertEquals(emptyList<VaultPath>(), report.changed)
         Git.open(File(url)).use { bare -> assertNotNull(bare.repository.resolve("refs/heads/main")) }
 
         val b = vault("b")
@@ -195,6 +196,59 @@ class GitSyncTest {
         assertFalse(b.has(".trash/Old.md"), ".trash/ is never synced")
         assertEquals("line one\r\nline two\r\n", b.read("Windows.md"), "byte for byte")
         assertEquals(GitSync.GITIGNORE, b.read(".gitignore"), "same .gitignore as desktop, so no conflict")
+    }
+
+    @Test
+    fun `a sync reports the branch and the files it pushed`() {
+        val url = remote()
+        val a = vault("a")
+        GitSync.connect(a, url, null)
+        a.write("One.md", "1\n")
+        a.write("Two.md", "2\n")
+        val report = GitSync.sync(a, null)
+        assertEquals("main", report.branch)
+        assertEquals(listOf("One.md", "Two.md"), report.pushed.map { it.value }.sorted())
+        assertEquals(emptyList<VaultPath>(), report.changed)
+    }
+
+    @Test
+    fun `cloning keeps the remote's own gitignore without conflict copies`() {
+        val url = remote()
+        val desktop = vault("desktop")
+        desktop.write(".gitignore", "*.log\n")
+        desktop.write("Note.md", "hi\n")
+        Git.init().setDirectory(desktop).setInitialBranch("main").call().use { git ->
+            git.add().addFilepattern(".").call()
+            val me = PersonIdent("Me", "me@example.com")
+            git.commit().setMessage("first").setAuthor(me).setCommitter(me).call()
+            git.remoteAdd().setName("origin").setUri(org.eclipse.jgit.transport.URIish(url)).call()
+            git.push().setRemote("origin").setRefSpecs(org.eclipse.jgit.transport.RefSpec("HEAD:refs/heads/main")).call()
+        }
+
+        val phone = File(temp, "phone")
+        GitSync.clone(phone, url, null)
+        assertEquals("hi\n", phone.read("Note.md"))
+        assertEquals("*.log\n", phone.read(".gitignore"))
+        assertEquals(listOf(".git", ".gitignore", "Note.md"), phone.list()?.sorted())
+        assertEquals(url, GitSync.remoteUrl(phone))
+
+        phone.write("Note.md", "edited\n")
+        assertEquals(listOf("Note.md"), GitSync.sync(phone, null).pushed.map { it.value })
+    }
+
+    @Test
+    fun `cloning an empty remote works and refuses a folder that isn't empty`() {
+        val url = remote()
+        val phone = File(temp, "phone")
+        GitSync.clone(phone, url, null)
+        assertEquals(GitSync.GITIGNORE, phone.read(".gitignore"))
+
+        val busy = vault("busy")
+        busy.write("Old.md", "old\n")
+        assertThrows<CoreError.Git> { GitSync.clone(busy, url, null) }
+        val missing = File(temp, "nope.git").path
+        val error = assertThrows<CoreError.Git> { GitSync.clone(File(temp, "c"), missing, null) }
+        assertTrue(error.message.orEmpty().contains("wasn't found"), error.message)
     }
 
     @Test

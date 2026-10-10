@@ -31,6 +31,10 @@ data class SyncReport(
     val changed: List<VaultPath> = emptyList(),
     /** Copies saved because a file changed on both sides. */
     val conflicts: List<VaultPath> = emptyList(),
+    /** Files this device sent to the remote (they differed from the remote's version). */
+    val pushed: List<VaultPath> = emptyList(),
+    /** The remote branch the vault syncs with ("main"); `null` if it isn't known. */
+    val branch: String? = null,
 )
 
 /** HTTPS sign-in for the remote: a user name and a personal access token. */
@@ -122,6 +126,34 @@ object GitSync {
         return sync(root, credentials)
     }
 
+    /**
+     * Copies the repository at [url] into [root] (an empty or missing folder), then sets it up like
+     * [connect] does. Unlike [connect] on an empty folder, the remote's own files (its `.gitignore`)
+     * arrive as they are, so a fresh clone never starts with conflict copies.
+     * On failure [root] may hold a partial copy; the caller removes it.
+     */
+    fun clone(
+        root: File,
+        url: String,
+        credentials: GitCredentials?,
+    ): SyncReport {
+        val address = url.trim()
+        if (address.isEmpty()) throw CoreError.Git("Enter the address of a git repository.")
+        if (root.exists() && !root.listFiles().isNullOrEmpty()) {
+            throw CoreError.Git("The folder \"${root.name}\" isn't empty.")
+        }
+        runGit {
+            Git
+                .cloneRepository()
+                .setURI(address)
+                .setDirectory(root)
+                .setCredentialsProvider(provider(credentials))
+                .call()
+                .close()
+        }
+        return connect(root, address, credentials)
+    }
+
     /** Stops syncing: removes the remote. The history in `.git` stays. */
     fun disconnect(root: File) {
         runGit { open(root).use { git -> git.remoteRemove().setRemoteName(REMOTE).call() } }
@@ -173,8 +205,9 @@ object GitSync {
         val branch = remoteBranch(git, credentials)
         if (branch == null) {
             // An empty remote: just send what's here.
-            if (head(git) != null) push(git, credentials, "main")
-            return SyncReport()
+            val now = head(git) ?: return SyncReport()
+            push(git, credentials, "main")
+            return SyncReport(pushed = changedFiles(git, null, now), branch = "main")
         }
 
         val theirsRef = "refs/remotes/$REMOTE/$branch"
@@ -187,7 +220,7 @@ object GitSync {
         val theirs = git.repository.resolve(theirsRef) ?: throw CoreError.Git("The remote branch \"$branch\" is missing.")
         val before = head(git)
 
-        var report = SyncReport()
+        var report = SyncReport(branch = branch)
         val upToDate = before != null && isAncestor(git, theirs, before)
         if (!upToDate) {
             val result =
@@ -213,11 +246,14 @@ object GitSync {
                     }
                     else -> throw CoreError.Git("Couldn't merge the remote's notes (${result.mergeStatus}).")
                 }
-            report = SyncReport(changed = changedFiles(git, before), conflicts = conflicts)
+            report = report.copy(changed = changedFiles(git, before), conflicts = conflicts)
         }
         // Send our commits, if the remote doesn't have them yet.
         val now = head(git)
-        if (now != null && !isAncestor(git, now, theirs)) push(git, credentials, branch)
+        if (now != null && !isAncestor(git, now, theirs)) {
+            push(git, credentials, branch)
+            report = report.copy(pushed = changedFiles(git, theirs, now))
+        }
         return report
     }
 
@@ -316,13 +352,14 @@ object GitSync {
             walk.isMergedInto(walk.parseCommit(ancestor), walk.parseCommit(descendant))
         }
 
-    /** Files that differ between [before] and HEAD (all files if there was no [before]). */
+    /** Files that differ between [before] and [after] (all files if there was no [before]). */
     private fun changedFiles(
         git: Git,
         before: ObjectId?,
+        after: ObjectId? = head(git),
     ): List<VaultPath> {
         val repository = git.repository
-        val after = head(git) ?: return emptyList()
+        if (after == null) return emptyList()
         val changed = mutableListOf<VaultPath>()
         RevWalk(repository).use { revWalk ->
             TreeWalk(repository).use { walk ->
