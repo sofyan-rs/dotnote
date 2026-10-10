@@ -170,10 +170,12 @@ class FilesViewModel(
                     selected = row.path == state.selected,
                 )
             }
+        // The note opened last. Pinned notes sit in front, so the first card isn't always it.
         val current =
-            state.openNotes.entries
-                .firstOrNull()
-                ?.path
+            state.selected?.takeIf { selected -> state.openNotes.entries.any { it.path == selected } }
+                ?: state.openNotes.entries
+                    .firstOrNull()
+                    ?.path
         val cards =
             state.openNotes.entries.map { entry ->
                 val locked = NoteNames.isLockedNote(entry.path)

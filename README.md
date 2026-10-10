@@ -4,6 +4,20 @@ The phone version of [KuNotes](https://github.com/sofyan-rs/kunotes-gpui): a min
 
 Built with **Kotlin + Jetpack Compose**, styled with the **Dotline** design system: monochrome, dark first, one red signal colour, dot-matrix display type.
 
+## Download
+
+Get the latest APK from [Releases](https://github.com/sofyan-rs/kunotes-android/releases/latest). Most phones need `arm64-v8a`; if unsure, take `universal`. Android 8.0 or newer.
+
+## Screenshots
+
+| Files | Live | Source | Preview |
+|---|---|---|---|
+| <img src="ss/files.png" width="200" alt="Files tab"> | <img src="ss/editor-live.png" width="200" alt="Live mode: markers hidden away from the cursor"> | <img src="ss/editor-source.png" width="200" alt="Source mode with line numbers"> | <img src="ss/editor-preview.png" width="200" alt="Preview mode"> |
+
+| Search | Vaults | Light theme |
+|---|---|---|
+| <img src="ss/search.png" width="200" alt="Search by note name"> | <img src="ss/vaults.png" width="200" alt="Vaults and theme choice"> | <img src="ss/files-light.png" width="200" alt="Files tab in the light theme"> |
+
 > **Status:** all screens from the design are built and tested on the emulator: vaults (picked folders and git clones), file tree, editor (Live / Source / Preview), search, locked notes and git sync. Remaining work (store release, accessibility pass, a few editor details) is in [docs/implementation/PLAN.md](docs/implementation/PLAN.md).
 
 ## Features
