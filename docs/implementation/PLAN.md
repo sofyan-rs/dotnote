@@ -63,28 +63,29 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 
 ---
 
-## Phase 3: Vault onboarding (1.1–1.3)
+## Phase 3: Vault onboarding (1.1–1.3) ✅
 
-- [ ] `SettingsStore` (DataStore + kotlinx.serialization) and `VaultRegistry`.
-- [ ] `SafVaultFs` with id cache and safe write (§7.1–7.2).
-- [ ] Welcome (1.1) → Open folder sheet (1.2) → `OpenDocumentTree` + persisted permission; cancelled pick; revoked permission.
-- [ ] Reopen the last vault at launch.
-- [ ] Empty vault (1.3).
-- [ ] Navigation shell: routes + `BottomNav` (FILES active; other tabs placeholder).
+- [x] `SettingsStore` (DataStore + kotlinx.serialization) and `VaultRegistry`.
+- [x] `SafVaultFs` with id cache and safe write (§7.1–7.2). Verified on the emulator against `Documents/Notes`.
+- [ ] Spike Q5: scan time for ~2,000 notes on SAF.
+- [x] Welcome (1.1) → Open folder sheet (1.2) → `OpenDocumentTree` + persisted permission; cancelled pick; revoked permission.
+- [x] Reopen the last vault at launch.
+- [x] Empty vault (1.3).
+- [x] Navigation shell: routes + `BottomNav` (FILES active; other tabs placeholder).
 
 **Done when:** picking a folder on a device shows it as a vault, and it reopens after the app is killed.
 
 ---
 
-## Phase 4: Files (2.1–2.6, 1.4)
+## Phase 4: Files (2.1–2.6, 1.4) ✅
 
-- [ ] `VaultStore` (§4.1) with rescan on `ON_START`, after ops, pull-to-refresh, 10 s poll (§7.4).
-- [ ] Files screen (2.1): header + count line, tree with expand/collapse, selected row, ⋮ and long-press.
-- [ ] Open notes row (`OpenNotes` + persisted per vault).
-- [ ] New note / folder sheet (1.4) with location picker and validation.
-- [ ] Folder actions (2.2) and note actions (2.3), incl. copy path and share.
-- [ ] Rename (2.4), Move to (2.5), Trash + Undo (2.6).
-- [ ] Trash purge (30 days) on vault open.
+- [x] `VaultStore` (§4.1) with rescan on `ON_START`, after ops, pull-to-refresh, 10 s poll (§7.4).
+- [x] Files screen (2.1): header + count line, tree with expand/collapse, selected row, ⋮ and long-press.
+- [x] Open notes row (`OpenNotes` + persisted per vault).
+- [x] New note / folder sheet (1.4) with location picker and validation.
+- [x] Folder actions (2.2) and note actions (2.3), incl. copy path and share.
+- [x] Rename (2.4), Move to (2.5), Trash + Undo (2.6).
+- [x] Trash purge (30 days) on vault open.
 
 **Done when:** create, rename, move, trash and undo work on the sample vault, and changes made in another app show up.
 
@@ -107,20 +108,20 @@ Order from SPEC §8: Source, then Preview, then Live.
 
 ---
 
-## Phase 6: Search (4.1–4.2)
+## Phase 6: Search (4.1–4.2) ✅
 
-- [ ] Quick switcher: autofocus, count, highlighted matches, folder path, IME "Go", create note row.
-- [ ] RECENT chips for an empty query.
-- [ ] No results (4.2).
+- [x] Quick switcher: autofocus, count, highlighted matches, folder path, IME "Go", create note row.
+- [x] RECENT chips for an empty query.
+- [x] No results (4.2).
 
 ---
 
-## Phase 7: Vaults (6.1–6.4)
+## Phase 7: Vaults (6.1–6.4) ✅
 
-- [ ] Change vault sheet (6.1).
-- [ ] Vaults tab (6.2), incl. ⋮ on the open vault (SPEC known gap).
-- [ ] Vault actions (6.3): open, rename in list, sync settings, notes password.
-- [ ] Remove vault (6.4): release permission; optional "also delete the folder" (to system or `.trash`, decide).
+- [x] Change vault sheet (6.1).
+- [x] Vaults tab (6.2), incl. ⋮ on the open vault (SPEC known gap).
+- [x] Vault actions (6.3): open, rename in list, sync settings, notes password.
+- [x] Remove vault (6.4): release permission. "Also delete the folder" left out on purpose: Android has no trash for a picked folder, so it would delete notes for good.
 
 ---
 

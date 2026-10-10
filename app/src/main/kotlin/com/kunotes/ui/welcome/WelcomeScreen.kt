@@ -49,48 +49,26 @@ import com.kunotes.ui.theme.Doto
 import com.kunotes.ui.theme.KuNotesTheme
 import com.kunotes.ui.theme.SpaceMono
 
-/** Screen entry: wires the ViewModel and the folder picker to [WelcomeContent]. */
+/** Screen entry: the welcome content plus the open-folder flow (sheet → picker). */
 @Composable
 fun WelcomeScreen(
     lostAccessTo: String?,
     onVaultOpened: () -> Unit,
     onCloneFromGit: () -> Unit,
 ) {
-    val viewModel = kuNotesViewModel { WelcomeViewModel(it.vaultRegistry, it.vaultStore) }
-    val error by viewModel.error.collectAsStateWithLifecycle()
     // `rememberSaveable` keeps the sheet open across rotation.
     var sheetOpen by rememberSaveable { mutableStateOf(lostAccessTo != null) }
-
-    // Android's folder picker. It returns the folder's URI, or null if the user backed out.
-    val pickFolder =
-        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri: Uri? ->
-            if (uri != null) viewModel.addFolder(uri, onVaultOpened)
-        }
-
-    WelcomeContent(
-        error = error,
-        onOpenFolder = { sheetOpen = true },
-        onCloneFromGit = onCloneFromGit,
+    WelcomeContent(onOpenFolder = { sheetOpen = true }, onCloneFromGit = onCloneFromGit)
+    OpenFolderFlow(
+        open = sheetOpen,
+        lostAccessTo = lostAccessTo,
+        onDismiss = { sheetOpen = false },
+        onVaultOpened = onVaultOpened,
     )
-    if (sheetOpen) {
-        OpenFolderSheet(
-            lostAccessTo = lostAccessTo,
-            onChooseFolder = { pickFolder.launch(DOCUMENTS_FOLDER) },
-            onDismiss = { sheetOpen = false },
-        )
-    }
 }
-
-/**
- * Where the folder picker starts: the phone's Documents folder (the explainer suggests
- * "Documents/Notes"). The picker falls back to its default if this folder doesn't exist.
- */
-private val DOCUMENTS_FOLDER: Uri =
-    android.provider.DocumentsContract.buildDocumentUri("com.android.externalstorage.documents", "primary:Documents")
 
 @Composable
 private fun WelcomeContent(
-    error: String?,
     onOpenFolder: () -> Unit,
     onCloneFromGit: () -> Unit,
 ) {
@@ -123,101 +101,20 @@ private fun WelcomeContent(
             Modifier.padding(start = Dotline.space.s4, end = Dotline.space.s4, bottom = Dotline.space.s6),
             verticalArrangement = Arrangement.spacedBy(Dotline.space.s2),
         ) {
-            if (error != null) Text(error, style = Dotline.type.bodyS, color = Dotline.colors.accentText)
             PrimaryButton("Open a folder", onClick = onOpenFolder, icon = DotlineIcons.Folder, modifier = Modifier.fillMaxWidth())
             SecondaryButton("Clone from git", onClick = onCloneFromGit, icon = DotlineIcons.GitBranch, modifier = Modifier.fillMaxWidth())
         }
     }
 }
 
-/** The explainer sheet before Android's folder picker opens (1.2). */
-@Composable
-private fun OpenFolderSheet(
-    lostAccessTo: String?,
-    onChooseFolder: () -> Unit,
-    onDismiss: () -> Unit,
-) {
-    DotlineBottomSheet(onDismissRequest = onDismiss, spacing = 20.dp) {
-        Column(Modifier.padding(horizontal = Dotline.space.s1), verticalArrangement = Arrangement.spacedBy(Dotline.space.s1)) {
-            Text(
-                if (lostAccessTo == null) "Pick a folder for your vault" else "Open “$lostAccessTo” again",
-                style = Dotline.type.title,
-                color = Dotline.colors.ink,
-            )
-            Text(
-                if (lostAccessTo == null) {
-                    "Android's folder picker opens next."
-                } else {
-                    "KuNotes lost access to this folder (it was moved, or access was turned off). Pick it again."
-                },
-                style = Dotline.type.body,
-                color = Dotline.colors.inkMuted,
-            )
-        }
-        Column(Modifier.padding(horizontal = Dotline.space.s1), verticalArrangement = Arrangement.spacedBy(Dotline.space.s3)) {
-            Step(
-                number = "1",
-                text =
-                    buildAnnotatedString {
-                        append("Choose a folder with your notes, or create a new one like ")
-                        withStyle(SpanStyle(fontFamily = SpaceMono, fontSize = 13.sp)) { append("Documents/Notes") }
-                    },
-            )
-            Step(
-                number = "2",
-                text =
-                    buildAnnotatedString {
-                        append("Tap ")
-                        withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append("Use this folder") }
-                        append(", then ")
-                        withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append("Allow") }
-                        append(".")
-                    },
-            )
-        }
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .background(Dotline.colors.bg, Dotline.radius.m)
-                .padding(Dotline.space.s4),
-            horizontalArrangement = Arrangement.spacedBy(Dotline.space.s3),
-        ) {
-            Icon(DotlineIcons.Lock, contentDescription = null, tint = Dotline.colors.inkMuted, modifier = Modifier.size(20.dp))
-            Text(
-                "KuNotes can only read and write inside the folder you pick. Nothing else on your phone.",
-                style = Dotline.type.bodyS,
-                color = Dotline.colors.inkMuted,
-            )
-        }
-        PrimaryButton("Choose folder", onClick = onChooseFolder, modifier = Modifier.fillMaxWidth())
-    }
-}
-
-@Composable
-private fun Step(
-    number: String,
-    text: androidx.compose.ui.text.AnnotatedString,
-) {
-    Row(horizontalArrangement = Arrangement.spacedBy(Dotline.space.s4), verticalAlignment = Alignment.Top) {
-        // Numbers in Doto: display type at 24 sp, the smallest size Doto may be used at.
-        Text(
-            number,
-            style = Dotline.type.dotM.copy(fontFamily = Doto, fontSize = 24.sp, lineHeight = 24.sp, fontWeight = FontWeight.Black),
-            color = Dotline.colors.ink,
-            modifier = Modifier.width(20.dp),
-        )
-        Text(text, style = Dotline.type.body, color = Dotline.colors.ink)
-    }
-}
-
 @Preview(name = "Dark")
 @Composable
 private fun WelcomeDarkPreview() {
-    KuNotesTheme(dark = true) { WelcomeContent(error = null, onOpenFolder = {}, onCloneFromGit = {}) }
+    KuNotesTheme(dark = true) { WelcomeContent(onOpenFolder = {}, onCloneFromGit = {}) }
 }
 
 @Preview(name = "Light")
 @Composable
 private fun WelcomeLightPreview() {
-    KuNotesTheme(dark = false) { WelcomeContent(error = null, onOpenFolder = {}, onCloneFromGit = {}) }
+    KuNotesTheme(dark = false) { WelcomeContent(onOpenFolder = {}, onCloneFromGit = {}) }
 }

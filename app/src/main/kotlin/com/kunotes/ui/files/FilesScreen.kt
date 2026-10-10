@@ -54,6 +54,8 @@ import com.kunotes.ui.dotline.showDotlineSnackbar
 import com.kunotes.ui.kuNotesViewModel
 import com.kunotes.ui.navigation.MainTabs
 import com.kunotes.ui.theme.Dotline
+import com.kunotes.ui.vaults.VaultSwitcherSheet
+import com.kunotes.ui.welcome.OpenFolderFlow
 import com.kunotes.vault.VaultEvent
 
 /** Which sheet is open on the Files screen, if any. */
@@ -81,13 +83,16 @@ fun FilesScreen(
     onTabClick: (MainTab) -> Unit,
     onOpenNote: (VaultPath) -> Unit,
     onMoveItem: (VaultPath) -> Unit,
-    onSwitchVault: () -> Unit,
+    onManageVaults: () -> Unit,
+    onCloneFromGit: () -> Unit,
     onSearch: () -> Unit,
     onLockNote: (VaultPath) -> Unit,
 ) {
     val viewModel = kuNotesViewModel { FilesViewModel(it.vaultStore) }
     val ui by viewModel.ui.collectAsStateWithLifecycle()
     var sheet by remember { mutableStateOf<FilesSheet?>(null) }
+    var vaultSwitcherOpen by remember { mutableStateOf(false) }
+    var openFolderOpen by remember { mutableStateOf(false) }
     val snackbars = remember { SnackbarHostState() }
     val context = LocalContext.current
 
@@ -135,7 +140,7 @@ fun FilesScreen(
         Column(Modifier.fillMaxSize()) {
             ScreenTitle(
                 title = ui.vaultName.uppercase(),
-                onTitleClick = onSwitchVault,
+                onTitleClick = { vaultSwitcherOpen = true },
                 subline = if (ui.loaded) "${ui.noteCount} ${if (ui.noteCount == 1) "note" else "notes"}" else "Reading…",
                 actions = {
                     ScreenTitleAction(DotlineIcons.Search, "Search notes", onSearch)
@@ -159,6 +164,22 @@ fun FilesScreen(
             }
         }
     }
+
+    if (vaultSwitcherOpen) {
+        VaultSwitcherSheet(
+            onManage = onManageVaults,
+            onOpenFolder = {
+                vaultSwitcherOpen = false
+                openFolderOpen = true
+            },
+            onCloneFromGit = {
+                vaultSwitcherOpen = false
+                onCloneFromGit()
+            },
+            onDismiss = { vaultSwitcherOpen = false },
+        )
+    }
+    OpenFolderFlow(open = openFolderOpen, lostAccessTo = null, onDismiss = { openFolderOpen = false }, onVaultOpened = {})
 
     when (val current = sheet) {
         null -> Unit

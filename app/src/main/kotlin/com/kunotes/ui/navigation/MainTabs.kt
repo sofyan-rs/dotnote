@@ -7,8 +7,11 @@ package com.kunotes.ui.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,6 +26,7 @@ import com.kunotes.ui.theme.Dotline
  * Lays out a tab screen. [content] gets the full area above the bottom nav; [overlay] is
  * drawn on top of it (floating button, snackbar), aligned by the caller.
  */
+@OptIn(ExperimentalLayoutApi::class) // isImeVisible
 @Composable
 fun MainTabs(
     selected: MainTab,
@@ -45,7 +49,11 @@ fun MainTabs(
             content()
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) { overlay() }
         }
-        BottomNav(tabs = MainTab.entries, selectedTab = selected, onTabClick = onTabClick)
+        // While the keyboard is open, the bottom nav hides: the keyboard covers it anyway, and
+        // screens use imePadding() to stay above the keyboard.
+        if (!WindowInsets.isImeVisible) {
+            BottomNav(tabs = MainTab.entries, selectedTab = selected, onTabClick = onTabClick)
+        }
     }
 }
 

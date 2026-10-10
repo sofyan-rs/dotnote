@@ -9,9 +9,14 @@ package com.kunotes.ui.navigation
 
 import kotlinx.serialization.Serializable
 
-/** First launch (1.1), with the open-folder explainer sheet (1.2). */
+/**
+ * First launch (1.1), with the open-folder explainer sheet (1.2). [lostAccessTo] names a vault
+ * whose folder can't be opened anymore (the sheet then asks to pick it again).
+ */
 @Serializable
-data object Welcome
+data class Welcome(
+    val lostAccessTo: String? = null,
+)
 
 /** The four bottom-nav tabs. */
 @Serializable
