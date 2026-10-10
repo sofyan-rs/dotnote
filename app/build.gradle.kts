@@ -33,6 +33,11 @@ android {
         compose = true
     }
 
+    testOptions {
+        // JVM unit tests: Android framework calls return defaults instead of throwing.
+        unitTests.isReturnDefaultValues = true
+    }
+
     lint {
         warningsAsErrors = false
         abortOnError = true
@@ -51,6 +56,10 @@ dependencies {
     implementation(libs.androidx.datastore)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.commonmark)
+    implementation(libs.commonmark.gfm.tables)
+    implementation(libs.commonmark.gfm.strikethrough)
+    implementation(libs.commonmark.task.list.items)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
@@ -61,4 +70,13 @@ dependencies {
     debugImplementation(libs.jgit) // spike screen creates a bare repo directly
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testRuntimeOnly(libs.junit.launcher)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
