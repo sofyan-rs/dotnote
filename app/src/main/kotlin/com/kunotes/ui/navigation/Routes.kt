@@ -37,3 +37,23 @@ data class Editor(
 data class MoveTo(
     val path: String,
 )
+
+/**
+ * Locked note (5.2): asks for the vault password. [path] is the note. Afterwards it opens the
+ * editor, or, with [toggleLock], locks/unlocks [path] (the "Lock note" action) and goes back.
+ */
+@Serializable
+data class Unlock(
+    val path: String,
+    val toggleLock: Boolean = false,
+)
+
+/** Set notes password (5.1). [path] is the note to lock afterwards, if any. */
+@Serializable
+data class SetPassword(
+    val path: String? = null,
+)
+
+/** Change notes password (5.3) of the open vault. */
+@Serializable
+data object ChangePassword
