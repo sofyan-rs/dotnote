@@ -105,7 +105,8 @@ Order from SPEC §8: Source, then Preview, then Live.
 - [x] Mode remembered per app. Switching modes never changes file bytes (JVM ViewModel test; a Compose UI test is still to do).
 - [x] Enter continues lists (desktop rule); the heading button shows the line's level (H1/H2/H3).
 - [ ] Live mode with a CJK keyboard (checked with Gboard only).
-- [ ] Tappable links in Preview.
+- [x] Web and mail links in Preview open in the browser.
+- [ ] Links to other notes (`[x](Other.md)`) open that note (now styled only).
 
 **Done when:** `Example.md` renders correctly in all three modes and the save-safety manual test passes. ✅ Checked on the emulator: Live/Source/Preview, autosave, save on Home.
 
@@ -157,7 +158,7 @@ Order from SPEC §8: Source, then Preview, then Live.
 ## Phase 10: Polish and release
 
 - [x] App icon (Dotline style: dot grid with one red dot).
-- [ ] Splash screen (Android 12+ splash API).
+- [x] Splash: the system splash (Android 12+) shows the icon on the theme background; older versions show the theme background. No extra library.
 - [x] Release build with R8 works (JGit and kage keep rules in `app/proguard-rules.pro`), 4.1 MB APK.
 - [ ] Move user-facing strings into `strings.xml` (translations).
 - [ ] Accessibility: TalkBack labels, focus ring, font scale up to 200%, reduced motion.
