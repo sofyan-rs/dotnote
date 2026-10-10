@@ -40,6 +40,9 @@ class NoteFiles(
      */
     var keyProvider: () -> VaultKey? = { null }
 
+    /** Called after every save (git auto-sync starts its 60 s wait here). */
+    var onSaved: (VaultPath) -> Unit = {}
+
     suspend fun read(path: VaultPath): NoteText =
         withContext(Dispatchers.IO) {
             val fs = vaultStore.fs ?: throw CoreError.Io("No vault is open")
@@ -68,5 +71,6 @@ class NoteFiles(
         } else {
             fs.writeAtomic(path, onDisk.toByteArray())
         }
+        onSaved(path)
     }
 }

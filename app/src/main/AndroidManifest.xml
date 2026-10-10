@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Git sync talks to the remote over HTTPS. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".KuNotesApp"
         android:allowBackup="false"

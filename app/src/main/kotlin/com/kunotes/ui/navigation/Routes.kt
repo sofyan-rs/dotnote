@@ -62,3 +62,7 @@ data class SetPassword(
 /** Change notes password (5.3) of the open vault. */
 @Serializable
 data object ChangePassword
+
+/** Clone a git repository as a new vault (SPEC 7, clone flow). */
+@Serializable
+data object Clone

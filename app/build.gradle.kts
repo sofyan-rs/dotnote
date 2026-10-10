@@ -34,6 +34,7 @@ android {
     }
 
     testOptions {
+        // JVM unit tests run on JUnit 5 (Jupiter), like `:core`.
         unitTests.all { it.useJUnitPlatform() }
     }
 
@@ -55,6 +56,7 @@ dependencies {
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.biometric)
     implementation(libs.androidx.fragment)
+    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
 

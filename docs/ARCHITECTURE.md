@@ -366,21 +366,21 @@ Holds the unlocked vault key in memory, per vault. Unlocking runs scrypt on `Dis
 
 ### 9.1 Where synced vaults live
 
-JGit needs a real `java.io.File` work tree; it can't use a SAF tree. See open question Q1 (§12). Planned default: a cloned vault lives in app-specific storage and uses `FileVaultFs`; an existing SAF vault can't be connected to git until Q1 is decided.
+JGit needs a real `java.io.File` work tree; it can't use a SAF tree. **Decided (Q1, option a):** a git-synced vault lives in app-specific storage, `context.filesDir/vaults/<name>`, saved as a `VaultKind.File` vault (`VaultRegistry.addAppFolder`) and read with `FileVaultFs`. It is created by **Clone from git** (`ui/sync/CloneScreen.kt`: `GitSync.clone`, then the token is saved, the vault added, auto-sync turned on and the vault opened). A folder picked with SAF can't be synced; the SYNC tab explains that and offers **Clone from git**. Trade-off: other apps can't see the files of a cloned vault.
 
 ### 9.2 Behaviour (must match desktop `git.rs`)
 
 - One sync = commit local changes, fetch, merge the remote, push.
 - When a file changed on both sides, this device's version stays and the other is saved next to it as `Name (conflict YYYY-MM-DD).md` (`.md.age` keeps both extensions). Same naming function as desktop, ported with its tests.
 - On connect, write desktop's `.gitignore` (same bytes) if the vault has none; `.trash/` goes in `.git/info/exclude`, so the two never conflict.
-- Auth: HTTPS with a personal access token. The token is encrypted with a Keystore AES key and stored in app storage (not in `Settings`). `security-crypto`'s `EncryptedSharedPreferences` is deprecated; don't use it.
+- Auth: HTTPS with a personal access token. The token is encrypted with a Keystore AES key and stored in app storage (not in `Settings`): `sync/TokenStore.kt`, AES-GCM, one file per vault in `files/git-sign-in/`, removed when the vault is removed. `security-crypto`'s `EncryptedSharedPreferences` is deprecated; don't use it.
 
 ### 9.3 `SyncController`
 
-Status (`LAST SYNC`, up to date, files pushed/pulled, error) as a `StateFlow`. Timing follows desktop where it makes sense on a phone:
+`sync/SyncController.kt`, app-scoped (built in `sync/SyncSetup.kt`, which also hooks it to `ProcessLifecycleOwner`). Status (`LAST SYNC`, up to date, files pushed/pulled, error, conflict copies) as a `StateFlow`; `changedFiles` emits the paths a sync changed so an open note can reload. The git calls go through the `SyncGit` interface, so the timing is unit-tested with a fake and virtual time. One `Mutex` keeps the foreground sync and the background job from running git at the same time. Timing follows desktop where it makes sense on a phone (only for vaults in `Settings.syncedVaults`):
 - On app start (`ON_START`) when auto-sync is on.
-- 60 s after the last edit while the app is open (desktop `AFTER_EDIT`).
-- On `ON_STOP`, a one-time WorkManager job (network required) commits and pushes.
+- 60 s after the last edit while the app is open (desktop `AFTER_EDIT`): `NoteFiles.write` calls `noteSaved()`; trash/rename/move (`VaultEvent`s) count as edits.
+- On `ON_STOP`, if something was saved since the last sync, a one-time WorkManager job (`sync/SyncWorker.kt`, network required, 3 s delay so flushed saves land first) runs `GitSync.commitAndPushQuickly` (20 s timeout). A save that lands after `ON_STOP` enqueues the job directly.
 - **Sync now** button any time.
 
 ---
@@ -417,7 +417,7 @@ Status (`LAST SYNC`, up to date, files pushed/pulled, error) as a `StateFlow`. T
 
 Each is answered in the Phase 0 spike or before the phase that needs it. Record answers here and in PLAN.
 
-- **Q1. Git and SAF.** JGit can't work on a SAF tree. Options: (a) synced vaults live in app storage (`FileVaultFs`) — simple, but other apps can't see those files; (b) request "All files access" (`MANAGE_EXTERNAL_STORAGE`) and use `FileVaultFs` everywhere — simplest code, real atomic renames, `FileObserver`, but Play Store review needs a justification and the SPEC 1.2 privacy copy changes; (c) keep a JGit repo in app storage and mirror it to the SAF folder — keeps SAF, but two copies and a mirror to get right. **Leaning (a) for v1**, revisit after Phase 8.
+- **Q1. Git and SAF.** JGit can't work on a SAF tree. Options: (a) synced vaults live in app storage (`FileVaultFs`) — simple, but other apps can't see those files; (b) request "All files access" (`MANAGE_EXTERNAL_STORAGE`) and use `FileVaultFs` everywhere — simplest code, real atomic renames, `FileObserver`, but Play Store review needs a justification and the SPEC 1.2 privacy copy changes; (c) keep a JGit repo in app storage and mirror it to the SAF folder — keeps SAF, but two copies and a mirror to get right. ✅ **Decided (Phase 9): (a).** Synced vaults are cloned into `filesDir/vaults/<name>` (`VaultKind.File`); picked SAF folders can't sync, and the SYNC tab says so and offers **Clone from git** (§9.1). (b) or (c) can be revisited if users ask to sync a folder other apps can see.
 - **Q2. Live editor API.** ✅ Mostly answered: Compose foundation 1.12 lets an `OutputTransformation` add `SpanStyle`/`ParagraphStyle` (`TextFieldBuffer.addStyle`) and hide characters (`replace(start, end, "")`); the Phase 0 spike screen shows headings at 30/22 sp, bold/italic/strike/code styled, and markers hidden off the cursor line. Still to check in Phase 5: cursor movement across hidden markers, IME (Gboard, Samsung, CJK), and inline-code background height.
 - **Q3. kage compatibility.** ✅ kage 0.8 does scrypt and armor. Desktop-made key + note decrypt in JVM tests and on the emulator (bytes match); a Kotlin-made vault opens in desktop `kunotes-core`. Follow-up in Q7.
 - **Q4. JGit on Android.** ✅ JGit 7 crashes on API 30 (`InputStream.readNBytes`, Java 11). JGit 5.13.5 works: two-device sync through a bare repo with a conflict copy passes on the emulator. HTTPS token auth still to try against a real host (Phase 9).

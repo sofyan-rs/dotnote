@@ -21,6 +21,8 @@ import com.kunotes.ui.lock.LockActionsViewModel
 import com.kunotes.ui.lock.SetPasswordScreen
 import com.kunotes.ui.lock.UnlockScreen
 import com.kunotes.ui.search.SearchScreen
+import com.kunotes.ui.sync.CloneScreen
+import com.kunotes.ui.sync.SyncScreen
 import com.kunotes.ui.vaults.VaultNavigation
 import com.kunotes.ui.vaults.VaultsScreen
 import com.kunotes.ui.welcome.WelcomeScreen
@@ -37,7 +39,7 @@ fun KuNotesNavHost(start: StartScreen) {
                 onVaultOpened = {
                     navController.navigate(Files) { popUpTo<Welcome> { inclusive = true } }
                 },
-                onCloneFromGit = { navController.navigate(Sync) },
+                onCloneFromGit = { navController.navigate(Clone) },
             )
         }
         composable<Files> {
@@ -50,7 +52,7 @@ fun KuNotesNavHost(start: StartScreen) {
                 },
                 onMoveItem = { path -> navController.navigate(MoveTo(path.value)) },
                 onManageVaults = { navController.navigateToTab(MainTab.Vaults) },
-                onCloneFromGit = { navController.navigateToTab(MainTab.Sync) },
+                onCloneFromGit = { navController.navigate(Clone) },
                 onSearch = { navController.navigateToTab(MainTab.Search) },
                 onLockNote = { path ->
                     lockActions.toggleLock(
@@ -95,14 +97,23 @@ fun KuNotesNavHost(start: StartScreen) {
                 },
             )
         }
-        composable<Sync> { PlaceholderTab(MainTab.Sync, navController::navigateToTab) }
+        composable<Sync> {
+            SyncScreen(onTabClick = navController::navigateToTab, onCloneFromGit = { navController.navigate(Clone) })
+        }
+        composable<Clone> {
+            CloneScreen(
+                // The new vault is open: show its files, with nothing to go back to (like Welcome).
+                onCloned = { navController.navigate(Files) { popUpTo(navController.graph.id) { inclusive = true } } },
+                onBack = { navController.popBackStack() },
+            )
+        }
         composable<Vaults> {
             VaultsScreen(
                 onTabClick = navController::navigateToTab,
                 navigation =
                     VaultNavigation(
                         onOpenFiles = { navController.navigateToTab(MainTab.Files) },
-                        onCloneFromGit = { navController.navigateToTab(MainTab.Sync) },
+                        onCloneFromGit = { navController.navigate(Clone) },
                         onSyncSettings = { navController.navigateToTab(MainTab.Sync) },
                         onNotesPassword = { hasPassword ->
                             navController.navigate(if (hasPassword) ChangePassword else SetPassword(null))

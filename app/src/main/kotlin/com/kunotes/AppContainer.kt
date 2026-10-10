@@ -12,6 +12,9 @@ import com.kunotes.lock.BiometricKey
 import com.kunotes.lock.NoteLocker
 import com.kunotes.lock.VaultLock
 import com.kunotes.settings.SettingsStore
+import com.kunotes.sync.SyncController
+import com.kunotes.sync.TokenStore
+import com.kunotes.sync.createSyncController
 import com.kunotes.vault.NoteFiles
 import com.kunotes.vault.VaultRegistry
 import com.kunotes.vault.VaultStore
@@ -30,6 +33,9 @@ class AppContainer(
      * closes. `SupervisorJob` keeps one failed job from cancelling the others.
      */
     val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
+    /** The app's private storage; cloned vaults live in `vaults/` inside it (ARCHITECTURE §9.1). */
+    val appFilesDir: java.io.File = context.filesDir
 
     val settingsStore = SettingsStore(context)
     val vaultRegistry = VaultRegistry(context, settingsStore)
@@ -57,4 +63,10 @@ class AppContainer(
                 .collect { vaultLock.lockAllExcept(it) }
         }
     }
+
+    val tokenStore = TokenStore(context)
+    val syncController: SyncController =
+        createSyncController(context, appScope, settingsStore, vaultRegistry, vaultStore, tokenStore).also { sync ->
+            noteFiles.onSaved = { sync.noteSaved() }
+        }
 }

@@ -138,11 +138,13 @@ Order from SPEC §8: Source, then Preview, then Live.
 
 ## Phase 9: Git sync (7.1)
 
-- [ ] Decide Q1 (where synced vaults live).
-- [ ] `TokenStore` (Keystore-encrypted).
-- [ ] `SyncController` timing (§9.3) and `SyncWorker`.
-- [ ] Git sync screen (7.1): status widget, repository group, auto-sync switch.
-- [ ] Clone flow, error state, conflict list (not designed yet: design first, SPEC §7).
+- [x] Decide Q1 (where synced vaults live): (a) app storage, `filesDir/vaults/<name>`; picked SAF folders can't sync (ARCHITECTURE §9.1, §12).
+- [x] `TokenStore` (Keystore AES-GCM).
+- [x] `SyncController` timing (§9.3) and `SyncWorker`, with unit tests.
+- [x] Git sync screen (7.1): status widget, repository group, auto-sync switch, sign-in sheet, "can't sync" state for SAF vaults.
+- [x] Clone flow (`CloneScreen`, designed in the Dotline style), error state (in the widget), conflict copies listed in the widget message.
+- [ ] Try HTTPS token auth against GitHub on a device (Q4 follow-up).
+- [ ] Vaults tab (6.2) "Clone from git" → `Clone` route (wire when the Vaults screen lands).
 
 ---
 
@@ -185,5 +187,5 @@ Run on an old (API 26–29) and a new (API 34+) device before each release.
 | SAF is slow and has no change events | Laggy tree on big vaults, stale lists | `DocumentsContract` with an id cache, background scans, light polling (§7.4). Measure in Q5. |
 | SAF has no atomic replace | Half-written note on a crash | Temp + backup rename dance with a recovery pass (§7.2). |
 | `kage` incompatible with desktop `age` | Locked notes unreadable across devices | Fixture tests both ways (Q3). Fallback: own minimal age implementation. |
-| JGit needs a real file system and may lag on Android | Git sync limited to app-storage vaults | Q1 / Q4; decide before Phase 9. |
+| JGit needs a real file system and may lag on Android | Git sync limited to app-storage vaults | Q1 decided (a): only cloned vaults sync. |
 | Behaviour drifts from desktop (names, sort, formats) | Vaults look different on each device | Port desktop tests verbatim; compatibility rules in CONTRIBUTION §4. |
