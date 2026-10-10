@@ -37,3 +37,7 @@ data class Editor(
 data class MoveTo(
     val path: String,
 )
+
+/** Clone a git repository as a new vault (SPEC 7, clone flow). */
+@Serializable
+data object Clone

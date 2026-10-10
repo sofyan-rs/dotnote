@@ -14,6 +14,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.kunotes.ui.files.FilesScreen
 import com.kunotes.ui.files.MoveToScreen
+import com.kunotes.ui.sync.CloneScreen
+import com.kunotes.ui.sync.SyncScreen
 import com.kunotes.ui.welcome.WelcomeScreen
 
 @Composable
@@ -28,7 +30,7 @@ fun KuNotesNavHost(start: StartScreen) {
                 onVaultOpened = {
                     navController.navigate(Files) { popUpTo<Welcome> { inclusive = true } }
                 },
-                onCloneFromGit = { navController.navigate(Sync) },
+                onCloneFromGit = { navController.navigate(Clone) },
             )
         }
         composable<Files> {
@@ -45,7 +47,16 @@ fun KuNotesNavHost(start: StartScreen) {
             MoveToScreen(path = entry.toRoute<MoveTo>().path, onDone = { navController.popBackStack() })
         }
         composable<Search> { PlaceholderTab(com.kunotes.ui.dotline.MainTab.Search, navController::navigateToTab) }
-        composable<Sync> { PlaceholderTab(com.kunotes.ui.dotline.MainTab.Sync, navController::navigateToTab) }
+        composable<Sync> {
+            SyncScreen(onTabClick = navController::navigateToTab, onCloneFromGit = { navController.navigate(Clone) })
+        }
+        composable<Clone> {
+            CloneScreen(
+                // The new vault is open: show its files, with nothing to go back to (like Welcome).
+                onCloned = { navController.navigate(Files) { popUpTo(navController.graph.id) { inclusive = true } } },
+                onBack = { navController.popBackStack() },
+            )
+        }
         composable<Vaults> { PlaceholderTab(com.kunotes.ui.dotline.MainTab.Vaults, navController::navigateToTab) }
         composable<Editor> { entry ->
             PlaceholderEditor(path = entry.toRoute<Editor>().path, onBack = { navController.popBackStack() })

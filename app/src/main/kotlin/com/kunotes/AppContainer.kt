@@ -28,6 +28,9 @@ class AppContainer(
      */
     val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
+    /** The app's private storage; cloned vaults live in `vaults/` inside it (ARCHITECTURE §9.1). */
+    val appFilesDir: java.io.File = context.filesDir
+
     val settingsStore = SettingsStore(context)
     val vaultRegistry = VaultRegistry(context, settingsStore)
     val vaultStore = VaultStore(vaultRegistry, settingsStore, appScope)
