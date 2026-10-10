@@ -4,9 +4,9 @@ The phone version of [KuNotes](https://github.com/sofyan-rs/kunotes-gpui): a min
 
 Built with **Kotlin + Jetpack Compose**, styled with the **Dotline** design system: monochrome, dark first, one red signal colour, dot-matrix display type.
 
-> **Status:** Phase 0–1 done: project scaffold, Dotline theme (dark + light), and the `:core` logic ported from desktop with 242 tests. No user-facing screens yet. See [docs/implementation/PLAN.md](docs/implementation/PLAN.md).
+> **Status:** all screens from the design are built and tested on the emulator: vaults (picked folders and git clones), file tree, editor (Live / Source / Preview), search, locked notes and git sync. Remaining work (store release, accessibility pass, a few editor details) is in [docs/implementation/PLAN.md](docs/implementation/PLAN.md).
 
-## Features (planned)
+## Features
 
 - **Vault-based:** open any folder as a vault (Storage Access Framework). Keep several vaults and switch between them.
 - **File tree:** folders first, natural sort, create, rename, move, and move to trash with undo.

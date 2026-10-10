@@ -91,20 +91,23 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 
 ---
 
-## Phase 5: Editor (3.1–3.4)
+## Phase 5: Editor (3.1–3.4) ✅
 
 Order from SPEC §8: Source, then Preview, then Live.
 
-- [ ] `EditorViewModel`: one buffer, load with line-ending detect, autosave 500 ms, flush on leave / `ON_STOP`, SAVED / SAVING state.
-- [ ] Source (3.2): monospace field, gutter, span styling, status line with line ending.
-- [ ] Formatter bar wired to `Format`, above the keyboard; status `LN, COL · CHARS`.
-- [ ] Preview (3.3): commonmark-java renderer for every element in `Example.md`; Edit pill.
-- [ ] Live (3.1): approach from Q2; hidden markers off the cursor line; task toggle; accent caret.
-- [ ] Editor menu (3.4).
-- [ ] Images: Photo Picker → `.img/`, shown in Live and Preview.
-- [ ] Mode remembered per app. Switching modes never changes file bytes (UI test).
+- [x] `EditorViewModel`: one buffer, load with line-ending detect, autosave 500 ms, flush on leave / `ON_STOP`, SAVED / SAVING state.
+- [x] Source (3.2): monospace field, gutter, span styling, status line with line ending.
+- [x] Formatter bar wired to `Format`, above the keyboard; status `LN, COL · CHARS`.
+- [x] Preview (3.3): commonmark-java renderer for every element in `Example.md`; Edit pill.
+- [x] Live (3.1): approach from Q2; hidden markers off the cursor line; task toggle; accent caret.
+- [x] Editor menu (3.4).
+- [x] Images: Photo Picker → `.img/`, shown in Live and Preview.
+- [x] Mode remembered per app. Switching modes never changes file bytes (JVM ViewModel test; a Compose UI test is still to do).
+- [x] Enter continues lists (desktop rule); the heading button shows the line's level (H1/H2/H3).
+- [ ] Live mode with a CJK keyboard (checked with Gboard only).
+- [ ] Tappable links in Preview.
 
-**Done when:** `Example.md` renders correctly in all three modes and the save-safety manual test passes.
+**Done when:** `Example.md` renders correctly in all three modes and the save-safety manual test passes. ✅ Checked on the emulator: Live/Source/Preview, autosave, save on Home.
 
 ---
 
@@ -125,18 +128,20 @@ Order from SPEC §8: Source, then Preview, then Live.
 
 ---
 
-## Phase 8: Locked notes (5.1–5.3)
+## Phase 8: Locked notes (5.1–5.3) ✅
 
-- [ ] `VaultLock`: key in memory, 5-minute auto-lock, `FLAG_SECURE` on decrypted notes.
-- [ ] Set password (5.1) with strength meter and match check.
-- [ ] Locked note (5.2) → unlock → editor; saves through `Lock.writeNote`.
-- [ ] Change password (5.3).
-- [ ] Fingerprint unlock (§8.3).
-- [ ] Round-trip check with desktop KuNotes and the `age` CLI.
+- [x] `VaultLock`: key in memory, 5-minute auto-lock, `FLAG_SECURE` on decrypted notes.
+- [x] Set password (5.1) with strength meter and match check.
+- [x] Locked note (5.2) → unlock → editor; saves through `Lock.writeNote`.
+- [x] Change password (reached from Vaults → ⋮ → Notes password) (5.3).
+- [x] Fingerprint unlock (§8.3). Not tried on a device with a fingerprint yet.
+- [x] Round-trip with desktop KuNotes: a note locked on the phone opens in desktop `kunotes-core`, and desktop-locked notes open on the phone. (`age` CLI check still to do.)
+- [x] Release build (R8) locks and unlocks correctly.
+- [x] "Unlock note" (remove lock) says so on its password screen.
 
 ---
 
-## Phase 9: Git sync (7.1)
+## Phase 9: Git sync (7.1) ✅ (token auth on a real host pending)
 
 - [x] Decide Q1 (where synced vaults live): (a) app storage, `filesDir/vaults/<name>`; picked SAF folders can't sync (ARCHITECTURE §9.1, §12).
 - [x] `TokenStore` (Keystore AES-GCM).
@@ -144,13 +149,17 @@ Order from SPEC §8: Source, then Preview, then Live.
 - [x] Git sync screen (7.1): status widget, repository group, auto-sync switch, sign-in sheet, "can't sync" state for SAF vaults.
 - [x] Clone flow (`CloneScreen`, designed in the Dotline style), error state (in the widget), conflict copies listed in the widget message.
 - [ ] Try HTTPS token auth against GitHub on a device (Q4 follow-up).
-- [ ] Vaults tab (6.2) "Clone from git" → `Clone` route (wire when the Vaults screen lands).
+- [x] Vaults tab (6.2) and change-vault sheet "Clone from git" → `Clone` route.
+- [x] Clone of a public repo works without sign-in (clone sets up without pushing; a later push without a token shows the sign-in error on the SYNC tab).
 
 ---
 
 ## Phase 10: Polish and release
 
-- [ ] App icon (Dotline style), splash.
+- [x] App icon (Dotline style: dot grid with one red dot).
+- [ ] Splash screen (Android 12+ splash API).
+- [x] Release build with R8 works (JGit and kage keep rules in `app/proguard-rules.pro`), 4.1 MB APK.
+- [ ] Move user-facing strings into `strings.xml` (translations).
 - [ ] Accessibility: TalkBack labels, focus ring, font scale up to 200%, reduced motion.
 - [ ] Old/new Android device pass of the feature checklist below.
 - [ ] Release signing, `.aab`, store listing with screenshots.
