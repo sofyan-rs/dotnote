@@ -13,6 +13,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,6 +43,17 @@ class MainActivity : ComponentActivity() {
                     ThemeMode.Light -> false
                     ThemeMode.Dark -> true
                 }
+            // Status and navigation bar icons follow the app's theme (it can differ from the phone's).
+            DisposableEffect(dark) {
+                val style =
+                    if (dark) {
+                        SystemBarStyle.dark(Color.TRANSPARENT)
+                    } else {
+                        SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+                    }
+                enableEdgeToEdge(statusBarStyle = style, navigationBarStyle = style)
+                onDispose {}
+            }
             KuNotesTheme(dark = dark) {
                 // Settings load in a few milliseconds; show the plain background until then.
                 if (start == StartScreen.Loading) {

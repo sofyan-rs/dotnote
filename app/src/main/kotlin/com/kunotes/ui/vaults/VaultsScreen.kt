@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kunotes.settings.SavedVault
+import com.kunotes.settings.ThemeMode
 import com.kunotes.ui.dotline.DotlineIcons
 import com.kunotes.ui.dotline.ListDivider
 import com.kunotes.ui.dotline.ListGroup
@@ -32,6 +33,8 @@ import com.kunotes.ui.dotline.ListRowChevron
 import com.kunotes.ui.dotline.MainTab
 import com.kunotes.ui.dotline.ScreenTitle
 import com.kunotes.ui.dotline.SectionLabel
+import com.kunotes.ui.dotline.SegmentOption
+import com.kunotes.ui.dotline.SegmentedControl
 import com.kunotes.ui.kuNotesViewModel
 import com.kunotes.ui.navigation.MainTabs
 import com.kunotes.ui.theme.Dotline
@@ -56,6 +59,7 @@ fun VaultsScreen(
     val viewModel = kuNotesViewModel { VaultsViewModel(it) }
     val vaults by viewModel.vaults.collectAsStateWithLifecycle()
     val message by viewModel.message.collectAsStateWithLifecycle()
+    val theme by viewModel.theme.collectAsStateWithLifecycle()
     var actionsFor by remember { mutableStateOf<SavedVault?>(null) }
     var openFolder by remember { mutableStateOf(false) }
 
@@ -95,7 +99,7 @@ fun VaultsScreen(
                     }
                 }
                 SectionLabel("ADD A VAULT", Modifier.padding(top = Dotline.space.s4))
-                ListGroup(Modifier.padding(bottom = Dotline.space.s5)) {
+                ListGroup {
                     ListRow(
                         "Open a folder",
                         leadingIcon = DotlineIcons.Folder,
@@ -110,6 +114,14 @@ fun VaultsScreen(
                         trailing = { ListRowChevron() },
                     )
                 }
+                // App-wide setting; lives here until there is a Settings screen (SPEC §7 backlog).
+                SectionLabel("THEME", Modifier.padding(top = Dotline.space.s4))
+                SegmentedControl(
+                    options = ThemeMode.entries.map { SegmentOption(it.name.uppercase()) },
+                    selectedIndex = theme.ordinal,
+                    onSelect = { viewModel.setTheme(ThemeMode.entries[it]) },
+                    modifier = Modifier.padding(bottom = Dotline.space.s5),
+                )
             }
         }
     }

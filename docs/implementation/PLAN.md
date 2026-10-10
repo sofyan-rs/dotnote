@@ -52,7 +52,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] Fonts in `res/font` (Doto, Space Grotesk, Space Mono, TTF; Doto and Space Grotesk are variable fonts).
 - [x] `ui/theme/` from `DotlineTheme.kt`; `KuNotesTheme` mapped onto `MaterialTheme`, no elevation.
 - [x] Dark and light theme, following the system setting (window background and system bars too).
-- [ ] Theme choice (System / Light / Dark) in Settings.
+- [x] Theme choice (System / Light / Dark), on the Vaults tab until a Settings screen exists; system-bar icons follow the app theme.
 - [x] Icons (`ui/dotline/DotlineIcons.kt`): the 36 line icons from the mockups (+ `EyeOff`), 24 dp, 1.5 dp stroke.
 - [x] Shared press scale and focus ring (`ui/dotline/Interaction.kt`).
 - [x] Components: `ScreenTitle`, `BottomNav`, `ListGroup`/`ListRow`, `TreeRow`, `OpenNoteCard`, `BottomSheet` + `SheetHeader`, `QuickActionTile`, `PrimaryButton`/`SecondaryButton`/`DestructiveButton`, `SegmentedControl`, `TextField`, `DotMeter`, `DotArt`, `Snackbar`, `KuSwitch`, `RadioDot`, `DropdownMenu`, `FormatterBar` (shell).

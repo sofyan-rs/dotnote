@@ -11,6 +11,7 @@ import com.kunotes.core.CoreError
 import com.kunotes.core.Search
 import com.kunotes.core.VaultNode
 import com.kunotes.settings.SavedVault
+import com.kunotes.settings.ThemeMode
 import com.kunotes.settings.VaultKind
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -132,6 +134,15 @@ class VaultsViewModel(
                     .firstOrNull { registry.hasAccess(it) }
             if (next == null) onNoVaultLeft() else container.vaultStore.open(next)
         }
+    }
+
+    val theme: StateFlow<ThemeMode> =
+        container.settingsStore.settings
+            .map { it.theme }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ThemeMode.System)
+
+    fun setTheme(theme: ThemeMode) {
+        viewModelScope.launch { container.settingsStore.update { it.copy(theme = theme) } }
     }
 
     fun clearMessage() {
