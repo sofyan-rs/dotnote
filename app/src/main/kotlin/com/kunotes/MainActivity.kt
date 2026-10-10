@@ -5,7 +5,6 @@ package com.kunotes
 
 import android.graphics.Color
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kunotes.settings.ThemeMode
 import com.kunotes.ui.kuNotesViewModel
@@ -24,7 +24,9 @@ import com.kunotes.ui.navigation.StartScreen
 import com.kunotes.ui.theme.Dotline
 import com.kunotes.ui.theme.KuNotesTheme
 
-class MainActivity : ComponentActivity() {
+// FragmentActivity (a ComponentActivity with fragment support) because the fingerprint dialog
+// (androidx.biometric BiometricPrompt) is shown through a fragment.
+class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Transparent system bars; their icons turn dark or light with the system theme.
