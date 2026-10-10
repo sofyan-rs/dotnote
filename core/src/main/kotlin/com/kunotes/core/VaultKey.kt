@@ -40,15 +40,18 @@ class VaultKey internal constructor(
             ?: throw CoreError.Lock("The unlocked note isn't valid text.")
     }
 
-    /** The secret key text (`AGE-SECRET-KEY-1...`), only for saving it encrypted in the key file. */
-    internal fun secretText(): String = identity.encodeToString()
+    /**
+     * The secret key text (`AGE-SECRET-KEY-1...`). Only for saving it encrypted: in the key file,
+     * or wrapped by the phone's keystore for fingerprint unlock (ARCHITECTURE §8.3).
+     */
+    fun secretText(): String = identity.encodeToString()
 
     companion object {
         /** A new random vault key. */
         internal fun generate(): VaultKey = VaultKey(X25519Identity.new())
 
-        /** Reads a key from its secret text, or returns `null` if the text isn't a key. */
-        internal fun parse(secretText: String): VaultKey? =
+        /** Reads a key from its [secretText], or returns `null` if the text isn't a key. */
+        fun parse(secretText: String): VaultKey? =
             try {
                 VaultKey(X25519Identity.decode(secretText.trim()))
             } catch (_: Exception) {
