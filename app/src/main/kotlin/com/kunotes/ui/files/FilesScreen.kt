@@ -76,6 +76,11 @@ sealed interface FilesSheet {
     data class Rename(
         val path: VaultPath,
     ) : FilesSheet
+
+    /** Long press on an open-note card: pin, close, close others. */
+    data class OpenNoteActions(
+        val path: VaultPath,
+    ) : FilesSheet
 }
 
 @Composable
@@ -156,6 +161,7 @@ fun FilesScreen(
                 FileList(
                     ui = ui,
                     onOpenNote = openNote,
+                    onCardActions = { card -> sheet = FilesSheet.OpenNoteActions(card.path) },
                     onToggleFolder = viewModel::toggleFolder,
                     onRowActions = { row ->
                         sheet = if (row.isFolder) FilesSheet.FolderActions(row.path) else FilesSheet.NoteActions(row.path)
@@ -253,6 +259,18 @@ fun FilesScreen(
                 },
                 onDismiss = { sheet = null },
             )
+        is FilesSheet.OpenNoteActions -> {
+            val card = ui.openNotes.firstOrNull { it.path == current.path }
+            OpenNoteActionsSheet(
+                title = card?.title ?: current.path.name,
+                pinned = card?.isPinned == true,
+                onPin = { viewModel.togglePin(current.path) },
+                onClose = { viewModel.closeOpenNote(current.path) },
+                onCloseOthers = { viewModel.closeOtherOpenNotes(current.path) },
+                onCloseAll = { viewModel.closeUnpinnedOpenNotes() },
+                onDismiss = { sheet = null },
+            )
+        }
         is FilesSheet.Rename ->
             RenameSheet(
                 path = current.path,
@@ -273,6 +291,7 @@ fun FilesScreen(
 private fun FileList(
     ui: FilesUi,
     onOpenNote: (VaultPath) -> Unit,
+    onCardActions: (OpenNoteUi) -> Unit,
     onToggleFolder: (VaultPath) -> Unit,
     onRowActions: (TreeRowUi) -> Unit,
 ) {
@@ -289,6 +308,9 @@ private fun FileList(
                             onClick = { onOpenNote(card.path) },
                             icon = if (card.isLocked) DotlineIcons.Lock else DotlineIcons.Note,
                             isCurrent = card.isCurrent,
+                            isPinned = card.isPinned,
+                            onLongClick = { onCardActions(card) },
+                            onLongClickLabel = "Pin or close",
                         )
                     }
                 }

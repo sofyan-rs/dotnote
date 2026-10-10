@@ -27,6 +27,11 @@ data class UnlockUi(
     val fileName: String = "",
     /** True for a `.md.age` note; false when the vault is unlocked to lock a plain note. */
     val noteIsLocked: Boolean = true,
+    /**
+     * True when this screen removes the lock ("Unlock note"): the note is saved as a plain .md
+     * file again. False when it only opens the note.
+     */
+    val removesLock: Boolean = false,
     /** True if fingerprint unlock is on for this vault (shows "Unlock with fingerprint"). */
     val fingerprintEnabled: Boolean = false,
     /** Null if fingerprint can be turned on here, else why not (under the checkbox). */
@@ -54,6 +59,7 @@ class UnlockViewModel(
                 title = Paths.noteTitle(note),
                 fileName = note.name,
                 noteIsLocked = NoteNames.isLockedNote(note),
+                removesLock = toggleLock && NoteNames.isLockedNote(note),
                 fingerprintUnavailable = container.biometricKey.unavailableReason(),
             ),
         )

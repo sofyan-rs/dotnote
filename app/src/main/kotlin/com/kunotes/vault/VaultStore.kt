@@ -196,15 +196,29 @@ class VaultStore(
 
     // ---- Open notes ----
 
-    /** Marks [note] as open (moves it to the front of the open-notes row). */
+    /**
+     * Marks [note] as open (moves it to the front of the open-notes row). Only the
+     * [MAX_UNPINNED_OPEN] most recent unpinned notes stay in the row; pinned ones always stay.
+     */
     fun openNote(note: VaultPath) {
-        updateOpenNotes { it.open(note) }
+        updateOpenNotes { notes ->
+            val opened = notes.open(note)
+            val unpinned = opened.entries.filter { !it.pinned }
+            if (unpinned.size <= MAX_UNPINNED_OPEN) opened else OpenNotes(opened.entries - unpinned.drop(MAX_UNPINNED_OPEN).toSet())
+        }
         select(note)
     }
 
     fun togglePin(note: VaultPath) = updateOpenNotes { it.togglePin(note) }
 
+    /** Removes [note] from the open-notes row (the file is untouched). */
     fun closeNote(note: VaultPath) = updateOpenNotes { it.close(note) }
+
+    /** Keeps only [keep] and the pinned notes in the row. */
+    fun closeOtherNotes(keep: VaultPath) = updateOpenNotes { it.closeOthers(keep) }
+
+    /** Keeps only the pinned notes in the row. */
+    fun closeUnpinnedNotes() = updateOpenNotes { it.closeUnpinned() }
 
     // ---- File operations (each returns the new path, or null after showing an error) ----
 
@@ -382,6 +396,9 @@ class VaultStore(
 
     private companion object {
         const val POLL_MILLIS = 10_000L
+
+        /** How many unpinned notes the open-notes row keeps (most recent first). */
+        const val MAX_UNPINNED_OPEN = 8
 
         /** Bigger notes skip the count (reading them on every scan would cost too much). */
         const val MAX_COUNTED_BYTES = 512 * 1024

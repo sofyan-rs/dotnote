@@ -244,7 +244,7 @@ Secrets (git token, wrapped vault key) are **not** in `Settings`; see §8.3 and 
 
 - `FilesViewModel` maps `VaultState` to rows with `:core` `Search.visibleRows(root, expanded)` and renders them in one `LazyColumn` (`TreeRow`, indent 28 dp per depth). Keys are the `VaultPath`, so rows keep identity across rescans.
 - Sort and hide rules come from `:core` `VaultNode` and match desktop: folders first, natural sort, dot-files and `.img` hidden, only `.md` and `.md.age` shown.
-- **Open notes** (`OpenNoteCard` row) is the mobile form of desktop tabs, backed by `:core` `OpenNotes` (port of `tabs.rs`): most recent first, pinned at the front, renames and moves remap entries. No "preview tab" concept on Android.
+- **Open notes** (`OpenNoteCard` row) is the mobile form of desktop tabs, backed by `:core` `OpenNotes` (port of `tabs.rs`): most recent first, pinned at the front (pin mark on the card), renames and moves remap entries. Long press on a card: Pin/Unpin, Close, Close others, Close all unpinned (closing only removes the card; the note stays). At most 8 unpinned cards are kept; the oldest drops off. The red dot marks the note opened last. No "preview tab" concept on Android.
 
 ### 6.2 Sheets and dialogs
 

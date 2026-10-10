@@ -133,13 +133,20 @@ private fun UnlockContent(
             DotArt(DotArtPatterns.Lock, contentDescription = "Locked")
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Dotline.space.s2)) {
                 Text(
-                    if (ui.noteIsLocked) "This note is locked" else "Unlock this vault's notes",
+                    when {
+                        ui.removesLock -> "Remove the lock?"
+                        ui.noteIsLocked -> "This note is locked"
+                        else -> "Unlock this vault's notes"
+                    },
                     style = Dotline.type.title,
                     color = Dotline.colors.ink,
                     textAlign = TextAlign.Center,
                 )
                 Text(
-                    if (ui.noteIsLocked) {
+                    if (ui.removesLock) {
+                        "Enter the vault password. “${ui.title}” is then saved as a plain .md file anyone can read, " +
+                            "and the encrypted copy goes to the trash."
+                    } else if (ui.noteIsLocked) {
                         "It's encrypted on disk. Enter the vault password to open it. It locks again after 5 minutes."
                     } else {
                         "Enter the vault password to lock “${ui.title}”. Locked notes lock again after 5 minutes."
@@ -184,7 +191,12 @@ private fun UnlockContent(
             verticalArrangement = Arrangement.spacedBy(Dotline.space.s2),
         ) {
             PrimaryButton(
-                text = if (ui.busy) "Unlocking…" else "Unlock",
+                text =
+                    when {
+                        ui.busy -> "Unlocking…"
+                        ui.removesLock -> "Remove lock"
+                        else -> "Unlock"
+                    },
                 onClick = onUnlock,
                 enabled = !ui.busy && password.text.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth(),

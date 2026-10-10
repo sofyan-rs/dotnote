@@ -81,7 +81,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 
 - [x] `VaultStore` (§4.1) with rescan on `ON_START`, after ops, pull-to-refresh, 10 s poll (§7.4).
 - [x] Files screen (2.1): header + count line, tree with expand/collapse, selected row, ⋮ and long-press.
-- [x] Open notes row (`OpenNotes` + persisted per vault).
+- [x] Open notes row (`OpenNotes` + persisted per vault), with pin mark and long-press Pin / Close / Close others / Close all unpinned; at most 8 unpinned cards.
 - [x] New note / folder sheet (1.4) with location picker and validation.
 - [x] Folder actions (2.2) and note actions (2.3), incl. copy path and share.
 - [x] Rename (2.4), Move to (2.5), Trash + Undo (2.6).

@@ -42,6 +42,7 @@ data class OpenNoteUi(
     val caption: String,
     val isLocked: Boolean,
     val isCurrent: Boolean,
+    val isPinned: Boolean,
 )
 
 data class TreeRowUi(
@@ -82,6 +83,12 @@ class FilesViewModel(
     fun openNote(path: VaultPath) = vaultStore.openNote(path)
 
     fun togglePin(path: VaultPath) = vaultStore.togglePin(path)
+
+    fun closeOpenNote(path: VaultPath) = vaultStore.closeNote(path)
+
+    fun closeOtherOpenNotes(keep: VaultPath) = vaultStore.closeOtherNotes(keep)
+
+    fun closeUnpinnedOpenNotes() = vaultStore.closeUnpinnedNotes()
 
     fun createNote(
         dir: VaultPath,
@@ -176,11 +183,12 @@ class FilesViewModel(
                     caption =
                         when {
                             locked -> "LOCKED"
-                            entry.path == current -> "EDITING"
+                            // The red dot marks the note opened last; the caption says when it changed.
                             else -> RelativeTime.format(nodes[entry.path]?.lastModified ?: 0)?.uppercase() ?: ""
                         },
                     isLocked = locked,
                     isCurrent = entry.path == current,
+                    isPinned = entry.pinned,
                 )
             }
         return FilesUi(

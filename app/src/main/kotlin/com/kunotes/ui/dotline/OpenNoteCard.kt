@@ -68,7 +68,11 @@ fun OpenNoteCard(
     modifier: Modifier = Modifier,
     icon: ImageVector = DotlineIcons.Note,
     isCurrent: Boolean = false,
+    /** Pinned notes stay at the front of the row and aren't closed by "Close others". */
+    isPinned: Boolean = false,
     onLongClick: (() -> Unit)? = null,
+    /** What a long press does, read by TalkBack ("Actions"). */
+    onLongClickLabel: String? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
@@ -86,9 +90,12 @@ fun OpenNoteCard(
                     indication = null, // No Material ripple: the pressed background is the feedback.
                     role = Role.Button,
                     onLongClick = onLongClick,
+                    onLongClickLabel = onLongClickLabel,
                     onClick = onClick,
-                ).semantics { if (isCurrent) stateDescription = "Current note" }
-                .padding(horizontal = Dotline.space.s4, vertical = Dotline.space.s3),
+                ).semantics {
+                    stateDescription =
+                        listOfNotNull(if (isCurrent) "Current note" else null, if (isPinned) "Pinned" else null).joinToString(", ")
+                }.padding(horizontal = Dotline.space.s4, vertical = Dotline.space.s3),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Row(
@@ -97,8 +104,13 @@ fun OpenNoteCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(icon, contentDescription = null, tint = Dotline.colors.ink, modifier = Modifier.size(CardIconSize))
-            if (isCurrent) {
-                Box(Modifier.size(Dotline.size.dot).background(Dotline.colors.accent, CircleShape))
+            Row(horizontalArrangement = Arrangement.spacedBy(Dotline.space.s2), verticalAlignment = Alignment.CenterVertically) {
+                if (isPinned) {
+                    Icon(DotlineIcons.Pin, contentDescription = null, tint = Dotline.colors.inkMuted, modifier = Modifier.size(16.dp))
+                }
+                if (isCurrent) {
+                    Box(Modifier.size(Dotline.size.dot).background(Dotline.colors.accent, CircleShape))
+                }
             }
         }
         Column {
