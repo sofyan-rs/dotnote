@@ -9,6 +9,7 @@ package com.kunotes
 
 import android.content.Context
 import com.kunotes.settings.SettingsStore
+import com.kunotes.vault.NoteFiles
 import com.kunotes.vault.VaultRegistry
 import com.kunotes.vault.VaultStore
 import kotlinx.coroutines.CoroutineScope
@@ -27,4 +28,5 @@ class AppContainer(
     val settingsStore = SettingsStore(context)
     val vaultRegistry = VaultRegistry(context, settingsStore)
     val vaultStore = VaultStore(vaultRegistry, settingsStore, appScope)
+    val noteFiles = NoteFiles(vaultStore)
 }
