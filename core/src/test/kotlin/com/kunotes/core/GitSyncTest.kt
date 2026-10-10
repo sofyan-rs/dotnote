@@ -220,9 +220,26 @@ class GitSyncTest {
         Git.init().setDirectory(desktop).setInitialBranch("main").call().use { git ->
             git.add().addFilepattern(".").call()
             val me = PersonIdent("Me", "me@example.com")
-            git.commit().setMessage("first").setAuthor(me).setCommitter(me).call()
-            git.remoteAdd().setName("origin").setUri(org.eclipse.jgit.transport.URIish(url)).call()
-            git.push().setRemote("origin").setRefSpecs(org.eclipse.jgit.transport.RefSpec("HEAD:refs/heads/main")).call()
+            git
+                .commit()
+                .setMessage("first")
+                .setAuthor(me)
+                .setCommitter(me)
+                .call()
+            git
+                .remoteAdd()
+                .setName("origin")
+                .setUri(
+                    org.eclipse.jgit.transport
+                        .URIish(url),
+                ).call()
+            git
+                .push()
+                .setRemote("origin")
+                .setRefSpecs(
+                    org.eclipse.jgit.transport
+                        .RefSpec("HEAD:refs/heads/main"),
+                ).call()
         }
 
         val phone = File(temp, "phone")

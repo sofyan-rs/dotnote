@@ -33,6 +33,11 @@ android {
         compose = true
     }
 
+    testOptions {
+        // JVM unit tests run on JUnit 5 (Jupiter), like `:core`.
+        unitTests.all { it.useJUnitPlatform() }
+    }
+
     lint {
         warningsAsErrors = false
         abortOnError = true
@@ -49,6 +54,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.datastore)
+    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
 
@@ -61,4 +67,9 @@ dependencies {
     debugImplementation(libs.jgit) // spike screen creates a bare repo directly
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testRuntimeOnly(libs.junit.launcher)
 }

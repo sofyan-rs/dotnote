@@ -9,6 +9,9 @@ package com.kunotes
 
 import android.content.Context
 import com.kunotes.settings.SettingsStore
+import com.kunotes.sync.SyncController
+import com.kunotes.sync.TokenStore
+import com.kunotes.sync.createSyncController
 import com.kunotes.vault.NoteFiles
 import com.kunotes.vault.VaultRegistry
 import com.kunotes.vault.VaultStore
@@ -29,4 +32,9 @@ class AppContainer(
     val vaultRegistry = VaultRegistry(context, settingsStore)
     val vaultStore = VaultStore(vaultRegistry, settingsStore, appScope)
     val noteFiles = NoteFiles(vaultStore)
+    val tokenStore = TokenStore(context)
+    val syncController: SyncController =
+        createSyncController(context, appScope, settingsStore, vaultRegistry, vaultStore, tokenStore).also { sync ->
+            noteFiles.onSaved = { sync.noteSaved() }
+        }
 }
