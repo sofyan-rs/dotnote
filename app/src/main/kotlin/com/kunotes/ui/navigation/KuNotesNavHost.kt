@@ -131,6 +131,9 @@ fun KuNotesNavHost(start: StartScreen) {
                 path = entry.toRoute<Editor>().path,
                 onBack = { navController.popBackStack() },
                 onMove = { path -> navController.navigate(MoveTo(path.value)) },
+                onOpenNote = { path ->
+                    navController.navigate(if (lockActions.needsUnlock(path)) Unlock(path.value) else Editor(path.value))
+                },
                 onNeedsUnlock = { path ->
                     navController.navigate(Unlock(path.value)) { popUpTo<Editor> { inclusive = true } }
                 },

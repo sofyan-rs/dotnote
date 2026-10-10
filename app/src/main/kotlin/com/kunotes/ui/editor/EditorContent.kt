@@ -60,6 +60,8 @@ class EditorActions(
     val onToggleTask: (Int) -> Unit,
     val onMenuAction: (EditorMenuAction) -> Unit,
     val readImage: ImageReader,
+    /** A link to another note was tapped in Preview; the argument is the link as written. */
+    val onOpenNoteLink: (String) -> Unit = {},
 )
 
 @Composable
@@ -141,7 +143,26 @@ private fun PreviewPane(
     // The footer sits under the scrolling note (not on top of it); the Edit pill floats above both.
     Box(Modifier.fillMaxSize()) {
         androidx.compose.foundation.layout.Column(Modifier.fillMaxSize()) {
-            MarkdownPreview(current, actions.readImage, Modifier.weight(1f).fillMaxWidth())
+            // Links in the preview open through LocalUriHandler; catch our note links on the way.
+            val browser = androidx.compose.ui.platform.LocalUriHandler.current
+            val handler =
+                remember(browser, actions) {
+                    object : androidx.compose.ui.platform.UriHandler {
+                        override fun openUri(uri: String) {
+                            if (uri.startsWith(
+                                    NOTE_LINK_SCHEME,
+                                )
+                            ) {
+                                actions.onOpenNoteLink(uri.removePrefix(NOTE_LINK_SCHEME))
+                            } else {
+                                browser.openUri(uri)
+                            }
+                        }
+                    }
+                }
+            androidx.compose.runtime.CompositionLocalProvider(androidx.compose.ui.platform.LocalUriHandler provides handler) {
+                MarkdownPreview(current, actions.readImage, Modifier.weight(1f).fillMaxWidth())
+            }
             Text(
                 "READ ONLY · $chars CHARS",
                 style = Dotline.type.label,

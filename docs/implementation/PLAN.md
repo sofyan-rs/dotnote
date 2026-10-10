@@ -106,7 +106,7 @@ Order from SPEC §8: Source, then Preview, then Live.
 - [x] Enter continues lists (desktop rule); the heading button shows the line's level (H1/H2/H3).
 - [ ] Live mode with a CJK keyboard (checked with Gboard only).
 - [x] Web and mail links in Preview open in the browser.
-- [ ] Links to other notes (`[x](Other.md)`) open that note (now styled only).
+- [x] Links to other notes (`[x](Other.md)`, relative to the note) open that note.
 
 **Done when:** `Example.md` renders correctly in all three modes and the save-safety manual test passes. ✅ Checked on the emulator: Live/Source/Preview, autosave, save on Home.
 

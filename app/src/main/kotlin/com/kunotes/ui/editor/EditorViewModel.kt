@@ -244,6 +244,19 @@ class EditorViewModel(
 
     fun togglePin() = backend.togglePin(path)
 
+    /**
+     * The note a Preview link points to, relative to this note's folder (`%20` decoded,
+     * `#heading` dropped), or `null` if there's no such note in the vault.
+     */
+    suspend fun resolveNoteLink(link: String): VaultPath? {
+        val decoded = java.net.URLDecoder.decode(link.substringBefore('#').replace("+", "%2B"), "UTF-8")
+        val target =
+            com.kunotes.core.Paths
+                .imageFile(_ui.value.path.parent ?: VaultPath.ROOT, decoded) ?: return null
+        val entry = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { backend.fs?.stat(target) }
+        return if (entry != null && !entry.isDir) target else null
+    }
+
     /** Names next to the note, for the rename sheet. */
     fun siblingNames(): List<String> = backend.namesIn(path.parent ?: VaultPath.ROOT)
 

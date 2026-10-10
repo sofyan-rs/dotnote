@@ -28,6 +28,9 @@ import org.commonmark.node.StrongEmphasis
 import org.commonmark.node.Text
 import org.commonmark.parser.Parser
 
+/** Prefix of note links in the preview's text; [PreviewMarkdown] adds it, the preview pane handles it. */
+internal const val NOTE_LINK_SCHEME = "kunotes-note:"
+
 internal object PreviewMarkdown {
     /** Building a parser is not free, and it's safe to share between threads. */
     private val parser: Parser =
@@ -89,7 +92,11 @@ internal object PreviewMarkdown {
         }
     }
 
-    /** Web and mail links open in the browser; other links (to notes) are only styled. */
+    /**
+     * Web and mail links open in the browser. Relative links to notes (`Plan.md`,
+     * `../Projects/Plan.md`) open that note: they get a `kunotes-note:` address that the preview
+     * catches (see [NOTE_LINK_SCHEME]). Other links are only styled.
+     */
     private fun AnnotatedString.Builder.appendLink(
         link: Link,
         styles: MarkdownStyles,
@@ -98,8 +105,15 @@ internal object PreviewMarkdown {
         val opensOutside = url.startsWith("https://") || url.startsWith("http://") || url.startsWith("mailto:")
         if (opensOutside) {
             withLink(LinkAnnotation.Url(url, TextLinkStyles(style = styles.link))) { appendChildren(link, styles) }
+        } else if (isNoteLink(url)) {
+            withLink(LinkAnnotation.Url(NOTE_LINK_SCHEME + url, TextLinkStyles(style = styles.link))) { appendChildren(link, styles) }
         } else {
             withStyle(styles.link) { appendChildren(link, styles) }
         }
+    }
+
+    private fun isNoteLink(url: String): Boolean {
+        val target = url.substringBefore('#').lowercase()
+        return !url.contains("://") && (target.endsWith(".md") || target.endsWith(".md.age"))
     }
 }

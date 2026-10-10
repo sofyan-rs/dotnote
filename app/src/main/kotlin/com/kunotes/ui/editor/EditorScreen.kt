@@ -52,6 +52,8 @@ fun EditorScreen(
     onMove: (VaultPath) -> Unit,
     onNeedsUnlock: (VaultPath) -> Unit,
     onLockNote: (VaultPath) -> Unit,
+    /** Open another note (a link in Preview). */
+    onOpenNote: (VaultPath) -> Unit = {},
 ) {
     val viewModel =
         kuNotesViewModel(key = "editor:$path") { container ->
@@ -142,6 +144,18 @@ fun EditorScreen(
                 }
             },
             readImage = viewModel::readImage,
+            onOpenNoteLink = { link ->
+                scope.launch {
+                    val target = viewModel.resolveNoteLink(link)
+                    if (target ==
+                        null
+                    ) {
+                        snackbars.showDotlineSnackbar("“$link” isn't in this vault", actionLabel = null)
+                    } else {
+                        viewModel.saveThen { onOpenNote(target) }
+                    }
+                }
+            },
         )
 
     EditorContent(
