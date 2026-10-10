@@ -1,0 +1,79 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "First-Launch.dc.html": {"h": 844, "is_interactive": true, "title": "1.1 Welcome", "w": 390, "x": 0, "y": 0},
+    "Open-Folder.dc.html": {"h": 844, "is_interactive": true, "title": "1.2 Open a folder", "w": 390, "x": 470, "y": 0},
+    "Empty-Vault.dc.html": {"h": 844, "is_interactive": true, "title": "1.3 Empty vault", "w": 390, "x": 940, "y": 0},
+    "New-Item.dc.html": {"h": 844, "is_interactive": true, "title": "1.4 New note / folder", "w": 390, "x": 1410, "y": 0},
+
+    "Main.dc.html": {"h": 844, "is_interactive": true, "title": "2.1 Files", "w": 390, "x": 0, "y": 1244},
+    "Folder-Actions.dc.html": {"h": 844, "is_interactive": true, "title": "2.2 Folder actions", "w": 390, "x": 470, "y": 1244},
+    "Note-Actions.dc.html": {"h": 844, "is_interactive": true, "title": "2.3 Note actions", "w": 390, "x": 940, "y": 1244},
+    "Rename.dc.html": {"h": 844, "is_interactive": true, "title": "2.4 Rename", "w": 390, "x": 1410, "y": 1244},
+    "Move-To.dc.html": {"h": 844, "is_interactive": true, "title": "2.5 Move to folder", "w": 390, "x": 1880, "y": 1244},
+    "Trash-Undo.dc.html": {"h": 844, "is_interactive": true, "title": "2.6 Moved to trash · Undo", "w": 390, "x": 2350, "y": 1244},
+
+    "Editor-Live.dc.html": {"h": 844, "is_interactive": true, "title": "3.1 Editor · Live", "w": 390, "x": 0, "y": 2488},
+    "Editor-Source.dc.html": {"h": 844, "is_interactive": true, "title": "3.2 Editor · Source", "w": 390, "x": 470, "y": 2488},
+    "Editor-Preview.dc.html": {"h": 844, "is_interactive": true, "title": "3.3 Editor · Preview", "w": 390, "x": 940, "y": 2488},
+    "Editor-Menu.dc.html": {"h": 844, "is_interactive": true, "title": "3.4 Editor menu", "w": 390, "x": 1410, "y": 2488},
+
+    "Quick-Switcher.dc.html": {"h": 844, "is_interactive": true, "title": "4.1 Quick switcher", "w": 390, "x": 0, "y": 3732},
+    "No-Results.dc.html": {"h": 844, "is_interactive": true, "title": "4.2 No results", "w": 390, "x": 470, "y": 3732},
+
+    "Set-Password.dc.html": {"h": 844, "is_interactive": true, "title": "5.1 Set notes password", "w": 390, "x": 0, "y": 4976},
+    "Unlock.dc.html": {"h": 844, "is_interactive": true, "title": "5.2 Locked note", "w": 390, "x": 470, "y": 4976},
+    "Change-Password.dc.html": {"h": 844, "is_interactive": true, "title": "5.3 Change notes password", "w": 390, "x": 940, "y": 4976},
+
+    "Vault-Switcher.dc.html": {"h": 844, "is_interactive": true, "title": "6.1 Change vault", "w": 390, "x": 0, "y": 6220},
+    "Vaults.dc.html": {"h": 844, "is_interactive": true, "title": "6.2 Vaults", "w": 390, "x": 470, "y": 6220},
+    "Vault-Actions.dc.html": {"h": 844, "is_interactive": true, "title": "6.3 Vault actions", "w": 390, "x": 940, "y": 6220},
+    "Remove-Vault.dc.html": {"h": 844, "is_interactive": true, "title": "6.4 Remove vault", "w": 390, "x": 1410, "y": 6220},
+
+    "Git-Sync.dc.html": {"h": 844, "is_interactive": true, "title": "7.1 Git sync", "w": 390, "x": 0, "y": 7464}
+  },
+  "createdOnFiles": {"at": "2026-10-10T09:00:00Z", "v": 1},
+  "designSystems": [
+    {"artifact": "https://claude.ai/code/artifact/657e1cca-1636-4d66-8e8b-978a9bdb7582", "copiedAt": "2026-10-10T09:00:00Z", "namespace": "dotline", "title": "Dotline", "version": "1791601129-7c6b"}
+  ],
+  "launch": {"view": "canvas"},
+  "notes": {
+    "title": {"kind": "title1", "maxW": 2740, "text": "KuNotes for Android", "w": 240, "x": 0, "y": -620},
+    "r1": {"kind": "title1", "maxW": 1800, "text": "1 · First launch", "x": 0, "y": -300},
+    "r2": {"kind": "title1", "maxW": 2740, "text": "2 · Files", "x": 0, "y": 944},
+    "r3": {"kind": "title1", "maxW": 1800, "text": "3 · Editor", "x": 0, "y": 2188},
+    "r4": {"kind": "title1", "maxW": 860, "text": "4 · Search", "x": 0, "y": 3432},
+    "r5": {"kind": "title1", "maxW": 1330, "text": "5 · Locked notes", "x": 0, "y": 4676},
+    "r6": {"kind": "title1", "maxW": 1800, "text": "6 · Vaults", "x": 0, "y": 5920},
+    "r7": {"kind": "title1", "maxW": 860, "text": "7 · Git sync", "x": 0, "y": 7164}
+  },
+  "order": [
+    "First-Launch.dc.html",
+    "Open-Folder.dc.html",
+    "Empty-Vault.dc.html",
+    "New-Item.dc.html",
+    "Main.dc.html",
+    "Folder-Actions.dc.html",
+    "Note-Actions.dc.html",
+    "Rename.dc.html",
+    "Move-To.dc.html",
+    "Trash-Undo.dc.html",
+    "Editor-Live.dc.html",
+    "Editor-Source.dc.html",
+    "Editor-Preview.dc.html",
+    "Editor-Menu.dc.html",
+    "Quick-Switcher.dc.html",
+    "No-Results.dc.html",
+    "Set-Password.dc.html",
+    "Unlock.dc.html",
+    "Change-Password.dc.html",
+    "Vault-Switcher.dc.html",
+    "Vaults.dc.html",
+    "Vault-Actions.dc.html",
+    "Remove-Vault.dc.html",
+    "Git-Sync.dc.html"
+  ],
+  "pages": [],
+  "title": "KuNotes Mobile"
+}

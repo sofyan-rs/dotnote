@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Debug builds only: the Phase 0 spike screen. Launch with
+     adb shell am start -n com.kunotes.android/com.kunotes.spike.SpikeActivity -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <activity
+            android:name="com.kunotes.spike.SpikeActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+    </application>
+</manifest>

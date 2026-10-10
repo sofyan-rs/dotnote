@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KuNotes · Vault actions</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700;900&amp;family=Space+Grotesk:wght@300..700&amp;family=Space+Mono:wght@400;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#ffffff}a:hover{color:#a6a6a6}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid #ffffff;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; background: #000000; color: #ffffff; font-family: 'Space Grotesk', system-ui, sans-serif">
+
+  <div aria-hidden="true" style="padding: 48px 16px 0 16px; display: flex; flex-direction: column; gap: 32px">
+    <span style="font-family: Doto, 'Space Mono', monospace; font-size: 32px; line-height: 36px; font-weight: 700">VAULTS</span>
+    <div style="background: #111111; border-radius: 16px; height: 216px; margin-top: 60px"></div>
+  </div>
+
+  <a href="Vaults.dc.html" aria-label="Close sheet" style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.72)"></a>
+
+  <section role="dialog" aria-label="Actions for Work" style="position: absolute; left: 0; right: 0; bottom: 0; background: #111111; border-radius: 28px 28px 0 0; padding: 12px 16px 32px 16px; display: flex; flex-direction: column; gap: 16px">
+    <div style="align-self: center; display: flex; gap: 4px" aria-hidden="true">
+      <span style="width: 4px; height: 4px; border-radius: 999px; background: #6b6b6b"></span>
+      <span style="width: 4px; height: 4px; border-radius: 999px; background: #6b6b6b"></span>
+      <span style="width: 4px; height: 4px; border-radius: 999px; background: #6b6b6b"></span>
+      <span style="width: 4px; height: 4px; border-radius: 999px; background: #6b6b6b"></span>
+      <span style="width: 4px; height: 4px; border-radius: 999px; background: #6b6b6b"></span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px; padding: 4px 4px 0 4px">
+      <span style="width: 48px; height: 48px; border-radius: 16px; background: #1c1c1c; display: flex; align-items: center; justify-content: center">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M3 9h18"/></svg>
+      </span>
+      <div style="display: flex; flex-direction: column; min-width: 0">
+        <span style="font-size: 22px; line-height: 28px; font-weight: 500; letter-spacing: -0.01em">Work</span>
+        <span style="font-family: 'Space Mono', monospace; font-size: 13px; line-height: 18px; color: #a6a6a6">Documents/Work · 41 notes</span>
+      </div>
+    </div>
+
+    <div style="background: #000000; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column">
+      <a href="Main.dc.html" style="min-height: 56px; border-bottom: 1px solid #262626; display: flex; align-items: center; gap: 16px; padding: 0 16px; text-decoration: none; color: #ffffff">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M3 6h7l2 2h9v11H3z"/></svg>
+        <span style="font-size: 17px; font-weight: 500">Open vault</span>
+      </a>
+      <button type="button" style="min-height: 56px; border: 0; border-bottom: 1px solid #262626; background: none; display: flex; align-items: center; gap: 16px; padding: 0 16px; text-align: left; cursor: pointer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>
+        <span style="font-size: 17px; font-weight: 500">Rename in list</span>
+      </button>
+      <a href="Git-Sync.dc.html" style="min-height: 56px; border-bottom: 1px solid #262626; display: flex; align-items: center; gap: 16px; padding: 0 16px; text-decoration: none; color: #ffffff">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="7" r="2"/><path d="M6 7v10M18 9c0 5-6 4-12 8"/></svg>
+        <span style="flex: 1; font-size: 17px; font-weight: 500">Sync settings</span>
+        <span style="font-family: 'Space Mono', monospace; font-size: 13px; color: #a6a6a6">On</span>
+      </a>
+      <a href="Change-Password.dc.html" style="min-height: 56px; border-bottom: 1px solid #262626; display: flex; align-items: center; gap: 16px; padding: 0 16px; text-decoration: none; color: #ffffff">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><rect x="5" y="10" width="14" height="10"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        <span style="flex: 1; font-size: 17px; font-weight: 500">Notes password</span>
+        <span style="font-family: 'Space Mono', monospace; font-size: 13px; color: #a6a6a6">Set</span>
+      </a>
+      <a href="Remove-Vault.dc.html" style="min-height: 56px; display: flex; align-items: center; gap: 16px; padding: 0 16px; text-decoration: none; color: #ff5a52">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><path d="M5 12h14"/><rect x="3" y="4" width="18" height="16"/></svg>
+        <span style="font-size: 17px; font-weight: 500">Remove vault</span>
+      </a>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

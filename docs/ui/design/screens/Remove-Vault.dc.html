@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KuNotes · Remove vault</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700;900&amp;family=Space+Grotesk:wght@300..700&amp;family=Space+Mono:wght@400;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#ffffff}a:hover{color:#a6a6a6}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid #ffffff;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; background: #000000; color: #ffffff; font-family: 'Space Grotesk', system-ui, sans-serif">
+
+  <div aria-hidden="true" style="padding: 48px 16px 0 16px; display: flex; flex-direction: column; gap: 32px">
+    <span style="font-family: Doto, 'Space Mono', monospace; font-size: 32px; line-height: 36px; font-weight: 700">VAULTS</span>
+    <div style="background: #111111; border-radius: 16px; height: 216px; margin-top: 60px"></div>
+  </div>
+
+  <div aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.72)"></div>
+
+  <section role="alertdialog" aria-labelledby="rv-title" aria-describedby="rv-body" style="position: absolute; left: 24px; right: 24px; top: 236px; background: #111111; border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+    <h1 id="rv-title" style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 500; letter-spacing: -0.01em">Remove “Work”?</h1>
+    <p id="rv-body" style="margin: 0; font-size: 15px; line-height: 22px; color: #a6a6a6">KuNotes forgets this vault. The folder and its 41 notes stay on your phone, and you can open it again any time.</p>
+
+    <label style="display: flex; align-items: flex-start; gap: 12px; min-height: 48px; padding-top: 4px; font-size: 15px; line-height: 22px">
+      <input type="checkbox" style="width: 20px; height: 20px; margin: 1px 0 0 0; flex: none; accent-color: #e5211c">
+      <span style="display: flex; flex-direction: column">
+        <span>Also delete the folder</span>
+        <span style="font-size: 13px; line-height: 18px; color: #a6a6a6">Moves Documents/Work to trash. Notes synced with git stay in the repository.</span>
+      </span>
+    </label>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding-top: 8px">
+      <a href="Vault-Actions.dc.html" style="height: 48px; border-radius: 999px; border: 1.5px solid #6b6b6b; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500">Cancel</a>
+      <a href="Vaults.dc.html" style="height: 48px; border-radius: 999px; background: #e5211c; color: #ffffff; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500">Remove</a>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
