@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The note widget: starts at 2×2 cells and resizes up to 4×4 (2×2, 4×2 and 4×4 have their own
+  layout). minWidth/minHeight are the pre-Android-12 way to say 2×2; targetCell* is the new one.
+  updatePeriodMillis (30 min, the minimum) picks up notes changed outside the app, e.g. by git sync.
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.dotnote.widget.NoteWidgetConfigActivity"
+    android:description="@string/note_widget_description"
+    android:initialLayout="@layout/note_widget_loading"
+    android:minWidth="110dp"
+    android:minHeight="110dp"
+    android:minResizeWidth="110dp"
+    android:minResizeHeight="110dp"
+    android:maxResizeWidth="320dp"
+    android:maxResizeHeight="320dp"
+    android:targetCellWidth="2"
+    android:targetCellHeight="2"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="home_screen"
+    android:widgetFeatures="reconfigurable" />

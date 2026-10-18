@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dotnote</string>
+    <string name="note_widget_label">Selected Note</string>
+    <string name="note_widget_loading">Loading…</string>
+    <string name="note_widget_description">A note from your vault on the home screen</string>
 </resources>

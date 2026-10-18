@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text colours of the widget's loading layout (Dotline dark tokens). -->
+<resources>
+    <color name="note_widget_ink">#FFFFFFFF</color>
+    <color name="note_widget_ink_muted">#FFA6A6A6</color>
+    <color name="note_widget_ink_faint">#FF808080</color>
+</resources>

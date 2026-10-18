@@ -32,6 +32,7 @@ Get the latest APK from [Releases](https://github.com/sofyan-rs/dotnote/releases
 - **Quick switcher:** find a note by name, or create it.
 - **Locked notes:** encrypted with [age](https://age-encryption.org), one password per vault, auto-lock after 5 minutes, optional fingerprint unlock. Compatible with desktop Dotnote.
 - **Git sync (optional):** sync a vault with your own repository; a note changed on two devices keeps both versions.
+- **Home-screen widget ("Selected Note"):** shows one note, resizable from 2×2 to 4×4 (with 4×2 in between); long notes scroll, tap to open, and it updates when you save. Locked notes only show their title.
 
 Out of scope, same as desktop: wikilinks, backlinks, graph view, tags, plugins.
 

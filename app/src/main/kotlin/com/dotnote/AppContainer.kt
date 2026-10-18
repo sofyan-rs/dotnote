@@ -18,6 +18,7 @@ import com.dotnote.sync.createSyncController
 import com.dotnote.vault.NoteFiles
 import com.dotnote.vault.VaultRegistry
 import com.dotnote.vault.VaultStore
+import com.dotnote.widget.NoteWidgetData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -33,6 +34,9 @@ class AppContainer(
      * closes. `SupervisorJob` keeps one failed job from cancelling the others.
      */
     val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
+    /** The application context (never an Activity), safe to keep for the app's lifetime. */
+    private val appContext: Context = context.applicationContext
 
     /** The app's private storage; cloned vaults live in `vaults/` inside it (ARCHITECTURE §9.1). */
     val appFilesDir: java.io.File = context.filesDir
@@ -67,6 +71,10 @@ class AppContainer(
     val tokenStore = TokenStore(context)
     val syncController: SyncController =
         createSyncController(context, appScope, settingsStore, vaultRegistry, vaultStore, tokenStore).also { sync ->
-            noteFiles.onSaved = { sync.noteSaved() }
+            noteFiles.onSaved = {
+                sync.noteSaved()
+                // Home-screen widgets showing a note redraw with the new text.
+                appScope.launch { NoteWidgetData.refreshAll(appContext) }
+            }
         }
 }

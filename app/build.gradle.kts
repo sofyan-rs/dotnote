@@ -14,8 +14,8 @@ android {
         applicationId = "com.dotnote.android"
         minSdk = 26
         targetSdk = 36
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 3
+        versionName = "1.1.0"
     }
 
     // Release signing comes from keystore.properties (git-ignored, see CONTRIBUTION §2).
@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.androidx.biometric)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.glance.appwidget)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.commonmark)

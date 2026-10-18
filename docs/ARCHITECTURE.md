@@ -278,6 +278,18 @@ Either way the stored text is the raw markdown; the transformation only changes 
 
 `Search.flattenFiles` + `Search.filterFiles` (case-insensitive name match, natural order), matched part highlighted. Empty query shows RECENT chips from `OpenNotes`. IME action "Go" opens the top result. "Create note “query”" uses the same path as New note.
 
+### 6.6 Home-screen widget
+
+`widget/` holds the "Selected Note" widget, built with **Jetpack Glance** (Compose-like code that Glance turns into `RemoteViews`).
+
+- `NoteWidget` draws it with `SizeMode.Responsive` (2×2, 4×2, 4×4 layouts; it resizes freely between 2×2 and 4×4). The body is a `LazyColumn`, so long notes scroll.
+- `NoteWidgetConfigActivity` is the picker the launcher opens when the widget is added (and on Android 12+ via "reconfigure"); a widget whose note is gone opens it on tap. The choice (vault id + path) lives in Glance's per-widget preferences.
+- `NoteWidgetData.load` reads the note straight from `VaultRegistry.openFs(vault)`, so a widget works for any saved vault, not only the open one. Locked notes are never decrypted on the home screen.
+- `NotePreview` turns markdown into plain preview lines (unit-tested).
+- Updates: after every save (`NoteFiles.onSaved`), when the phone switches light/dark (`DotnoteApp.onConfigurationChanged`), and every 30 min (`updatePeriodMillis`) for changes from git sync or other apps.
+- A tap sends `OpenNoteIntent` to `MainActivity`; `AppViewModel.openNote` switches vault if needed and the nav host opens the editor (or Unlock).
+- Before Android 12 a widget can't switch text colours by itself, so the background (light or dark drawable) is picked in code at the same moment as the colours; from Android 12 both follow the theme on their own.
+
 ---
 
 ## 7. Storage

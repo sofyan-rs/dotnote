@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  What the launcher shows before the widget's first drawing (just added, or right after an app
+  update), instead of Glance's default spinner. Plain views only: launchers inflate this
+  without running app code. It matches the widget's own header.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/note_widget_background"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/note_widget_dot" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:fontFamily="monospace"
+            android:text="DOTNOTE"
+            android:textColor="@color/note_widget_ink_faint"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:maxLines="1"
+        android:text="@string/note_widget_label"
+        android:textColor="@color/note_widget_ink"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/note_widget_loading"
+        android:textColor="@color/note_widget_ink_muted"
+        android:textSize="13sp" />
+</LinearLayout>

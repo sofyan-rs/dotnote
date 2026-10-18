@@ -8,10 +8,13 @@
 package com.dotnote.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.dotnote.core.VaultPath
 import com.dotnote.ui.dotline.MainTab
 import com.dotnote.ui.dotnoteViewModel
 import com.dotnote.ui.editor.EditorScreen
@@ -28,10 +31,31 @@ import com.dotnote.ui.vaults.VaultNavigation
 import com.dotnote.ui.vaults.VaultsScreen
 import com.dotnote.ui.welcome.WelcomeScreen
 
+/**
+ * @param noteRequest a note path a home-screen widget asked to open, or `null`.
+ * @param onNoteRequestHandled called once that note is shown.
+ */
 @Composable
-fun DotnoteNavHost(start: StartScreen) {
+fun DotnoteNavHost(
+    start: StartScreen,
+    noteRequest: String? = null,
+    onNoteRequestHandled: () -> Unit = {},
+) {
     val navController = rememberNavController()
     val startRoute: Any = if (start is StartScreen.Welcome) Welcome(start.lostAccessTo) else Files
+
+    // A widget tap: show its note on top of the Files tab (locked notes ask for the password first).
+    val widgetLockActions = dotnoteViewModel { LockActionsViewModel(it) }
+    LaunchedEffect(noteRequest) {
+        val requested = noteRequest ?: return@LaunchedEffect
+        if (navController.currentDestination?.hasRoute<Welcome>() == true) {
+            navController.navigate(Files) { popUpTo<Welcome> { inclusive = true } }
+        }
+        val path = VaultPath(requested)
+        val route: Any = if (widgetLockActions.needsUnlock(path)) Unlock(path.value) else Editor(path.value)
+        navController.navigate(route) { popUpTo<Files>() }
+        onNoteRequestHandled()
+    }
 
     NavHost(navController = navController, startDestination = startRoute) {
         composable<Welcome> { entry ->
