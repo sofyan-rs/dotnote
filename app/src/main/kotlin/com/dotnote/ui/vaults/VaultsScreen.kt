@@ -131,7 +131,7 @@ fun VaultsScreen(
                 ListGroup {
                     ListRow(
                         "Created by Kurodev",
-                        subtitle = "sofyan.id",
+                        subtitle = "kurodev.org",
                         subtitleIsData = true,
                         // Opens the site in the browser.
                         onClick = { uriHandler.openUri(AUTHOR_URL) },
@@ -170,7 +170,7 @@ fun VaultsScreen(
 }
 
 /** The author's website, linked from the ABOUT section. */
-private const val AUTHOR_URL = "https://sofyan.id/"
+private const val AUTHOR_URL = "https://kurodev.org/"
 
 /** "● OPEN" on the vault that's open now. */
 @Composable
