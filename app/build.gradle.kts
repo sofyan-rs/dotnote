@@ -15,7 +15,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 1
-        versionName = "0.1.0"
+        versionName = "1.0.0"
     }
 
     // Release signing comes from keystore.properties (git-ignored, see CONTRIBUTION §2).
@@ -50,6 +50,8 @@ android {
 
     buildFeatures {
         compose = true
+        // BuildConfig.VERSION_NAME is shown under the credit on the Vaults tab.
+        buildConfig = true
     }
 
     // One APK per CPU type (smaller downloads for GitHub releases), plus a universal APK that

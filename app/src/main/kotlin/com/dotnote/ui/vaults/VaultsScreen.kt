@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -23,8 +24,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.dotnote.BuildConfig
 import com.dotnote.settings.SavedVault
 import com.dotnote.settings.ThemeMode
 import com.dotnote.ui.dotline.DotlineIcons
@@ -125,7 +128,7 @@ fun VaultsScreen(
                     onSelect = { viewModel.setTheme(ThemeMode.entries[it]) },
                 )
                 SectionLabel("ABOUT", Modifier.padding(top = Dotline.space.s4))
-                ListGroup(Modifier.padding(bottom = Dotline.space.s5)) {
+                ListGroup {
                     ListRow(
                         "Created by Kurodev",
                         subtitle = "sofyan.id",
@@ -135,6 +138,13 @@ fun VaultsScreen(
                         trailing = { ListRowChevron() },
                     )
                 }
+                Text(
+                    "DOTNOTE ${BuildConfig.VERSION_NAME}",
+                    style = Dotline.type.label,
+                    color = Dotline.colors.inkFaint,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(bottom = Dotline.space.s5),
+                )
             }
         }
     }
