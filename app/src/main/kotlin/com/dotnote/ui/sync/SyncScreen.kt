@@ -46,6 +46,7 @@ import com.dotnote.ui.dotline.PrimaryButton
 import com.dotnote.ui.dotline.ScreenTitle
 import com.dotnote.ui.dotline.SectionLabel
 import com.dotnote.ui.dotnoteViewModel
+import com.dotnote.ui.navigation.LocalBottomNavSpace
 import com.dotnote.ui.navigation.MainTabs
 import com.dotnote.ui.theme.Dotline
 import com.dotnote.ui.theme.DotnoteTheme
@@ -55,16 +56,13 @@ private val SyncRowHeight = 64.dp
 
 /** Screen entry: wires the ViewModel to [SyncContent] and shows the sign-in sheet. */
 @Composable
-fun SyncScreen(
-    onTabClick: (MainTab) -> Unit,
-    onCloneFromGit: () -> Unit,
-) {
+fun SyncScreen(onCloneFromGit: () -> Unit) {
     val viewModel =
         dotnoteViewModel { SyncViewModel(it.syncController, it.vaultStore, it.settingsStore, it.tokenStore) }
     val ui by viewModel.ui.collectAsStateWithLifecycle()
     var signInOpen by rememberSaveable { mutableStateOf(false) }
 
-    MainTabs(selected = MainTab.Sync, onTabClick = onTabClick) {
+    MainTabs {
         SyncContent(
             ui = ui,
             onSyncNow = viewModel::syncNow,
@@ -101,7 +99,14 @@ private fun SyncContent(
             Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(start = Dotline.space.s4, end = Dotline.space.s4, top = Dotline.space.s6, bottom = Dotline.space.s6),
+                // The extra bottom space lets the content scroll above the floating nav.
+                .padding(
+                    start = Dotline.space.s4,
+                    end = Dotline.space.s4,
+                    top = Dotline.space.s6,
+                    bottom =
+                        Dotline.space.s6 + LocalBottomNavSpace.current,
+                ),
             verticalArrangement = Arrangement.spacedBy(Dotline.space.s5),
         ) {
             if (ui.connected) {
@@ -290,7 +295,7 @@ private val previewUi =
 
 @Composable
 private fun PreviewContent(ui: SyncUi) {
-    MainTabs(selected = MainTab.Sync, onTabClick = {}) {
+    MainTabs {
         SyncContent(ui = ui, onSyncNow = {}, onSignIn = {}, onAutoSyncChange = {}, onCloneFromGit = {})
     }
 }

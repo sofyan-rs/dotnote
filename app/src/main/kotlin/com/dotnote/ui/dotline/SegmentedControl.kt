@@ -1,28 +1,35 @@
 /**
  * Dotline segmented control: a pill "well" with two or three segments, one selected.
  *
- * Used on: Editor-Live / Editor-Source / Editor-Preview (LIVE | SOURCE | PREVIEW) and
- * New-Item (NOTE | FOLDER).
+ * Used on: the editor (LIVE | SOURCE | PREVIEW), New-Item (NOTE | FOLDER) and the Vaults tab
+ * (THEME: SYSTEM | LIGHT | DARK).
  *
  * From the mockups: well = `surfaceRaised` pill with 4 dp padding and 4 dp between segments;
  * each segment is 40 dp tall (so the whole control is a 48 dp touch target), `label` text with
- * an optional 16 dp icon 6 dp before it. Selected = `ink` fill + `onInk` text, others `inkMuted`.
+ * an optional 16 dp icon 6 dp before it. Selected = `ink` pill + `onInk` text, others
+ * `inkMuted`. The pill slides to a newly selected segment.
  */
 package com.dotnote.ui.dotline
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.Icon
@@ -41,6 +48,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.dotnote.ui.theme.Dotline
 import com.dotnote.ui.theme.DotnoteTheme
@@ -82,27 +90,49 @@ fun SegmentedControl(
     onSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    // BoxWithConstraints gives the well's inner width, so we know how wide one segment is.
+    BoxWithConstraints(
         modifier =
             modifier
                 .clip(Dotline.radius.pill)
                 .background(Dotline.colors.surfaceRaised)
-                .padding(WellPadding)
-                // Tells accessibility services that these segments belong together (one choice).
-                .selectableGroup(),
-        horizontalArrangement = Arrangement.spacedBy(WellPadding),
+                .padding(WellPadding),
     ) {
-        options.forEachIndexed { index, option ->
-            Segment(
-                option = option,
-                selected = index == selectedIndex,
-                onClick = { onSelect(index) },
-            )
+        val count = options.size.coerceAtLeast(1)
+        val segmentWidth = (maxWidth - WellPadding * (count - 1)) / count
+        // One `ink` pill slides under the selected segment (a spring, so it settles softly).
+        val pillOffset by animateDpAsState(
+            targetValue = (segmentWidth + WellPadding) * selectedIndex,
+            animationSpec = spring(dampingRatio = 0.8f, stiffness = Spring.StiffnessMediumLow),
+            label = "segmentPill",
+        )
+        Box(
+            Modifier
+                .offset { IntOffset(pillOffset.roundToPx(), 0) }
+                .width(segmentWidth)
+                .height(SegmentHeight)
+                .background(Dotline.colors.ink, Dotline.radius.pill),
+        )
+        Row(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    // Tells accessibility services that these segments belong together (one choice).
+                    .selectableGroup(),
+            horizontalArrangement = Arrangement.spacedBy(WellPadding),
+        ) {
+            options.forEachIndexed { index, option ->
+                Segment(
+                    option = option,
+                    selected = index == selectedIndex,
+                    onClick = { onSelect(index) },
+                )
+            }
         }
     }
 }
 
-/** One segment. It is an extension on RowScope so it can use `Modifier.weight`. */
+/** One segment (its pill is drawn by [SegmentedControl]). An extension on RowScope so it can use `Modifier.weight`. */
 @Composable
 private fun RowScope.Segment(
     option: SegmentOption,
@@ -112,15 +142,10 @@ private fun RowScope.Segment(
     val colors = Dotline.colors
     val shape = Dotline.radius.pill
     val interactionSource = remember { MutableInteractionSource() }
-    // animate*AsState smoothly moves to the new colour when `selected` changes.
-    val fill by animateColorAsState(
-        targetValue = if (selected) colors.ink else Color.Transparent,
-        animationSpec = tween(DOTLINE_MOTION_MILLIS),
-        label = "segmentFill",
-    )
+    // animate*AsState smoothly moves to the new colour while the pill slides under the segment.
     val content by animateColorAsState(
         targetValue = if (selected) colors.onInk else colors.inkMuted,
-        animationSpec = tween(DOTLINE_MOTION_MILLIS),
+        animationSpec = tween(DOTLINE_MOTION_MILLIS * 2),
         label = "segmentContent",
     )
 
@@ -132,7 +157,6 @@ private fun RowScope.Segment(
                 .focusRing(interactionSource, shape)
                 .height(SegmentHeight)
                 .clip(shape)
-                .background(fill)
                 // selectable = clickable + "selected" semantics for screen readers.
                 .selectable(
                     selected = selected,

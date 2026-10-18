@@ -41,6 +41,7 @@ import com.dotnote.ui.dotline.SectionLabel
 import com.dotnote.ui.dotline.SegmentOption
 import com.dotnote.ui.dotline.SegmentedControl
 import com.dotnote.ui.dotnoteViewModel
+import com.dotnote.ui.navigation.LocalBottomNavSpace
 import com.dotnote.ui.navigation.MainTabs
 import com.dotnote.ui.theme.Dotline
 import com.dotnote.ui.welcome.OpenFolderFlow
@@ -57,10 +58,7 @@ class VaultNavigation(
 )
 
 @Composable
-fun VaultsScreen(
-    onTabClick: (MainTab) -> Unit,
-    navigation: VaultNavigation,
-) {
+fun VaultsScreen(navigation: VaultNavigation) {
     val viewModel = dotnoteViewModel { VaultsViewModel(it) }
     val vaults by viewModel.vaults.collectAsStateWithLifecycle()
     val message by viewModel.message.collectAsStateWithLifecycle()
@@ -69,7 +67,7 @@ fun VaultsScreen(
     var openFolder by remember { mutableStateOf(false) }
     val uriHandler = LocalUriHandler.current
 
-    MainTabs(selected = MainTab.Vaults, onTabClick = onTabClick) {
+    MainTabs {
         Column(
             Modifier
                 .fillMaxSize()
@@ -143,7 +141,8 @@ fun VaultsScreen(
                     style = Dotline.type.label,
                     color = Dotline.colors.inkFaint,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(bottom = Dotline.space.s5),
+                    // The extra bottom space lets the version line scroll above the floating nav.
+                    modifier = Modifier.fillMaxWidth().padding(bottom = Dotline.space.s5 + LocalBottomNavSpace.current),
                 )
             }
         }

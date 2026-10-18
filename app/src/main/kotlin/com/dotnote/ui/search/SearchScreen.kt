@@ -62,15 +62,13 @@ import com.dotnote.ui.dotline.PrimaryButton
 import com.dotnote.ui.dotline.ScreenTitle
 import com.dotnote.ui.dotline.SectionLabel
 import com.dotnote.ui.dotnoteViewModel
+import com.dotnote.ui.navigation.LocalBottomNavSpace
 import com.dotnote.ui.navigation.MainTabs
 import com.dotnote.ui.theme.Dotline
 import com.dotnote.ui.theme.DotnoteTheme
 
 @Composable
-fun SearchScreen(
-    onTabClick: (MainTab) -> Unit,
-    onOpenNote: (VaultPath) -> Unit,
-) {
+fun SearchScreen(onOpenNote: (VaultPath) -> Unit) {
     val viewModel = dotnoteViewModel { SearchViewModel(it.vaultStore) }
     // Collecting the vault state recomposes the results when the vault changes.
     val vaultState by viewModel.state.collectAsStateWithLifecycle()
@@ -88,7 +86,7 @@ fun SearchScreen(
 
     LaunchedEffect(Unit) { focus.requestFocus() }
 
-    MainTabs(selected = MainTab.Search, onTabClick = onTabClick) {
+    MainTabs {
         Column(Modifier.fillMaxSize().imePadding()) {
             ScreenTitle(title = "SEARCH")
             DotlineTextField(
@@ -119,7 +117,18 @@ private fun Results(
     onOpen: (VaultPath) -> Unit,
     onCreate: () -> Unit,
 ) {
-    LazyColumn(contentPadding = PaddingValues(Dotline.space.s4), verticalArrangement = Arrangement.spacedBy(Dotline.space.s2)) {
+    LazyColumn(
+        // The extra bottom space lets the last match scroll above the floating nav.
+        contentPadding =
+            PaddingValues(
+                start = Dotline.space.s4,
+                top = Dotline.space.s4,
+                end = Dotline.space.s4,
+                bottom =
+                    Dotline.space.s4 + LocalBottomNavSpace.current,
+            ),
+        verticalArrangement = Arrangement.spacedBy(Dotline.space.s2),
+    ) {
         item { SectionLabel("MATCHES") }
         item {
             ListGroup {

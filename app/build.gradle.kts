@@ -14,8 +14,8 @@ android {
         applicationId = "com.dotnote.android"
         minSdk = 26
         targetSdk = 36
-        versionCode = 3
-        versionName = "1.1.0"
+        versionCode = 4
+        versionName = "1.1.1"
     }
 
     // Release signing comes from keystore.properties (git-ignored, see CONTRIBUTION §2).

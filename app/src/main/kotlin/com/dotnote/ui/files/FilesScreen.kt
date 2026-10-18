@@ -52,6 +52,7 @@ import com.dotnote.ui.dotline.SectionLabel
 import com.dotnote.ui.dotline.TreeRow
 import com.dotnote.ui.dotline.showDotlineSnackbar
 import com.dotnote.ui.dotnoteViewModel
+import com.dotnote.ui.navigation.LocalBottomNavSpace
 import com.dotnote.ui.navigation.MainTabs
 import com.dotnote.ui.theme.Dotline
 import com.dotnote.ui.vaults.VaultSwitcherSheet
@@ -85,7 +86,6 @@ sealed interface FilesSheet {
 
 @Composable
 fun FilesScreen(
-    onTabClick: (MainTab) -> Unit,
     onOpenNote: (VaultPath) -> Unit,
     onMoveItem: (VaultPath) -> Unit,
     onManageVaults: () -> Unit,
@@ -130,8 +130,6 @@ fun FilesScreen(
     }
 
     MainTabs(
-        selected = MainTab.Files,
-        onTabClick = onTabClick,
         overlay = {
             Column(Modifier.fillMaxWidth().padding(Dotline.space.s4), horizontalAlignment = Alignment.End) {
                 DotlineSnackbarHost(snackbars, icon = DotlineIcons.Trash)
@@ -295,8 +293,8 @@ private fun FileList(
     onToggleFolder: (VaultPath) -> Unit,
     onRowActions: (TreeRowUi) -> Unit,
 ) {
-    // Bottom padding keeps the last row clear of the floating "New note" button.
-    LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 96.dp)) {
+    // Bottom padding keeps the last row clear of the floating nav and the "New note" button above it.
+    LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = LocalBottomNavSpace.current + 96.dp)) {
         if (ui.openNotes.isNotEmpty()) {
             item(key = "open-notes") {
                 Column(Modifier.padding(top = Dotline.space.s5), verticalArrangement = Arrangement.spacedBy(Dotline.space.s2)) {
