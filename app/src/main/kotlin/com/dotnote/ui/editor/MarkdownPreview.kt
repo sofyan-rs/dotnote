@@ -1,5 +1,5 @@
 /**
- * Preview mode (SPEC 3.3, mockup Editor-Preview, ARCHITECTURE §6.4): the note rendered read-only.
+ * Preview mode (ARCHITECTURE §6.4): the note rendered read-only.
  *
  * commonmark-java parses the note on `Dispatchers.Default`, 150 ms after the last change (desktop
  * `PREVIEW_DELAY`). Each top-level block is one `LazyColumn` item: headings, paragraphs, lists and

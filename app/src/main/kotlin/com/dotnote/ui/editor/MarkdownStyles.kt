@@ -1,5 +1,5 @@
 /**
- * Text styles of rendered markdown, shared by Live (SPEC 3.1) and Preview (3.3) so both look the
+ * Text styles of rendered markdown, shared by Live and Preview so both look the
  * same: body 16/26, H1 30/36 bold, H2 22/28 semibold, inline code in Geist Mono 14 on
  * `surfaceRaised`, quotes muted, code blocks in Geist Mono 13/20 (sizes from the mockups).
  *

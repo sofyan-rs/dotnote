@@ -1,5 +1,5 @@
 /**
- * "Change notes password" (SPEC 5.3, mockup `Change-Password.dc.html`): current, new and confirm
+ * "Change notes password": current, new and confirm
  * fields. A wrong current password shows on the current field (`accent` border, `accentText`
  * message). Reached from Vaults → vault actions → Notes password.
  */

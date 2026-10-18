@@ -1,5 +1,5 @@
 /**
- * "Open a folder" as a reusable flow (SPEC 1.2): the explainer sheet, then Android's folder
+ * "Open a folder" as a reusable flow: the explainer sheet, then Android's folder
  * picker, then the folder is saved as a vault and opened. Used by the welcome screen and the
  * vault screens. A cancelled pick leaves the sheet open; errors show inside the sheet.
  */

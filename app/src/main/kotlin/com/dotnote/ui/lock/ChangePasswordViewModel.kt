@@ -1,5 +1,5 @@
 /**
- * State and actions of "Change notes password" (SPEC 5.3). Only `.dotnote-lock.age` is rewritten
+ * State and actions of "Change notes password". Only `.dotnote-lock.age` is rewritten
  * (same vault key, new password), so locked notes don't change, like desktop.
  */
 package com.dotnote.ui.lock

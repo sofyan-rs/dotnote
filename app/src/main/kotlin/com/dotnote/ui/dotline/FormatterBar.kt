@@ -2,7 +2,7 @@
  * Formatter bar: the editor's row of 48 dp formatting buttons on `surface`, with a status
  * line under it ("LN 1, COL 8 · 645 CHARS"). It scrolls sideways when the buttons don't fit.
  *
- * Used by SPEC screens Editor-Live (3.1) and Editor-Source (3.2).
+ * Used by Editor-Live and Editor-Source.
  *
  * The bar sits directly above the keyboard: the caller adds `Modifier.imePadding()` to the
  * screen layout that holds it. The bar is data-driven: pass the [FormatAction]s to show, the

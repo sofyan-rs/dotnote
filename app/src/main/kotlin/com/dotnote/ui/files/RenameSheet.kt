@@ -1,5 +1,5 @@
 /**
- * Rename sheet (SPEC 2.4): the name without its extension, fully selected, with the fixed
+ * Rename sheet: the name without its extension, fully selected, with the fixed
  * `.md` suffix for notes. The file is renamed on disk; open notes follow it.
  */
 package com.dotnote.ui.files

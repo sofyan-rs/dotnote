@@ -1,5 +1,5 @@
 /**
- * Copy path and Share (SPEC 2.3), using Android's clipboard and share sheet.
+ * Copy path and Share, using Android's clipboard and share sheet.
  */
 package com.dotnote.ui.files
 

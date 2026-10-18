@@ -1,5 +1,5 @@
 /**
- * What the editor (SPEC 3.1–3.4) needs from the rest of the app: reading and saving the note,
+ * What the editor needs from the rest of the app: reading and saving the note,
  * the remembered view mode, vault events, and the file actions of the editor menu.
  *
  * [EditorViewModel] talks to this interface instead of the stores directly, so its save logic can

@@ -1,5 +1,5 @@
 /**
- * State and actions of the note editor (SPEC 3.1–3.4, ARCHITECTURE §4.2).
+ * State and actions of the note editor (ARCHITECTURE §4.2).
  *
  * Holds the **one text buffer** ([text], a Compose `TextFieldState` with `\n` line endings) that
  * Live, Source and Preview all show. Its selection is the cursor. Every change of the buffer is
@@ -240,7 +240,7 @@ class EditorViewModel(
         return TextRange(selection.min, selection.max)
     }
 
-    // ---- Menu actions (SPEC 3.4) ----
+    // ---- Menu actions ----
 
     fun togglePin() = backend.togglePin(path)
 
@@ -333,7 +333,7 @@ class EditorViewModel(
     }
 
     private fun location(path: VaultPath): String =
-        // "NOTES / JOURNAL / EXAMPLE.MD": vault, folders, file (SPEC 3.1).
+        // "NOTES / JOURNAL / EXAMPLE.MD": vault, folders, file.
         (listOf(backend.vaultName) + path.segments)
             .filter {
                 it.isNotEmpty()

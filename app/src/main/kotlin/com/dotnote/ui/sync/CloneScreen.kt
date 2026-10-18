@@ -1,5 +1,5 @@
 /**
- * Clone from git (SPEC 7 backlog "clone flow"; not in the mockups, designed in the Dotline style
+ * Clone from git (designed in the Dotline style
  * of Move-To and the sheets): repository address, sign-in, folder name and a **Clone** button
  * with a dot progress line. Errors (sign-in, not found, no network) show under the form.
  *

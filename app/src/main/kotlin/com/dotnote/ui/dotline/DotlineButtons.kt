@@ -1,5 +1,5 @@
 /**
- * Dotline pill buttons (SPEC §3): [PrimaryButton], [SecondaryButton] and [DestructiveButton].
+ * Dotline pill buttons: [PrimaryButton], [SecondaryButton] and [DestructiveButton].
  *
  * Used on: First-Launch ("Open a folder", "Clone from git"), Rename / New-Item ("Cancel", "Rename"),
  * Remove-Vault ("Remove"), Set-Password ("Set password and lock"), Vault-Switcher ("Open folder",

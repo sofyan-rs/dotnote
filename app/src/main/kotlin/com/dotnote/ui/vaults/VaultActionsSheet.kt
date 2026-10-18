@@ -1,10 +1,10 @@
 /**
- * Actions for one vault (SPEC 6.3): open, rename in the list, sync settings, notes password,
+ * Actions for one vault: open, rename in the list, sync settings, notes password,
  * remove (with the confirm dialog of 6.4).
  *
  * Removing only forgets the vault: the folder and notes stay on the phone. ("Also delete the
  * folder" from the mockup is left out on purpose: Android has no trash for a picked folder, so it
- * would delete notes for good. See PLAN.)
+ * would delete notes for good.)
  */
 package com.dotnote.ui.vaults
 

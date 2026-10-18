@@ -1,5 +1,5 @@
 /**
- * Source mode (SPEC 3.2, mockup Editor-Source): the raw markdown in Geist Mono 13/24 with a
+ * Source mode: the raw markdown in Geist Mono 13/24 with a
  * line-number gutter. The cursor's line number is `ink` and its line has a `surface` background.
  * Markers are drawn `inkFaint`, heading text bold, code muted; nothing is hidden.
  *

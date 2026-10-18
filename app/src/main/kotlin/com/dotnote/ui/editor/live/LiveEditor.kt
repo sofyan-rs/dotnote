@@ -1,5 +1,5 @@
 /**
- * Live mode (SPEC 3.1, mockup Editor-Live): the note's markdown, drawn formatted. Markers show
+ * Live mode: the note's markdown, drawn formatted. Markers show
  * (dimmed) only on the line(s) holding the cursor; task boxes toggle on tap; the caret is a 2 dp
  * `accent` bar.
  *

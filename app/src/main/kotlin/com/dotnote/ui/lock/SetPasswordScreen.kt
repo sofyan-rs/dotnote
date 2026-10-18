@@ -1,5 +1,5 @@
 /**
- * "Set a notes password" (SPEC 5.1, mockup `Set-Password.dc.html`). Shown on the first
+ * "Set a notes password". Shown on the first
  * "Lock note" in a vault without a password (and from Vaults → Notes password).
  *
  * Password field with a strength meter, confirm field with MATCH, the fingerprint checkbox,

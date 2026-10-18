@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-/** The strength hint on the Set-Password screen (SPEC 5.1). */
+/** The strength hint on the Set-Password screen. */
 class PasswordStrengthTest {
     @Test
     fun `the mockup password is strong with 9 of 12 dots`() {

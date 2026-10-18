@@ -1,7 +1,7 @@
 /**
  * Shows Android's fingerprint dialog (`BiometricPrompt`) and waits for the result, as one
- * suspend call. Used by [BiometricKey] for "Unlock with fingerprint" (SPEC 5.1, 5.2;
- * ARCHITECTURE §8.3).
+ * suspend call. Used by [BiometricKey] for "Unlock with fingerprint"
+ * (ARCHITECTURE §8.3).
  *
  * `BiometricPrompt` needs the activity (it adds a hidden fragment to show its dialog), so a
  * screen creates this with `rememberBiometricAuthenticator()` and passes it to its ViewModel's

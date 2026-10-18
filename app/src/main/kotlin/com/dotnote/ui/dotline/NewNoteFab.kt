@@ -2,7 +2,7 @@
  * "New note" floating button: a 56 dp `ink` pill with a plus icon, bottom-right on the file
  * list, 12 dp above the bottom navigation.
  *
- * Used by SPEC screen Main (2.1). The caller positions it (e.g. `Modifier.align(BottomEnd)
+ * Used on the Files tab. The caller positions it (e.g. `Modifier.align(BottomEnd)
  * .padding(end = 16.dp, bottom = 12.dp)` inside a Box above the BottomNav).
  */
 package com.dotnote.ui.dotline

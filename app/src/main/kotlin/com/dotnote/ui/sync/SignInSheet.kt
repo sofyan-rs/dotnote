@@ -1,5 +1,5 @@
 /**
- * Sign-in sheet of the SYNC tab (SPEC 7.1, "Sign-in" row; not designed, built like the Rename
+ * Sign-in sheet of the SYNC tab (the "Sign-in" row; built like the Rename
  * sheet): the HTTPS user name and personal access token for the vault's git remote.
  *
  * The saved token is never shown. Leaving the token field empty keeps the saved one.

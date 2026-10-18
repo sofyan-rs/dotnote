@@ -1,5 +1,5 @@
 /**
- * Loads pictures linked from a note (`![](.img/cat.png)`) for Live (SPEC 3.1) and Preview (3.3).
+ * Loads pictures linked from a note (`![](.img/cat.png)`) for Live and Preview.
  * The bytes come through `VaultFs` (via [EditorViewModel.readImage]), never a file path, and are
  * decoded off the main thread, scaled down to about screen width so big photos don't use too
  * much memory.

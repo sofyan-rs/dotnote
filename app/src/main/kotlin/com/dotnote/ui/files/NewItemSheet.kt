@@ -1,5 +1,5 @@
 /**
- * "New note / folder" sheet (SPEC 1.4): NOTE | FOLDER switch, the location ("In /Projects ▾"),
+ * "New note / folder" sheet: NOTE | FOLDER switch, the location ("In /Projects ▾"),
  * and the name. An empty name gives "Untitled" ("Untitled 2", ...). Sits above the keyboard.
  */
 package com.dotnote.ui.files

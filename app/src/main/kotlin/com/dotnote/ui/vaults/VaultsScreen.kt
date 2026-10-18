@@ -1,7 +1,7 @@
 /**
- * The VAULTS tab (SPEC 6.2): the vaults on this phone (the open one tagged ● OPEN), and
- * "Add a vault" (open a folder, clone from git). ⋮ opens the vault actions (6.3) — also for
- * the open vault (the gap noted in SPEC 6.2 is closed here). Also holds the THEME setting and
+ * The VAULTS tab: the vaults on this phone (the open one tagged ● OPEN), and
+ * "Add a vault" (open a folder, clone from git). ⋮ opens the vault actions — also for
+ * the open vault. Also holds the THEME setting and
  * an ABOUT section.
  */
 package com.dotnote.ui.vaults
@@ -120,7 +120,7 @@ fun VaultsScreen(
                         trailing = { ListRowChevron() },
                     )
                 }
-                // App-wide setting; lives here until there is a Settings screen (SPEC §7 backlog).
+                // App-wide setting; lives here until there is a Settings screen.
                 SectionLabel("THEME", Modifier.padding(top = Dotline.space.s4))
                 SegmentedControl(
                     options = ThemeMode.entries.map { SegmentOption(it.name.uppercase()) },

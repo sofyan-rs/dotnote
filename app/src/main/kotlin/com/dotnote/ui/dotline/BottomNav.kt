@@ -1,5 +1,5 @@
 /**
- * BottomNav: the tab bar at the bottom of the main screens (SPEC §3 "BottomNav").
+ * BottomNav: the tab bar at the bottom of the main screens.
  *
  * 4 tabs: FILES, SEARCH, SYNC, VAULTS ([MainTab]). Styled after Nothing OS 5.0: a floating
  * pill (`navBar`) with icons only. The active tab sits in a circle (`navSelected`) and is `ink`;
@@ -53,7 +53,7 @@ interface BottomNavTab {
     val icon: ImageVector
 }
 
-/** The four main tabs of the app, in bar order (SPEC §4). */
+/** The four main tabs of the app, in bar order. */
 enum class MainTab(
     override val label: String,
     override val icon: ImageVector,

@@ -1,5 +1,5 @@
 /**
- * Dotline checkbox (SPEC §3: checkboxes have a `lineStrong` edge) and [DotlineCheckboxRow],
+ * Dotline checkbox (checkboxes have a `lineStrong` edge) and [DotlineCheckboxRow],
  * a checkbox with its label that is tappable as a whole.
  *
  * Used on: Set-Password ("Unlock with fingerprint"), Unlock ("Unlock with fingerprint next time"),

@@ -1,5 +1,5 @@
 /**
- * The quick switcher's logic (SPEC 4.1): note names that contain the query (letter case
+ * The quick switcher's logic: note names that contain the query (letter case
  * ignored), in natural order, with where the match is so the screen can highlight it.
  */
 package com.dotnote.ui.search

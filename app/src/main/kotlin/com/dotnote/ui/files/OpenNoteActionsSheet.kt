@@ -3,7 +3,7 @@
  *
  * The row is the phone's version of desktop tabs. Closing a card only removes it from the row;
  * the note file stays. Pinned cards stay at the front and aren't closed by "Close others" or
- * "Close all unpinned". (Not in the mockups; SPEC §7 lists managing open notes as to be designed.)
+ * "Close all unpinned". (Not in the original design.)
  */
 package com.dotnote.ui.files
 

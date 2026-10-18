@@ -42,7 +42,7 @@ class AppContainer(
     val vaultStore = VaultStore(vaultRegistry, settingsStore, appScope)
     val noteFiles = NoteFiles(vaultStore)
 
-    /** Locked notes (SPEC 5): the unlocked vault key, fingerprint unlock, lock/unlock a note. */
+    /** Locked notes: the unlocked vault key, fingerprint unlock, lock/unlock a note. */
     val vaultLock = VaultLock(appScope)
     val biometricKey = BiometricKey(context, settingsStore)
     val noteLocker = NoteLocker(vaultStore, vaultLock)

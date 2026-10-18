@@ -2,7 +2,7 @@
  * Dot meter: a row of 4 dp dots, 4 dp apart. Lit dots are `ink`, unlit dots `lineStrong` at
  * 50% opacity. Shows a level, e.g. password strength (9 of 12 lit = strong).
  *
- * Used by SPEC screen Set-Password (5.1), next to the "STRONG · 16 CHARS" label.
+ * Used by Set-Password, next to the "STRONG · 16 CHARS" label.
  */
 package com.dotnote.ui.dotline
 

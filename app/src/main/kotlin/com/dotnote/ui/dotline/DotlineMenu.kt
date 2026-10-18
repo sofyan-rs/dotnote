@@ -1,6 +1,6 @@
 /**
- * DotlineMenu: the dropdown menu that opens from a ⋮ button (SPEC §3 "DropdownMenu", screen 3.4
- * Editor-Menu).
+ * DotlineMenu: the dropdown menu that opens from a ⋮ button (the editor's
+ * note menu).
  *
  * Nothing OS 5.0 style: a `surface` panel, radius 28, a soft shadow and a hairline `line` edge,
  * 248 dp wide. Rows are 52 dp with a 22 dp icon and `body` text, split by hairline dividers

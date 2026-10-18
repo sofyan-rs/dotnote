@@ -1,5 +1,5 @@
 /**
- * The SEARCH tab: the quick switcher (SPEC 4.1) and "no results" (4.2).
+ * The SEARCH tab: the quick switcher and "no results".
  *
  * The field is focused when the tab opens. With an empty query it shows RECENT notes as chips;
  * while typing it lists matching note names (top result highlighted, opened by the keyboard's
@@ -212,7 +212,7 @@ private fun RecentChip(
     }
 }
 
-/** No note matches (SPEC 4.2). */
+/** No note matches. */
 @Composable
 private fun NoResults(
     query: String,

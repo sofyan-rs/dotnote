@@ -1,5 +1,5 @@
 /**
- * Turns a formatter-bar button (SPEC 3.1, 3.2) into the `:core` [Format] edit to apply, and tells
+ * Turns a formatter-bar button into the `:core` [Format] edit to apply, and tells
  * which buttons are "on" at the cursor. Pure functions, so they are easy to test.
  */
 package com.dotnote.ui.editor

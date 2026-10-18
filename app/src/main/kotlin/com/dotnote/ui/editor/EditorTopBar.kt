@@ -1,5 +1,5 @@
 /**
- * The editor's top bar (SPEC 3.1–3.3) and its ⋮ menu (3.4, mockup Editor-Menu): back, the note's
+ * The editor's top bar and its ⋮ menu: back, the note's
  * title over `PERSONAL / EXAMPLE.MD`, the save state (✓ SAVED / ● SAVING), and ⋮.
  *
  * Menu: Rename, Move to…, Pin note, Copy path, Share, divider, Lock note, Move to trash (red).

@@ -1,5 +1,5 @@
 /**
- * Preview (SPEC 3.3) helpers for commonmark-java: the parser with the GitHub extensions
+ * Preview helpers for commonmark-java: the parser with the GitHub extensions
  * (tables, ~~strikethrough~~, task lists), and inline content (emphasis, code, links) as an
  * `AnnotatedString` for one `Text`.
  */

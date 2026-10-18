@@ -1,6 +1,6 @@
 /**
- * The clone flow (SPEC 7 backlog "clone flow"; reached from Welcome 1.1, Vaults 6.x and the
- * SYNC tab): copies a git repository into Dotnote' storage (`files/vaults/<name>`) and opens it
+ * The clone flow (reached from Welcome, the Vaults tab and the
+ * SYNC tab): copies a git repository into Dotnote's storage (`files/vaults/<name>`) and opens it
  * as a new synced vault (ARCHITECTURE §9.1).
  */
 package com.dotnote.ui.sync

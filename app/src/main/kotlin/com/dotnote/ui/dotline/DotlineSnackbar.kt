@@ -1,6 +1,6 @@
 /**
  * DotlineSnackbar: the short message at the bottom after an action, with an optional UNDO
- * (SPEC §3 "Snackbar", screen 2.6 Trash-Undo: "“Example” moved to trash · UNDO").
+ * (after a move to trash: "“Example” moved to trash · UNDO").
  *
  * `surfaceRaised`, 1.5 dp `lineStrong` border, radius 16, min 56 dp: a muted 20 dp icon, the
  * message in `body`, and the action in bold `label` caps.
@@ -60,7 +60,7 @@ import kotlinx.coroutines.withTimeoutOrNull
 /** The snackbar icon is 20 dp (Trash-Undo mockup). */
 private val SnackbarIconSize = 20.dp
 
-/** How long a snackbar stays (SPEC 2.6: about 5 s). */
+/** How long a snackbar stays (about 5 s). */
 private const val SNACKBAR_MILLIS = 5_000L
 
 /**

@@ -1,5 +1,5 @@
 /**
- * The editor's layout (SPEC 3.1 Live, 3.2 Source, 3.3 Preview), without a ViewModel so it can be
+ * The editor's layout (Live, Source, Preview), without a ViewModel so it can be
  * previewed: top bar, LIVE | SOURCE | PREVIEW, the content of the chosen mode, and in Live and
  * Source the formatter bar with the status line, which sits right above the keyboard.
  */

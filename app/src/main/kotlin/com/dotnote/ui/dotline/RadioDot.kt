@@ -1,5 +1,5 @@
 /**
- * Dotline radio button (SPEC §3 `RadioDot`): a round ring; when selected, a solid circle with a
+ * Dotline radio button: a round ring; when selected, a solid circle with a
  * small dot inside (Nothing OS 5.0 style).
  *
  * Used on: Move-To (destination folder list, 22 dp) and Vault-Switcher (vault list, 24 dp).

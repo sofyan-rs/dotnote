@@ -1,5 +1,5 @@
 /**
- * State and actions of the SYNC tab (SPEC 7.1): turns the [SyncController]'s status into what
+ * State and actions of the SYNC tab: turns the [SyncController]'s status into what
  * the screen draws, and saves the auto-sync switch and the git sign-in.
  */
 package com.dotnote.ui.sync

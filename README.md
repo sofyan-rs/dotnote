@@ -18,7 +18,7 @@ Get the latest APK from [Releases](https://github.com/sofyan-rs/dotnote/releases
 |---|---|---|
 | <img src="ss/search.png" width="200" alt="Search by note name"> | <img src="ss/vaults.png" width="200" alt="Vaults and theme choice"> | <img src="ss/files-light.png" width="200" alt="Files tab in the light theme"> |
 
-> **Status:** all screens from the design are built and tested on the emulator: vaults (picked folders and git clones), file tree, editor (Live / Source / Preview), search, locked notes and git sync. Remaining work (store release, accessibility pass, a few editor details) is in [docs/implementation/PLAN.md](docs/implementation/PLAN.md).
+> **Status:** all screens are built and tested on the emulator: vaults (picked folders and git clones), file tree, editor (Live / Source / Preview), search, locked notes and git sync.
 
 ## Features
 
@@ -51,8 +51,4 @@ Out of scope, same as desktop: wikilinks, backlinks, graph view, tags, plugins.
 ## Docs
 
 - [Architecture](docs/ARCHITECTURE.md): stack, modules, state model, storage, locked notes, git sync, open questions
-- [Implementation plan](docs/implementation/PLAN.md): phased roadmap, feature checklist, risks
 - [Contributing](docs/CONTRIBUTION.md): setup, conventions, testing, PR checklist
-- [UI spec](docs/ui/SPEC.md): screens, flow, behaviour, Compose mapping
-- [Dotline design system](docs/ui/design-system/README.md) and [tokens](docs/ui/design-system/tokens.json)
-- Screen mockups: [docs/ui/design/screens/](docs/ui/design/screens/)

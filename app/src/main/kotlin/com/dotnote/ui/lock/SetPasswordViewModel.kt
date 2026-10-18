@@ -1,5 +1,5 @@
 /**
- * State and actions of "Set a notes password" (SPEC 5.1): checks the two fields, creates the
+ * State and actions of "Set a notes password": checks the two fields, creates the
  * vault key, optionally turns on fingerprint unlock, then locks the note that asked for it.
  */
 package com.dotnote.ui.lock

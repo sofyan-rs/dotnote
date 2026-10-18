@@ -1,5 +1,5 @@
 /**
- * First launch (SPEC 1.1) and the open-folder explainer sheet (1.2).
+ * First launch and the open-folder explainer sheet.
  *
  * "Open a folder" first shows a sheet that explains Android's folder picker, then
  * "Choose folder" opens the picker. A cancelled pick just leaves the sheet open.

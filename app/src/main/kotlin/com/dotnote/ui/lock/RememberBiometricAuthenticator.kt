@@ -1,6 +1,6 @@
 /**
  * Gives a screen a [BiometricAuthenticator] for its activity, to pass to a ViewModel action
- * that turns on or uses fingerprint unlock (SPEC 5.1, 5.2).
+ * that turns on or uses fingerprint unlock.
  */
 package com.dotnote.ui.lock
 

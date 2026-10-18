@@ -1,5 +1,5 @@
 /**
- * The lock-related decisions the navigation needs (SPEC §4 flow):
+ * The lock-related decisions the navigation needs:
  * - opening a `.md.age` note goes to Unlock (5.2) while the vault is locked, else to the editor;
  * - "Lock note" locks/unlocks right away, or first shows Set password (5.1) or Unlock (5.2).
  */

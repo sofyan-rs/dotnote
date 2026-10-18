@@ -1,5 +1,5 @@
 /**
- * The Live-mode look (SPEC 3.1) as a Compose `OutputTransformation`: it changes only what the
+ * The Live-mode look as a Compose `OutputTransformation`: it changes only what the
  * text field *draws*, never the stored markdown. Compose maps the cursor across hidden and
  * replaced characters by itself (ARCHITECTURE §6.3, decided in the Phase 0 spike).
  *

@@ -1,5 +1,5 @@
 /**
- * A markdown table in Preview (SPEC 3.3, mockup Editor-Preview): a bordered r16 box that scrolls
+ * A markdown table in Preview: a bordered r16 box that scrolls
  * sideways when the table is wider than the screen. Cells have 10/12 dp padding; rows are
  * separated by 1 dp `line`; header cells are medium weight; the first column is `ink`, the
  * others `inkMuted`.

@@ -1,6 +1,6 @@
 /**
  * Keeps the git sign-in (HTTPS user name + personal access token) of each synced vault
- * (SPEC 7.1 "Sign-in", ARCHITECTURE §9.2).
+ * (ARCHITECTURE §9.2).
  *
  * The token is a password, so it is never stored in plain text and never logged:
  * - an AES key lives in the Android Keystore (the key never leaves the secure hardware/OS store);

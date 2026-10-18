@@ -1,5 +1,5 @@
 /**
- * "Unlock with fingerprint" (SPEC 5.1, 5.2; ARCHITECTURE §8.3).
+ * "Unlock with fingerprint" (ARCHITECTURE §8.3).
  *
  * The **vault key** (not the password) is encrypted ("wrapped") with an AES key that lives in the
  * Android Keystore and can only be used right after a fingerprint (BIOMETRIC_STRONG) matches.

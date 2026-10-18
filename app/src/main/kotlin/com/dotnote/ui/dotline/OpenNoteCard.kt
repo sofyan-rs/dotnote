@@ -1,6 +1,6 @@
 /**
  * OpenNoteCard: a small card for one open note, the phone's replacement for desktop tabs
- * (SPEC §3 "OpenNoteCard", screen 2.1 Main, "OPEN NOTES").
+ * ("OPEN NOTES" on the Files tab).
  *
  * 148×88 dp, `surface`, radius 16: icon at the top (note or lock), a red dot at the top right
  * when it is the note being edited, then the name and a mono caption (EDITING / 1 H AGO / LOCKED).

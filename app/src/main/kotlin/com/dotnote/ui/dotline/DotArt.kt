@@ -6,7 +6,7 @@
  * - `.` unlit (`lineStrong` at 50%)
  * - space: no dot
  *
- * Used by SPEC screens First-Launch (1.1), Empty-Vault (1.3), No-Results (4.2), Unlock (5.2).
+ * Used by First-Launch, Empty-Vault, No-Results, Unlock.
  * The patterns from those mockups are in [DotArtPatterns].
  */
 package com.dotnote.ui.dotline

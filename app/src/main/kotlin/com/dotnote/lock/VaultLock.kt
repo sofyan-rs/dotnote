@@ -1,6 +1,6 @@
 /**
  * Holds the unlocked vault key in memory, per vault, and locks it again after 5 minutes without
- * use (ARCHITECTURE §8.2, SPEC 5.2). App-scoped: one instance in [com.dotnote.AppContainer].
+ * use (ARCHITECTURE §8.2). App-scoped: one instance in [com.dotnote.AppContainer].
  *
  * "Use" means reading or saving a locked note: [keyFor] restarts the timer. The timer keeps
  * running while the app is in the background; if Android kills the process, the key is gone
@@ -74,7 +74,7 @@ class VaultLock(
         remember(vaultId, key)
     }
 
-    /** Sets the first password of [vaultId] (SPEC 5.1) and keeps the new key unlocked. */
+    /** Sets the first password of [vaultId] and keeps the new key unlocked. */
     suspend fun createPassword(
         vaultId: String,
         fs: VaultFs,
@@ -86,7 +86,7 @@ class VaultLock(
     }
 
     /**
-     * Changes the password of [vaultId] (SPEC 5.3). Throws `CoreError.Lock` ("The current password
+     * Changes the password of [vaultId]. Throws `CoreError.Lock` ("The current password
      * is wrong.") if [current] is wrong. The key stays the same and is kept unlocked.
      */
     suspend fun changePassword(

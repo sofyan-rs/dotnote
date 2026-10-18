@@ -1,5 +1,5 @@
 /**
- * A rough password-strength rating for the "Set a notes password" screen (SPEC 5.1): the dot
+ * A rough password-strength rating for the "Set a notes password" screen: the dot
  * meter and the `STRONG · 16 CHARS` label under the password field. Android only (desktop has
  * no meter).
  *

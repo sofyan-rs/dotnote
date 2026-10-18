@@ -1,5 +1,5 @@
 /**
- * "Move to folder" (SPEC 2.5): a full screen with every folder of the vault as a radio list,
+ * "Move to folder": a full screen with every folder of the vault as a radio list,
  * indented by depth. The current folder (and, for a folder, itself and its subfolders) can't
  * be picked. "New folder" creates one inside the selected folder and selects it.
  */

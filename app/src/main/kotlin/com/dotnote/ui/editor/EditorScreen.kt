@@ -1,5 +1,5 @@
 /**
- * The note editor screen (SPEC 3.1–3.4): connects [EditorViewModel] to [EditorContent], and runs
+ * The note editor screen: connects [EditorViewModel] to [EditorContent], and runs
  * what needs Android: the lifecycle (save on stop, reload on start), the Photo Picker for images,
  * the clipboard, the share sheet, and the rename sheet.
  */

@@ -1,6 +1,6 @@
 /**
- * Locks and unlocks single notes ("Lock note" in Note actions 2.3 and the editor menu 3.4;
- * SPEC 5.1–5.2).
+ * Locks and unlocks single notes ("Lock note" in the note actions sheet and the
+ * editor menu).
  *
  * - Locking `Name.md`: `Lock.lockNote` writes `Name.md.age` and checks it decrypts to the same
  *   text; only then is the readable `Name.md` moved to the vault trash.

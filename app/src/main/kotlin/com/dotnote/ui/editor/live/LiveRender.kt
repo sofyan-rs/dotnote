@@ -1,5 +1,5 @@
 /**
- * Works out how Live mode (SPEC 3.1) draws the note: which marker characters are hidden or
+ * Works out how Live mode draws the note: which marker characters are hidden or
  * replaced, and which parts get which style. Pure Kotlin on top of `:core` [LiveView], so it is
  * cheap to test and has no Compose types.
  *

@@ -1,17 +1,17 @@
 # Architecture
 
-Dotnote for Android is the phone version of [Dotnote](https://github.com/sofyan-rs/kunotes-gpui), a minimal markdown vault app. It is written in **Kotlin + Jetpack Compose** and styled with the **Dotline** design system (`docs/ui/design-system/`).
+Dotnote for Android is the phone version of [Dotnote](https://github.com/sofyan-rs/kunotes-gpui), a minimal markdown vault app. It is written in **Kotlin + Jetpack Compose** and styled with the **Dotline** design system (`app/.../ui/theme/` and `ui/dotline/`).
 
 Scope is the same as on desktop: **open a folder, browse it, edit markdown.** There are no wikilinks, backlinks, graph view, tags, or plugins. Files are the only source of truth, so there is no database. Git sync with the user's own remote is optional.
 
-Screens, flow, and copy are specified in [`docs/ui/SPEC.md`](ui/SPEC.md). This file covers how the app is built. Section numbers (§) refer to this file unless they say "SPEC §".
+This file covers how the app is built. Section numbers (§) refer to this file.
 
 ---
 
 ## 1. Goals and non-goals
 
 ### Goals
-- Ship the screens in SPEC §5 with the Dotline look (SPEC §2–3).
+- Ship every screen with the Dotline look.
 - **Stay compatible with desktop.** A vault edited on Android and on desktop (directly, or through git) must look the same to both: plain `.md` files, the same locked-note format (`.dotnote-lock.age`, `Name.md.age`), the same conflict-copy names, the same hidden-file rules, line endings preserved.
 - **Never lose user data:** debounced autosave, flush when leaving a note or the app, safe writes (§7.2), deletes go to a trash folder with undo.
 - Stay responsive on large vaults: no file I/O on the main thread.
@@ -32,7 +32,7 @@ Screens, flow, and copy are specified in [`docs/ui/SPEC.md`](ui/SPEC.md). This f
 |---|---|---|
 | Language | Kotlin 2.x, JVM target 17 | Coroutines + Flow for all async work. |
 | UI | Jetpack Compose (BOM), Material 3 as the base | Dotline theme on top (§5). Material components are used only where they can be restyled to Dotline. |
-| Navigation | Navigation Compose | Routes from SPEC §4. Sheets and dialogs are state, not routes. |
+| Navigation | Navigation Compose | Type-safe routes in `ui/navigation/Routes.kt`. Sheets and dialogs are state, not routes. |
 | State | `ViewModel` + `StateFlow` | One ViewModel per screen; shared state in app-scoped stores (§4). |
 | Dependency wiring | Manual (`AppContainer` in `DotnoteApp`) | No DI framework. Easy to read, enough for this size. |
 | Settings | DataStore + `kotlinx.serialization` JSON | One typed `Settings` object (§4.4). |
@@ -118,7 +118,7 @@ dotnote/
         │   └── TokenStore.kt        # Keystore-encrypted access token
         └── ui/
             ├── theme/               # Color, Type, Shape, Spacing, DotnoteTheme (from DotlineTheme.kt)
-            ├── dotline/             # design-system components (SPEC §3): ListRow, BottomSheet, …
+            ├── dotline/             # design-system components: ListRow, BottomSheet, …
             ├── navigation/          # routes, BottomNav host
             ├── welcome/             # 1.1, 1.2
             ├── files/               # 1.3, 1.4, 2.1–2.6
@@ -140,7 +140,7 @@ The right-hand comments name the desktop file each `:core` file ports. Port the 
 
 ### Rules for adding code
 
-1. **Group UI by feature** (`ui/files/`, `ui/editor/`). The only shared UI folder is `ui/dotline/`, which holds the design-system components from SPEC §3 and nothing else.
+1. **Group UI by feature** (`ui/files/`, `ui/editor/`). The only shared UI folder is `ui/dotline/`, which holds the design-system components and nothing else.
 2. **One main type per file, named after the file:** `VaultStore.kt` → `VaultStore`, `FileTreeScreen.kt` → `FileTreeScreen`.
 3. **At most two folder levels under `com/dotnote/`** (`ui/editor/live/` is the deepest).
 4. **Every file starts with a short KDoc comment** saying what it's for.
@@ -206,7 +206,7 @@ data class Settings(
     val vaults: List<SavedVault> = emptyList(),   // id, display name, kind (SAF/File), tree URI or path
     val lastVaultId: String? = null,
     val openNotes: Map<String, List<SavedOpenNote>> = emptyMap(), // per vault: path, pinned
-    val viewMode: ViewMode = ViewMode.Live,       // remembered per app (SPEC 3)
+    val viewMode: ViewMode = ViewMode.Live,       // remembered per app
     val syncedVaults: Set<String> = emptySet(),   // auto-sync on
     val biometricVaults: Set<String> = emptySet(),
 )
@@ -228,19 +228,19 @@ Secrets (git token, wrapped vault key) are **not** in `Settings`; see §8.3 and 
 
 ## 5. Theme and design system
 
-- `ui/theme/` is `docs/ui/design-system/compose/DotlineTheme.kt` split into `Color.kt`, `Type.kt`, `DotlineRadius.kt`, `Spacing.kt`, `DotnoteTheme.kt`. `tokens.json` is the source of truth; if a token changes, change it there first.
-- `DotnoteTheme` provides `LocalDotlineColors`, `LocalDotlineType`, `LocalDotlineSpacing` and maps onto `MaterialTheme` (`darkColorScheme(background = Bg, surface = Surface, …)`, SPEC §2).
+- `ui/theme/` holds the Dotline tokens: `Color.kt`, `Type.kt`, `DotlineRadius.kt`, `Spacing.kt`, `DotnoteTheme.kt`. These files are the source of truth; if a token changes, change it there first.
+- `DotnoteTheme` provides `LocalDotlineColors`, `LocalDotlineType`, `LocalDotlineSpacing` and maps onto `MaterialTheme` (`darkColorScheme(background = Bg, surface = Surface, …)`).
 - Fonts in `res/font`: Doto, Geist, Geist Mono (variable TTF, not woff2).
 - **Dark and light are both supported** and follow the phone's setting (`DotnoteTheme(dark = isSystemInDarkTheme())`); a System / Light / Dark choice in Settings comes later. Dark is the design reference: every screen is designed dark first, then checked in light. The window background before Compose draws comes from `res/values{,-night}/`, and system-bar icons follow the theme (`SystemBarStyle.auto`). Every component `@Preview` is shown in both themes.
 - Rules enforced in review: red (`accent`) at most once or twice per screen; Doto never under 24 sp; `tonalElevation = 0` and `shadowElevation = 0` everywhere; touch targets ≥ 48 dp; press = scale 0.97 in 120–160 ms, no bounce.
 - Icons: 24 dp Lucide line icons, 2 dp stroke, round caps, as `ImageVector`s in `ui/dotline/DotlineIcons.kt` (path data copied from lucide-static). No filled icons, no emoji.
-- Components live in `ui/dotline/` (SPEC §3), one per file, each with dark and light `@Preview`s. Press feedback (`pressScale`) and the focus ring (`focusRing`) are shared in `Interaction.kt`. A debug-only gallery (`adb shell am start -n com.dotnote.android/com.dotnote.gallery.GalleryActivity`) shows them all.
+- Components live in `ui/dotline/`, one per file, each with dark and light `@Preview`s. Press feedback (`pressScale`) and the focus ring (`focusRing`) are shared in `Interaction.kt`. A debug-only gallery (`adb shell am start -n com.dotnote.android/com.dotnote.gallery.GalleryActivity`) shows them all.
 
 ---
 
 ## 6. Components
 
-### 6.1 Files (SPEC 2.1)
+### 6.1 Files
 
 - `FilesViewModel` maps `VaultState` to rows with `:core` `Search.visibleRows(root, expanded)` and renders them in one `LazyColumn` (`TreeRow`, indent 28 dp per depth). Keys are the `VaultPath`, so rows keep identity across rescans.
 - Sort and hide rules come from `:core` `VaultNode` and match desktop: folders first, natural sort, dot-files and `.img` hidden, only `.md` and `.md.age` shown.
@@ -250,7 +250,7 @@ Secrets (git token, wrapped vault key) are **not** in `Settings`; see §8.3 and 
 
 Note actions, folder actions, new item, rename, move, change vault, vault actions, remove vault, editor menu: each is a composable shown from screen state (`ModalBottomSheet` restyled to Dotline, or a full-screen route for Move-To). Validation uses `:core` `Names.validateName` (Windows-strict, same as desktop) plus "no duplicate in this folder"; the error shows under the field in `accent-text`.
 
-### 6.3 Editor (SPEC 3.1–3.4)
+### 6.3 Editor
 
 One `EditorScreen` with a `SegmentedControl` (LIVE | SOURCE | PREVIEW) over the same buffer.
 
@@ -258,7 +258,7 @@ One `EditorScreen` with a `SegmentedControl` (LIVE | SOURCE | PREVIEW) over the 
 
 **Live.** Same field and same spans, plus `:core` `LiveView`: on every line except the one(s) holding the selection, marker characters are hidden and the line is styled like Preview (H1 30/36 bold, H2 22/28 semibold, body 16/26, inline code on `surface-raised`). Task boxes toggle on tap. The caret is a 2 dp `accent` bar.
 
-Implementation plan, decided in the Phase 0 spike (PLAN):
+Implementation plan, decided in the Phase 0 spike:
 1. Preferred: `BasicTextField(state: TextFieldState, outputTransformation = …)`. It gives built-in undo and IME handling, and maps offsets for hidden characters itself. Needs the current Compose version to allow styles from an output transformation.
 2. Fallback: `BasicTextField(value: TextFieldValue, visualTransformation = …)` with an `OffsetMapping` built from `LiveView.toDisplay/toSource`. Undo then comes from a port of `live_buffer.rs`.
 
@@ -270,11 +270,11 @@ Either way the stored text is the raw markdown; the transformation only changes 
 
 **Text ranges.** Desktop uses UTF-8 byte offsets; Kotlin strings are UTF-16. In `:core` every range is a **UTF-16 index into the `String`, never inside a surrogate pair**. Character counts are grapheme clusters (`BreakIterator`), so an emoji counts as one. Tests cover emoji and CJK.
 
-### 6.4 Preview (SPEC 3.3)
+### 6.4 Preview
 
 `commonmark-java` (+ tables, task list items, strikethrough) parses on `Dispatchers.Default`, 150 ms after the last edit (desktop `PREVIEW_DELAY`). A small renderer turns the AST into a `LazyColumn` of block composables: headings, paragraphs (`AnnotatedString` for inline styles and links), lists and task lists, blockquote with a 2 dp `line-strong` rule, fenced code on `surface` r16, tables in a bordered r16 box that scrolls sideways, images, rules. Read only; the floating **Edit** pill switches to Live.
 
-### 6.5 Quick switcher (SPEC 4.1–4.2)
+### 6.5 Quick switcher
 
 `Search.flattenFiles` + `Search.filterFiles` (case-insensitive name match, natural order), matched part highlighted. Empty query shows RECENT chips from `OpenNotes`. IME action "Go" opens the top result. "Create note “query”" uses the same path as New note.
 
@@ -303,7 +303,7 @@ interface VaultFs {
 
 | Backend | Used for | How |
 |---|---|---|
-| `SafVaultFs` | Folders picked with "Open a folder" (SPEC 1.2) | `DocumentsContract` queries on the persisted tree URI. A cache maps `VaultPath` → document id and is rebuilt on each scan. Avoid `DocumentFile` (too slow on large trees). |
+| `SafVaultFs` | Folders picked with "Open a folder" | `DocumentsContract` queries on the persisted tree URI. A cache maps `VaultPath` → document id and is rebuilt on each scan. Avoid `DocumentFile` (too slow on large trees). |
 | `FileVaultFs` | Vaults in app storage, e.g. cloned from git (§9.1); tests | `java.io.File` under a root folder. |
 | `MemoryVaultFs` | `:core` tests | In memory. |
 
@@ -331,9 +331,9 @@ There is no reliable change notification for SAF trees (other apps write through
 ### 7.5 Vault onboarding and permissions
 
 - "Choose folder" launches `ActivityResultContracts.OpenDocumentTree()`, then `takePersistableUriPermission(READ | WRITE)`, then saves a `SavedVault`.
-- Android 11+ won't let the user pick the storage root or `Download/` itself; the explainer sheet (SPEC 1.2) should say "pick or create a folder".
-- On open, check `persistedUriPermissions`. If the permission is gone, show SPEC 1.2 again with the explanation.
-- Removing a vault (SPEC 6.4) calls `releasePersistableUriPermission`.
+- Android 11+ won't let the user pick the storage root or `Download/` itself; the explainer sheet should say "pick or create a folder".
+- On open, check `persistedUriPermissions`. If the permission is gone, show the "Open a folder" explainer again.
+- Removing a vault calls `releasePersistableUriPermission`.
 
 ### 7.6 Autosave
 
@@ -398,7 +398,7 @@ JGit needs a real `java.io.File` work tree; it can't use a SAF tree. **Decided (
 | Feature | Android | Notes |
 |---|---|---|
 | Open folder as vault | SAF picker | §7.5 |
-| Several saved vaults, switch | ✓ | SPEC 6.x; desktop remembers only the last one |
+| Several saved vaults, switch | ✓ | Desktop remembers only the last one |
 | File tree, create, rename, move, trash + undo | ✓ | `.trash/` instead of OS trash (§7.3) |
 | Live / Source / Preview | ✓ | Split dropped |
 | Formatter bar | ✓ | Above the keyboard |
@@ -415,9 +415,9 @@ JGit needs a real `java.io.File` work tree; it can't use a SAF tree. **Decided (
 
 ## 12. Open questions
 
-Each is answered in the Phase 0 spike or before the phase that needs it. Record answers here and in PLAN.
+Each is answered in the Phase 0 spike or before the phase that needs it. Record answers here.
 
-- **Q1. Git and SAF.** JGit can't work on a SAF tree. Options: (a) synced vaults live in app storage (`FileVaultFs`) — simple, but other apps can't see those files; (b) request "All files access" (`MANAGE_EXTERNAL_STORAGE`) and use `FileVaultFs` everywhere — simplest code, real atomic renames, `FileObserver`, but Play Store review needs a justification and the SPEC 1.2 privacy copy changes; (c) keep a JGit repo in app storage and mirror it to the SAF folder — keeps SAF, but two copies and a mirror to get right. ✅ **Decided (Phase 9): (a).** Synced vaults are cloned into `filesDir/vaults/<name>` (`VaultKind.File`); picked SAF folders can't sync, and the SYNC tab says so and offers **Clone from git** (§9.1). (b) or (c) can be revisited if users ask to sync a folder other apps can see.
+- **Q1. Git and SAF.** JGit can't work on a SAF tree. Options: (a) synced vaults live in app storage (`FileVaultFs`) — simple, but other apps can't see those files; (b) request "All files access" (`MANAGE_EXTERNAL_STORAGE`) and use `FileVaultFs` everywhere — simplest code, real atomic renames, `FileObserver`, but Play Store review needs a justification and the "Open a folder" privacy copy changes; (c) keep a JGit repo in app storage and mirror it to the SAF folder — keeps SAF, but two copies and a mirror to get right. ✅ **Decided (Phase 9): (a).** Synced vaults are cloned into `filesDir/vaults/<name>` (`VaultKind.File`); picked SAF folders can't sync, and the SYNC tab says so and offers **Clone from git** (§9.1). (b) or (c) can be revisited if users ask to sync a folder other apps can see.
 - **Q2. Live editor API.** ✅ Mostly answered: Compose foundation 1.12 lets an `OutputTransformation` add `SpanStyle`/`ParagraphStyle` (`TextFieldBuffer.addStyle`) and hide characters (`replace(start, end, "")`); the Phase 0 spike screen shows headings at 30/22 sp, bold/italic/strike/code styled, and markers hidden off the cursor line. Still to check in Phase 5: cursor movement across hidden markers, IME (Gboard, Samsung, CJK), and inline-code background height.
 - **Q3. kage compatibility.** ✅ kage 0.8 does scrypt and armor. Desktop-made key + note decrypt in JVM tests and on the emulator (bytes match); a Kotlin-made vault opens in desktop `kunotes-core`. Follow-up in Q7.
 - **Q4. JGit on Android.** ✅ JGit 7 crashes on API 30 (`InputStream.readNBytes`, Java 11). JGit 5.13.5 works: two-device sync through a bare repo with a conflict copy passes on the emulator. HTTPS token auth still to try against a real host (Phase 9).

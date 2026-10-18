@@ -1,5 +1,5 @@
 /**
- * The app's screens as type-safe routes for Navigation Compose (SPEC §4).
+ * The app's screens as type-safe routes for Navigation Compose.
  *
  * Each `@Serializable` object or class is one destination; its fields are the arguments.
  * Navigate with `navController.navigate(Editor(path = "Projects/Plan.md"))`.
@@ -63,6 +63,6 @@ data class SetPassword(
 @Serializable
 data object ChangePassword
 
-/** Clone a git repository as a new vault (SPEC 7, clone flow). */
+/** Clone a git repository as a new vault (clone flow). */
 @Serializable
 data object Clone

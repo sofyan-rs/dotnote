@@ -1,6 +1,6 @@
 # Contributing
 
-How to set up, build, and work on Dotnote for Android. Read [ARCHITECTURE.md](ARCHITECTURE.md) for the design and [ui/SPEC.md](ui/SPEC.md) for the screens before a non-trivial change.
+How to set up, build, and work on Dotnote for Android. Read [ARCHITECTURE.md](ARCHITECTURE.md) for the design before a non-trivial change.
 
 ---
 
@@ -44,14 +44,15 @@ See ARCHITECTURE §3. In short:
 
 - `core/`: pure Kotlin/JVM logic, ported from desktop `kunotes-core`, with tests. No Android imports.
 - `app/`: the Compose app. `vault/`, `lock/`, `sync/`, `settings/` hold Android-facing stores; `ui/` holds screens grouped by feature, with design-system components in `ui/dotline/`.
-- `docs/ui/`: the design spec, Dotline design system, and screen mockups.
+- `docs/`: this guide and ARCHITECTURE.md.
 
 ### Reading order for newcomers
 
-1. `docs/ui/SPEC.md` (what the app does) and one screen file, e.g. `docs/ui/design/screens/Main.dc.html`.
+1. The README screenshots, then run the app (what it does).
 2. `ARCHITECTURE.md` §3–§4.
 3. `core/.../VaultPath.kt`, `VaultFs.kt`, `VaultNode.kt`, then their tests.
 4. `app/.../vault/VaultStore.kt` and `ui/files/`.
+5. `ui/dotline/` (the components) and the debug-only component gallery.
 
 ---
 
@@ -68,8 +69,8 @@ See ARCHITECTURE §3. In short:
 - Screen composable takes its ViewModel; everything below it takes plain values and lambdas (stateless, previewable).
 - Collect state with `collectAsStateWithLifecycle()`.
 - Every reusable component gets a `@Preview` in both the dark and the light theme. Check new screens in both (`adb shell cmd uimode night yes|no`).
-- Use theme values (`DotlineTheme.colors.*`, `.type.*`, `.spacing.*`), never hard-coded colours or sizes. The exact numbers are in `docs/ui/design/screens/*.dc.html`; copy them into the theme or component, not into the screen.
-- No elevation or shadows (`tonalElevation = 0.dp`, `shadowElevation = 0.dp`). Respect the Dotline rules in `docs/ui/design-system/README.md`: red at most once or twice per screen, Doto only ≥ 24 sp, touch targets ≥ 48 dp.
+- Use theme values (`DotlineTheme.colors.*`, `.type.*`, `.spacing.*`), never hard-coded colours or sizes. Sizes belong in the theme or the component, not in the screen.
+- No elevation (`tonalElevation = 0.dp`); the only shadow is the soft one under dropdown menus. Dotline rules: monochrome with red (`accent`) at most once or twice per screen, Doto only ≥ 24 sp, touch targets ≥ 48 dp, Lucide icons via `DotlineIcons`, styling after Nothing OS 5.0 (pill shapes, borderless fields, hairline dividers).
 - Long-running work belongs in a store or ViewModel coroutine, never in a composable.
 
 ### Threading
@@ -100,7 +101,7 @@ See ARCHITECTURE §3. In short:
 | Lock compatibility | Fixture files made by desktop (`core/src/test/resources/lock-fixture/`) must decrypt; files made by `:core` are checked with the `age` CLI before a release. |
 | Stores / ViewModels | JVM tests with `kotlinx-coroutines-test` and a `MemoryVaultFs`. |
 | UI | Compose UI tests (`createAndroidComposeRule`) for flows: create, rename, move, trash + undo, mode switch keeps bytes. |
-| Manual | The feature checklist in `docs/implementation/PLAN.md`, on an old and a new Android version, before each release. |
+| Manual | Every screen in the README feature list, on an old and a new Android version, before each release. |
 
 Every bug fix in `:core` gets a regression test. New format transforms need tests for an empty selection, multi-byte text, and the start and end of the document.
 
@@ -126,14 +127,14 @@ Every bug fix in `:core` gets a regression test. New format transforms need test
 
 - Branch from `main`: `feat/…`, `fix/…`, `docs/…`, `chore/…`.
 - Use [Conventional Commits](https://www.conventionalcommits.org/): `feat(files): move to folder`, `fix(save): flush on stop`.
-- Keep PRs small. One PLAN checklist item per PR is ideal.
+- Keep PRs small: one feature or fix per PR.
 
 ### PR checklist
 - [ ] `./gradlew test lint spotlessCheck` passes.
 - [ ] New `:core` logic has tests; ported logic has the desktop tests.
 - [ ] Data-safety rules (§4) respected; save/load changes tested manually.
-- [ ] UI matches the screen file in `docs/ui/design/screens/` (screenshot in the PR).
-- [ ] `docs/implementation/PLAN.md` checkboxes updated; ARCHITECTURE.md updated if the design changed.
+- [ ] UI checked in dark and light (screenshot in the PR); README screenshots retaken if a shown screen changed.
+- [ ] ARCHITECTURE.md updated if the design changed.
 
 ---
 

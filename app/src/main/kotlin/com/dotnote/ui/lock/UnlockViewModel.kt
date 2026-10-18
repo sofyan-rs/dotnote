@@ -1,5 +1,5 @@
 /**
- * State and actions of "This note is locked" (SPEC 5.2): unlock the vault with the password or a
+ * State and actions of "This note is locked": unlock the vault with the password or a
  * fingerprint, optionally turn fingerprint on for next time, then open (or lock/unlock) the note.
  */
 package com.dotnote.ui.lock

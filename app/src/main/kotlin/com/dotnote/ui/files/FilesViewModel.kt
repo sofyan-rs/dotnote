@@ -1,5 +1,5 @@
 /**
- * State and actions of the Files tab (SPEC 2.1): turns the [VaultStore]'s tree into the rows
+ * State and actions of the Files tab: turns the [VaultStore]'s tree into the rows
  * and cards the screen draws, and forwards taps to the store.
  */
 package com.dotnote.ui.files

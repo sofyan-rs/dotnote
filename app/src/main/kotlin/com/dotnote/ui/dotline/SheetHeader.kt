@@ -2,7 +2,7 @@
  * Sheet header: a 48 dp icon tile (`surfaceRaised`, radius 16) next to a title and a
  * mono subtitle, at the top of an action sheet.
  *
- * Used by SPEC screens Folder-Actions (2.2), Note-Actions (2.3) and Vault-Actions (6.3).
+ * Used by Folder-Actions, Note-Actions and Vault-Actions.
  */
 package com.dotnote.ui.dotline
 

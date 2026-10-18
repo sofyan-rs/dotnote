@@ -1,5 +1,5 @@
 /**
- * "Change vault" sheet (SPEC 6.1), opened from the vault name on the Files tab: a radio list of
+ * "Change vault" sheet, opened from the vault name on the Files tab: a radio list of
  * the saved vaults, Manage (→ Vaults tab), Open folder, Clone repo, and "Open {name}".
  */
 package com.dotnote.ui.vaults

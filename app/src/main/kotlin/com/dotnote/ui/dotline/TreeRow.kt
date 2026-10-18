@@ -1,5 +1,5 @@
 /**
- * TreeRow: one folder or note in the vault file tree (SPEC §3 "TreeRow", screen 2.1 Main).
+ * TreeRow: one folder or note in the vault file tree (Files tab).
  *
  * It is a [ListRow] with tree extras:
  * - folders: a ▸ / ▾ chevron (collapsed / expanded), the folder icon, the name and a count;

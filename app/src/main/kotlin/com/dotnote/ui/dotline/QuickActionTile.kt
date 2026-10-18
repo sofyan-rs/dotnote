@@ -1,6 +1,6 @@
 /**
- * QuickActionTile: a square-ish action button at the top of an actions sheet
- * (SPEC §3 "QuickActionTile"). 72 dp tall, `surfaceRaised`, radius 16, a 22 dp icon over a
+ * QuickActionTile: a square-ish action button at the top of an actions sheet.
+ * 72 dp tall, `surfaceRaised`, radius 16, a 22 dp icon over a
  * `label` caption (NEW NOTE, COPY PATH, PIN, SHARE …).
  *
  * Seen in: Folder-Actions (2.2), Note-Actions (2.3).

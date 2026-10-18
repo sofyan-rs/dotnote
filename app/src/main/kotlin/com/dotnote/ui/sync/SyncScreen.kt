@@ -1,8 +1,8 @@
 /**
- * The SYNC tab (SPEC 7.1, mockup `Git-Sync.dc.html`): the LAST SYNC widget with **Sync now**,
+ * The SYNC tab: the LAST SYNC widget with **Sync now**,
  * the REPOSITORY group (remote, sign-in, auto-sync) and a note about conflicts.
  *
- * Only vaults cloned from git (kept in Dotnote' storage) can sync (ARCHITECTURE §9.1). For a
+ * Only vaults cloned from git (kept in Dotnote's storage) can sync (ARCHITECTURE §9.1). For a
  * folder picked on the phone the tab explains that and offers **Clone from git** instead.
  */
 package com.dotnote.ui.sync

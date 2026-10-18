@@ -1,5 +1,5 @@
 /**
- * ListRow: one row inside a [ListGroup] (SPEC §3 "ListGroup + ListRow").
+ * ListRow: one row inside a [ListGroup].
  *
  * A row has an optional leading icon, a title (`headline`), an optional subtitle (`body-s` muted,
  * or `data` mono for paths), and a trailing slot (count text, chevron, switch, radio …).

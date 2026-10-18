@@ -1,6 +1,6 @@
 /**
  * ListGroup: the rounded block that holds a list of [ListRow]s, plus [ListDivider], the hairline
- * between two rows (SPEC §3 "ListGroup + ListRow").
+ * between two rows.
  *
  * Seen in: Main (2.1, VAULT tree), Folder-Actions (2.2), Note-Actions (2.3), Vaults (6.2),
  * Vault-Actions (6.3), Git-Sync (7.1, REPOSITORY).

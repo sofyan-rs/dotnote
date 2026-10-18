@@ -1,5 +1,5 @@
 /**
- * ScreenTitle: the big `dot-m` caps title at the top of a tab screen (SPEC §3 "ScreenTitle").
+ * ScreenTitle: the big `dot-m` caps title at the top of a tab screen.
  *
  * Optional parts:
  * - a ▾ after the title that makes it a button (Main: "PERSONAL ▾" opens the vault switcher, 6.1);

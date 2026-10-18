@@ -2,7 +2,7 @@
  * Dotline bottom sheet: a `surface` panel with 28 dp top corners and a five-dot handle,
  * sliding up over the `scrim`. No elevation, no tonal tint.
  *
- * Used by SPEC screens Open-Folder (1.2), Folder-Actions (2.2), Note-Actions (2.3),
+ * Used by Open-Folder, Folder-Actions, Note-Actions,
  * Vault-Switcher (6.1), Rename and New-Item (sheets that sit above the keyboard).
  *
  * Built on Material 3 `ModalBottomSheet`, which handles the dialog window, drag-to-dismiss,

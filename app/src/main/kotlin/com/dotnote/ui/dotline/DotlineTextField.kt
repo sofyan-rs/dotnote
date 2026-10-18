@@ -1,5 +1,5 @@
 /**
- * Dotline text inputs (SPEC §3 `TextField`): [DotlineTextField] for names and search,
+ * Dotline text inputs: [DotlineTextField] for names and search,
  * [DotlinePasswordField] for passwords, plus two small trailing helpers,
  * [DotlineTextFieldIconButton] (clear, show password) and [DotlineTextFieldStatus] (MATCH, a count).
  *

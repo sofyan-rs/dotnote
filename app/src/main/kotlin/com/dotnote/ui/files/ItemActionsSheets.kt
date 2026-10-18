@@ -1,5 +1,5 @@
 /**
- * The ⋮ sheets of the file tree: folder actions (SPEC 2.2) and note actions (2.3).
+ * The ⋮ sheets of the file tree: folder actions and note actions.
  */
 package com.dotnote.ui.files
 

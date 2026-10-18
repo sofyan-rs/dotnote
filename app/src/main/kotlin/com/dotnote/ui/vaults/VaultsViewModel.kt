@@ -1,5 +1,5 @@
 /**
- * The saved vaults for the Vaults tab (SPEC 6.2), the vault switcher (6.1) and the vault
+ * The saved vaults for the Vaults tab, the vault switcher and the vault
  * actions (6.3, 6.4): list, note counts, open, rename in the list, remove.
  */
 package com.dotnote.ui.vaults

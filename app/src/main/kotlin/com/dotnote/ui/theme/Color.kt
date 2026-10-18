@@ -1,5 +1,5 @@
 /**
- * Dotline colours (from docs/ui/design-system/tokens.json).
+ * Dotline colours.
  *
  * Read them in composables with `Dotline.colors.ink`, never with hard-coded `Color(...)`.
  */

@@ -1,5 +1,5 @@
 /**
- * Dotline segmented control (SPEC §3): a pill "well" with two or three segments, one selected.
+ * Dotline segmented control: a pill "well" with two or three segments, one selected.
  *
  * Used on: Editor-Live / Editor-Source / Editor-Preview (LIVE | SOURCE | PREVIEW) and
  * New-Item (NOTE | FOLDER).

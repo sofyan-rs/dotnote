@@ -1,5 +1,5 @@
 /**
- * Git sync of the open vault (SPEC 7.1, ARCHITECTURE §9.3): the status the SYNC tab shows, the
+ * Git sync of the open vault (ARCHITECTURE §9.3): the status the SYNC tab shows, the
  * **Sync now** action, and auto-sync timing.
  *
  * Auto-sync (only for vaults in `Settings.syncedVaults`):

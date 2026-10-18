@@ -1,5 +1,5 @@
 /**
- * The Files tab (SPEC 2.1), and the empty vault (1.3) when there are no notes yet.
+ * The Files tab, and the empty vault when there are no notes yet.
  *
  * Shows the open-notes row and the vault tree. The ⋮ of a row (or a long press) opens the
  * note or folder actions sheet; the floating button and the header icon open "New item".
@@ -324,7 +324,7 @@ private fun FileList(
         }
         item(key = "tree") {
             // One rounded group around all rows. Fine for typical vaults; a very large vault
-            // would be better as separate lazy items (see PLAN, Phase 10).
+            // would be better as separate lazy items.
             ListGroup(Modifier.padding(horizontal = Dotline.space.s4)) {
                 ui.rows.forEachIndexed { index, row ->
                     if (index > 0) ListDivider()
@@ -347,7 +347,7 @@ private fun FileList(
     }
 }
 
-/** No notes yet (SPEC 1.3). */
+/** No notes yet. */
 @Composable
 private fun EmptyVault(
     onNewNote: () -> Unit,

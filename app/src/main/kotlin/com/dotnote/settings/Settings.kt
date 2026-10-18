@@ -17,7 +17,7 @@ data class Settings(
     val lastVaultId: String? = null,
     /** Open notes per vault id: paths (vault-relative) and pinned flags, most recent first. */
     val openNotes: Map<String, List<SavedOpenNote>> = emptyMap(),
-    /** The editor mode used for the next note you open (SPEC 3: remembered per app). */
+    /** The editor mode used for the next note you open (remembered per app). */
     val viewMode: ViewMode = ViewMode.Live,
     /** Vault ids with git auto-sync turned on. */
     val syncedVaults: Set<String> = emptySet(),

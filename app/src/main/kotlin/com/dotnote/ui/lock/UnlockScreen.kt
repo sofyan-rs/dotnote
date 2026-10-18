@@ -1,5 +1,5 @@
 /**
- * "This note is locked" (SPEC 5.2, mockup `Unlock.dc.html`): shown when opening a `.md.age`
+ * "This note is locked": shown when opening a `.md.age`
  * note while the vault is locked, and before "Lock note" when the vault is locked.
  *
  * DotArt padlock, the 5-minute auto-lock explanation, VAULT PASSWORD, fingerprint (button when

@@ -2,7 +2,7 @@
  * Dotline alert dialog: a centred `surface` card (radius 28, no shadow) over the `scrim`, with
  * a title, a body, an optional extra slot (e.g. a checkbox row) and two action slots.
  *
- * Used by SPEC screen Remove-Vault (6.4).
+ * Used by the "Remove vault" confirmation.
  *
  * Two parts:
  * - [DotlineDialogCard]: just the card, so it can be shown inline (previews, gallery).

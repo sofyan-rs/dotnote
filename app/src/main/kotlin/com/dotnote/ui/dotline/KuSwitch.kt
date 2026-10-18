@@ -1,5 +1,5 @@
 /**
- * Dotline on/off switch (SPEC §3 `KuSwitch`).
+ * Dotline on/off switch.
  *
  * Used on: Git-Sync ("Auto-sync" row).
  *

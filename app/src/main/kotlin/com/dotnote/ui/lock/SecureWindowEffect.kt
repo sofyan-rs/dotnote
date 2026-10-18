@@ -3,7 +3,7 @@
  * no screenshots or screen recording, and the app shows blank in Recents.
  *
  * Call [SecureWindowEffect] from any screen that shows decrypted text (the editor, for a
- * `.md.age` note) or asks for the vault password (SPEC 5.1–5.3). The flag is cleared when the
+ * `.md.age` note) or asks for the vault password. The flag is cleared when the
  * last such screen leaves.
  */
 package com.dotnote.ui.lock
