@@ -127,7 +127,7 @@ fun VaultsScreen(
                 SectionLabel("ABOUT", Modifier.padding(top = Dotline.space.s4))
                 ListGroup(Modifier.padding(bottom = Dotline.space.s5)) {
                     ListRow(
-                        "Created by Sofyan",
+                        "Created by Kurodev",
                         subtitle = "sofyan.id",
                         subtitleIsData = true,
                         // Opens the site in the browser.
