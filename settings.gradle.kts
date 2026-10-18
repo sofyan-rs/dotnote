@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "kunotes-android"
+rootProject.name = "dotnote"
 include(":core", ":app")

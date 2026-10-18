@@ -1,6 +1,6 @@
 # Implementation Plan
 
-This plan builds KuNotes for Android in phases. Each phase ends with something that runs on a device. Design details are in [ARCHITECTURE.md](../ARCHITECTURE.md) (§ refers to it) and screens in [ui/SPEC.md](../ui/SPEC.md) (numbers like 2.1 refer to SPEC §5).
+This plan builds Dotnote for Android in phases. Each phase ends with something that runs on a device. Design details are in [ARCHITECTURE.md](../ARCHITECTURE.md) (§ refers to it) and screens in [ui/SPEC.md](../ui/SPEC.md) (numbers like 2.1 refer to SPEC §5).
 
 Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 
@@ -14,14 +14,14 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] Spotless + ktlint, Android Lint, JUnit 5 in `:core`.
 - [x] CI (GitHub Actions): `spotlessCheck`, `test`, `lint`, `assembleDebug` (`.github/workflows/ci.yml`).
 - [x] Debug-only spike screen (`app/src/debug/`, `SpikeActivity`) that runs Q2–Q4 on a device.
-- [x] Package / application id decided (Q6): `com.kunotes.android`.
+- [x] Package / application id decided (Q6): `com.dotnote.android`.
 - [~] Spike Q2 (styles + hidden markers work; cursor/IME check in Phase 5): Live editor on `TextFieldState` + `OutputTransformation` vs `TextFieldValue` + `VisualTransformation` (hidden markers, per-line font size, cursor movement, Gboard + one CJK IME).
-- [x] Spike Q3: `kage` reads a desktop `.kunotes-lock.age` + `Note.md.age` and writes files desktop can open.
+- [x] Spike Q3: `kage` reads a desktop `.dotnote-lock.age` + `Note.md.age` and writes files desktop can open.
 - [x] Spike Q4 (JGit 5.13; token auth in Phase 9): JGit on API 26 and 36: clone over HTTPS with a token, merge with a conflict.
 - [ ] Spike Q5 (moved to Phase 3, needs `SafVaultFs`): scan time of a 2,000-note SAF tree with `DocumentsContract`.
 - [x] Record answers in ARCHITECTURE §12 (and update the affected sections).
 
-**Done when:** CI is green, the app opens to a black screen with `KUNOTES` in Doto, and every §12 question except Q1 has a written answer.
+**Done when:** CI is green, the app opens to a black screen with `DOTNOTE` in Doto, and every §12 question except Q1 has a written answer.
 
 ---
 
@@ -50,10 +50,10 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 ## Phase 2: Theme and Dotline components (SPEC §2–3) ✅
 
 - [x] Fonts in `res/font` (Doto, Space Grotesk, Space Mono, TTF; Doto and Space Grotesk are variable fonts).
-- [x] `ui/theme/` from `DotlineTheme.kt`; `KuNotesTheme` mapped onto `MaterialTheme`, no elevation.
+- [x] `ui/theme/` from `DotlineTheme.kt`; `DotnoteTheme` mapped onto `MaterialTheme`, no elevation.
 - [x] Dark and light theme, following the system setting (window background and system bars too).
 - [x] Theme choice (System / Light / Dark), on the Vaults tab until a Settings screen exists; system-bar icons follow the app theme.
-- [x] Icons (`ui/dotline/DotlineIcons.kt`): the 36 line icons from the mockups (+ `EyeOff`), 24 dp, 1.5 dp stroke.
+- [x] Icons (`ui/dotline/DotlineIcons.kt`): 37 Lucide line icons (lucide-static 1.59.0), 24 dp, 2 dp stroke.
 - [x] Shared press scale and focus ring (`ui/dotline/Interaction.kt`).
 - [x] Components: `ScreenTitle`, `BottomNav`, `ListGroup`/`ListRow`, `TreeRow`, `OpenNoteCard`, `BottomSheet` + `SheetHeader`, `QuickActionTile`, `PrimaryButton`/`SecondaryButton`/`DestructiveButton`, `SegmentedControl`, `TextField`, `DotMeter`, `DotArt`, `Snackbar`, `KuSwitch`, `RadioDot`, `DropdownMenu`, `FormatterBar` (shell).
 - [x] A debug-only gallery screen (`app/src/debug/.../GalleryActivity`) with every component, checked on the emulator in dark and light.
@@ -136,7 +136,7 @@ Order from SPEC §8: Source, then Preview, then Live.
 - [x] Locked note (5.2) → unlock → editor; saves through `Lock.writeNote`.
 - [x] Change password (reached from Vaults → ⋮ → Notes password) (5.3).
 - [x] Fingerprint unlock (§8.3). Not tried on a device with a fingerprint yet.
-- [x] Round-trip with desktop KuNotes: a note locked on the phone opens in desktop `kunotes-core`, and desktop-locked notes open on the phone. (`age` CLI check still to do.)
+- [x] Round-trip with desktop Dotnote: a note locked on the phone opens in desktop `kunotes-core`, and desktop-locked notes open on the phone. (`age` CLI check still to do.)
 - [x] Release build (R8) locks and unlocks correctly.
 - [x] "Unlock note" (remove lock) says so on its password screen.
 

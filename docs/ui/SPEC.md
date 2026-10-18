@@ -1,6 +1,6 @@
-# KuNotes for Android: UI spec
+# Dotnote for Android: UI spec
 
-Mobile version of [KuNotes](https://github.com/sofyan-rs/kunotes-gpui), built with **Kotlin + Jetpack Compose**.
+Mobile version of [Dotnote](https://github.com/sofyan-rs/kunotes-gpui), built with **Kotlin + Jetpack Compose**.
 The design uses the **Dotline** design system: monochrome, dark first, one red signal colour, and dot-matrix display type.
 
 This folder holds:
@@ -27,7 +27,7 @@ This folder holds:
 - Changes made to files outside the app show up live.
 - Every note has 3 view modes on the same buffer: **Live** (formats while you type and hides markers away from the cursor), **Source** (raw markdown with highlighting) and **Preview** (read only). The desktop **Split** mode is dropped on phones.
 - **Autosave**: debounced atomic writes, so there's no save button.
-- **Locked notes**: encrypted with `age`, one password per vault. A note locks again after 5 minutes. The key file is `.kunotes-lock.age` and a locked note is `Name.md.age`. Keep this compatible with desktop.
+- **Locked notes**: encrypted with `age`, one password per vault. A note locks again after 5 minutes. The key file is `.dotnote-lock.age` and a locked note is `Name.md.age`. Keep this compatible with desktop.
 - **Git sync** is optional. A note changed on two devices keeps both versions.
 - **Out of scope** (same as desktop): wikilinks, backlinks, graph view, tags, plugins.
 
@@ -44,13 +44,13 @@ Read `design-system/tokens.json` and `design-system/README.md`; `design-system/c
 | `bg` | `#000000` | Screen background |
 | `surface` | `#111111` | List groups, cards, sheets |
 | `surface-raised` | `#1c1c1c` | Inputs, pressed or selected rows, segmented-control well |
-| `line` | `#262626` | Hairlines between rows |
-| `line-strong` | `#6b6b6b` | Borders of secondary buttons, chips, checkboxes |
+| `line` | white 12% (dark) / black 10% (light) | Hairlines between rows; translucent so it shows on any surface |
+| `line-strong` | `#4a4a4a` | Borders of secondary buttons, chips, checkboxes |
 | `ink` | `#ffffff` | Primary text and icons; fill of primary buttons |
 | `ink-muted` | `#a6a6a6` | Secondary text |
 | `ink-faint` | `#808080` | Captions and inactive tab labels (on `bg`/`surface` only) |
 | `on-ink` | `#000000` | Text on an `ink` fill |
-| `accent` | `#e5211c` | **Signal only**: caret, active-tab dot, current-note dot, switch on, destructive fill |
+| `accent` | `#e5211c` | **Signal only**: caret, current-note dot, destructive fill |
 | `accent-text` | `#ff5a52` | Red text (destructive rows, errors) |
 | `positive` | `#4ad991` | Synced, match. Always paired with a word or glyph |
 | `scrim` | `rgba(0,0,0,0.72)` | Behind sheets and dialogs |
@@ -59,34 +59,34 @@ Rule: red appears at most once or twice per screen.
 
 ### Type
 
-Fonts: **Doto** (display, dot-matrix), **Space Grotesk** (text), **Space Mono** (labels and data). All three are on Google Fonts; bundle them in `res/font`.
+Fonts: **Doto** (display, dot-matrix), **Geist** (text), **Geist Mono** (labels and data). All three are on Google Fonts; bundle them in `res/font`.
 
 | Style | Font | Size / line | Weight | Use |
 |---|---|---|---|---|
 | `dot-xl` | Doto | 72/72 | 900 | One hero number (sync "2 MIN AGO") |
 | `dot-m` | Doto | 32/36 | 700 | Screen titles in CAPS (`PERSONAL`, `SEARCH`, `VAULTS`) |
-| `title` | Space Grotesk | 22/28 | 500 | Sheet and dialog titles |
-| `headline` | Space Grotesk | 17/24 | 500 | Row titles, big buttons |
-| `body` | Space Grotesk | 15/22 | 400 | Paragraphs, buttons |
-| `body-s` | Space Grotesk | 13/18 | 400 | Row subtitles, helper text |
-| `label` | Space Mono | 11/14, +0.12em, UPPERCASE | 400 | Overlines, tab labels, chips |
-| `data` | Space Mono | 13/18 | 400 | Paths, counts, status |
+| `title` | Geist | 22/28 | 500 | Sheet and dialog titles |
+| `headline` | Geist | 17/24 | 500 | Row titles, big buttons |
+| `body` | Geist | 15/22 | 400 | Paragraphs, buttons |
+| `body-s` | Geist | 13/18 | 400 | Row subtitles, helper text |
+| `label` | Geist Mono | 11/14, +0.12em, UPPERCASE | 400 | Overlines, tab labels, chips |
+| `data` | Geist Mono | 13/18 | 400 | Paths, counts, status |
 
 Never use Doto under 24 sp or for body text.
 
-Editor content sizes: H1 30/36 bold, H2 22/28 semibold, body 16/26, inline code Space Mono 14 on `surface-raised`.
+Editor content sizes: H1 30/36 bold, H2 22/28 semibold, body 16/26, inline code Geist Mono 14 on `surface-raised`.
 
 ### Spacing, shape, size
 
 - Spacing on a 4 dp grid: `4, 8, 12, 16 (screen margin), 24 (between sections), 32 (under a screen title), 48`.
 - Radius: `8` (small), `16` (list groups, inputs, cards), `28` (sheet top corners, dialogs), `999` (pills: buttons, chips, segmented control, switch).
 - Touch target ≥ 48 dp. List rows ≥ 56 dp (72 dp for two-line vault rows).
-- Icon: 24 dp, line style, 1.5 dp stroke, square caps, mitred joins, `currentColor`.
+- Icon: 24 dp, Lucide line icons (lucide.dev), 2 dp stroke, round caps and joins, `currentColor`.
 - Depth comes from surface steps, never shadows. Set `tonalElevation = 0` and `shadowElevation = 0` everywhere.
 - Motion: 120–160 ms ease, buttons scale to 0.97 on press, no bounce.
 - Focus: 2 dp `ink` ring, offset 2 dp.
 
-Suggested files: `ui/theme/Color.kt`, `Type.kt`, `Shape.kt`, `Spacing.kt`, plus `KuNotesTheme` mapping onto `MaterialTheme` (`darkColorScheme(background = Bg, surface = Surface, surfaceVariant = SurfaceRaised, primary = Ink, onPrimary = OnInk, error = Accent, outline = LineStrong, outlineVariant = Line …)`).
+Suggested files: `ui/theme/Color.kt`, `Type.kt`, `Shape.kt`, `Spacing.kt`, plus `DotnoteTheme` mapping onto `MaterialTheme` (`darkColorScheme(background = Bg, surface = Surface, surfaceVariant = SurfaceRaised, primary = Ink, onPrimary = OnInk, error = Accent, outline = LineStrong, outlineVariant = Line …)`).
 
 ---
 
@@ -97,7 +97,7 @@ Build these once. They repeat across screens.
 | Component | Notes | Seen in |
 |---|---|---|
 | `ScreenTitle` | `dot-m` caps text, optional ▾ (opens vault switcher) | Files, Search, Sync, Vaults |
-| `BottomNav` | 4 tabs: FILES, SEARCH, SYNC, VAULTS. 88 dp incl. inset. Active = `ink` + 4 dp red dot above icon, inactive = `ink-faint` | 2.1, 7.1, 6.2, 1.3 |
+| `BottomNav` | 4 tabs: FILES, SEARCH, SYNC, VAULTS. Floating 64 dp `nav-bar` pill, icons only (Nothing OS 5.0). Active = `ink` icon in a 52 dp `nav-selected` circle, inactive = `ink-faint` | 2.1, 7.1, 6.2, 1.3 |
 | `ListGroup` + `ListRow` | `surface` block, radius 16, hairline `line` between rows. Row: leading icon, title (`headline`), optional subtitle (`body-s` muted), trailing (count / chevron / ⋮ / switch / radio) | Most screens |
 | `TreeRow` | `ListRow` + chevron (▸/▾) + indent 28 dp per depth | 2.1 |
 | `OpenNoteCard` | 148×88, `surface`, radius 16, icon, name, mono caption (EDITING / 1 H AGO / LOCKED), red dot if current | 2.1 |
@@ -108,14 +108,14 @@ Build these once. They repeat across screens.
 | `SecondaryButton` | pill, 1.5 dp `line-strong` border, `ink` text | everywhere |
 | `DestructiveButton` | pill, `accent` fill, white text | 6.4 |
 | `SegmentedControl` | pill well `surface-raised`, selected segment `ink` fill + `on-ink` text, `label` text with icon | Editor, New item |
-| `TextField` | 56 dp, `surface-raised`, radius 16, border 1.5 dp: `ink` when focused, `line-strong` idle, `accent` on error. Label above in `label` style. Optional suffix (`.md`), trailing icon (clear, show password), trailing status (MATCH in `positive`) | Rename, New item, Passwords, Search |
+| `TextField` | 56 dp borderless pill (Nothing OS 5.0), `surface` on a screen, `surface-raised` in a sheet. Border 1.5 dp only when focused (`line-strong`) or on error (`accent`). Label above in `label` style. Optional suffix (`.md`), trailing icon (clear, show password), trailing status (MATCH in `positive`) | Rename, New item, Passwords, Search |
 | `DotMeter` | row of 4 dp dots, lit = `ink`, unlit = `line-strong` at 50% | Set password strength |
 | `DotArt` | grid of 8 dp dots (4 dp gap) from a string pattern (`X` lit, `R` red, `.` unlit). Used for empty states and the lock | 1.1, 1.3, 4.2, 5.2 |
 | `Snackbar` | `surface-raised`, border `line-strong`, radius 16, icon + text + `UNDO` (`label`, bold) | 2.6 |
-| `KuSwitch` | 52×32 pill, on = `accent` track + white thumb, off = `surface-raised` + `line-strong` border | 7.1 |
-| `RadioDot` | 22–24 dp ring; selected = `ink` ring + red centre | 2.5, 6.1 |
+| `KuSwitch` | 52×32 pill, 26 dp thumb; on = `ink` track + `on-ink` thumb, off = `surface-raised` + `line-strong` border | 7.1 |
+| `RadioDot` | 22–24 dp ring; selected = `ink` filled circle + `on-ink` centre dot | 2.5, 6.1 |
 | `FormatterBar` | horizontal scroll row of 48 dp buttons on `surface`, sits above the keyboard (`imePadding()`), status line under it (LN, COL · CHARS) | 3.1, 3.2 |
-| `DropdownMenu` | `surface-raised`, radius 16, 1.5 dp `line-strong` border, no shadow, rows 48 dp | 3.4 |
+| `DropdownMenu` | Nothing OS 5.0: `surface`, radius 28, soft shadow + hairline `line` edge, rows 52 dp, hairline between every row | 3.4 |
 
 ---
 
@@ -155,11 +155,11 @@ Numbers match the canvas board titles. File = `design/screens/<file>`.
 
 **1.1 Welcome**, `First-Launch.dc.html`
 - Shown when no vault is saved.
-- DotArt of a note page with a red caret dot. `KUNOTES` in dot-m, then the title "Markdown notes in a folder you own." and a muted paragraph under it.
+- DotArt of a note page with a red caret dot. `DOTNOTE` in dot-m, then the title "Markdown notes in a folder you own." and a muted paragraph under it.
 - Buttons: **Open a folder** (primary) → 1.2, **Clone from git** (secondary) → 7.1.
 
 **1.2 Open a folder**, `Open-Folder.dc.html`
-- Bottom sheet that explains the system picker before it opens. It has 2 numbered steps (numbers in Doto) and a privacy note: "KuNotes can only read and write inside the folder you pick."
+- Bottom sheet that explains the system picker before it opens. It has 2 numbered steps (numbers in Doto) and a privacy note: "Dotnote can only read and write inside the folder you pick."
 - **Choose folder** launches `ActivityResultContracts.OpenDocumentTree()`. Then call `takePersistableUriPermission` (read + write) and save the vault.
 - Handle a cancelled pick (stay on the sheet) and a permission later revoked (show 1.2 again with an explanation).
 
@@ -214,7 +214,7 @@ The editor has one buffer and 3 modes. The mode choice is remembered per app.
 - Port `kunotes-core/live*.rs` logic (or rewrite in Kotlin): parsing with CommonMark (e.g. `org.commonmark` or `intellij-markdown`) + `AnnotatedString` / `VisualTransformation` on a `BasicTextField` with `TextFieldState`.
 
 **3.2 Source**, `Editor-Source.dc.html`
-- Monospace (Space Mono 13/24) with a line-number gutter (current line in `ink`, current line background `surface`). Markers are drawn in `ink-faint`, heading text bold, code muted.
+- Monospace (Geist Mono 13/24) with a line-number gutter (current line in `ink`, current line background `surface`). Markers are drawn in `ink-faint`, heading text bold, code muted.
 - Same formatter bar. The status line adds the line ending (`LF`).
 
 **3.3 Preview**, `Editor-Preview.dc.html`
@@ -248,7 +248,7 @@ The editor has one buffer and 3 modes. The mode choice is remembered per app.
 
 **5.3 Change notes password**, `Change-Password.dc.html`
 - Fields: current password, new password, confirm. The error state is shown on the current field (`accent` border + `accent-text` message).
-- Copy: "Your 3 locked notes stay locked. Only the password that opens them changes." This assumes only `.kunotes-lock.age` is re-encrypted with the new password, matching desktop. Check `kunotes-core/lock.rs`.
+- Copy: "Your 3 locked notes stay locked. Only the password that opens them changes." This assumes only `.dotnote-lock.age` is re-encrypted with the new password, matching desktop. Check `kunotes-core/lock.rs`.
 - The helper says other synced devices will ask for the new password.
 
 ### 6 · Vaults

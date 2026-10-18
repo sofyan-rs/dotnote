@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.kunotes"
+    namespace = "com.dotnote"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.kunotes.android"
+        applicationId = "com.dotnote.android"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

@@ -1,6 +1,6 @@
 # Architecture
 
-KuNotes for Android is the phone version of [KuNotes](https://github.com/sofyan-rs/kunotes-gpui), a minimal markdown vault app. It is written in **Kotlin + Jetpack Compose** and styled with the **Dotline** design system (`docs/ui/design-system/`).
+Dotnote for Android is the phone version of [Dotnote](https://github.com/sofyan-rs/kunotes-gpui), a minimal markdown vault app. It is written in **Kotlin + Jetpack Compose** and styled with the **Dotline** design system (`docs/ui/design-system/`).
 
 Scope is the same as on desktop: **open a folder, browse it, edit markdown.** There are no wikilinks, backlinks, graph view, tags, or plugins. Files are the only source of truth, so there is no database. Git sync with the user's own remote is optional.
 
@@ -12,13 +12,13 @@ Screens, flow, and copy are specified in [`docs/ui/SPEC.md`](ui/SPEC.md). This f
 
 ### Goals
 - Ship the screens in SPEC §5 with the Dotline look (SPEC §2–3).
-- **Stay compatible with desktop.** A vault edited on Android and on desktop (directly, or through git) must look the same to both: plain `.md` files, the same locked-note format (`.kunotes-lock.age`, `Name.md.age`), the same conflict-copy names, the same hidden-file rules, line endings preserved.
+- **Stay compatible with desktop.** A vault edited on Android and on desktop (directly, or through git) must look the same to both: plain `.md` files, the same locked-note format (`.dotnote-lock.age`, `Name.md.age`), the same conflict-copy names, the same hidden-file rules, line endings preserved.
 - **Never lose user data:** debounced autosave, flush when leaving a note or the app, safe writes (§7.2), deletes go to a trash folder with undo.
 - Stay responsive on large vaults: no file I/O on the main thread.
 - Keep logic testable: pure logic lives in the `:core` module (plain Kotlin/JVM, no Android) with fast unit tests.
 
 ### Non-goals
-- Wikilinks, backlinks, tags, graph, plugins, a KuNotes sync service.
+- Wikilinks, backlinks, tags, graph, plugins, a Dotnote sync service.
 - The desktop **Split** mode (screens are too narrow).
 - Several vaults open at once. One vault is open; the others are saved in the list.
 - Rich-text WYSIWYG. Live mode styles the markdown text; it never keeps a second document model.
@@ -34,7 +34,7 @@ Screens, flow, and copy are specified in [`docs/ui/SPEC.md`](ui/SPEC.md). This f
 | UI | Jetpack Compose (BOM), Material 3 as the base | Dotline theme on top (§5). Material components are used only where they can be restyled to Dotline. |
 | Navigation | Navigation Compose | Routes from SPEC §4. Sheets and dialogs are state, not routes. |
 | State | `ViewModel` + `StateFlow` | One ViewModel per screen; shared state in app-scoped stores (§4). |
-| Dependency wiring | Manual (`AppContainer` in `KuNotesApp`) | No DI framework. Easy to read, enough for this size. |
+| Dependency wiring | Manual (`AppContainer` in `DotnoteApp`) | No DI framework. Easy to read, enough for this size. |
 | Settings | DataStore + `kotlinx.serialization` JSON | One typed `Settings` object (§4.4). |
 | Vault access | Storage Access Framework (`OpenDocumentTree` + `DocumentsContract`) | Behind a `VaultFs` interface (§7). |
 | Markdown preview | `commonmark-java` + GFM extensions (tables, task lists, strikethrough) | Rendered to Compose blocks (§6.4). |
@@ -49,7 +49,7 @@ Screens, flow, and copy are specified in [`docs/ui/SPEC.md`](ui/SPEC.md). This f
 
 Exact versions live in `gradle/libs.versions.toml`.
 
-**Application id:** `com.kunotes.android` (Kotlin packages under `com.kunotes`).
+**Application id:** `com.dotnote.android` (Kotlin packages under `com.dotnote`).
 
 **SDK levels:** `minSdk 26` (Android 8.0), `targetSdk 36`, `compileSdk 37` (current AndroidX releases require compiling against 37; this doesn't change runtime behaviour). 26 gives `java.nio.file` (JGit), adaptive icons, and Keystore features we need.
 
@@ -62,13 +62,13 @@ Exact versions live in `gradle/libs.versions.toml`.
 Two Gradle modules, mirroring desktop's two crates.
 
 ```
-kunotes-android/
+dotnote/
 ├── settings.gradle.kts
 ├── build.gradle.kts
 ├── gradle/libs.versions.toml        # all dependency versions
 ├── core/                            # LIBRARY: pure Kotlin/JVM, no Android, fully unit-tested
 │   └── src/
-│       ├── main/kotlin/com/kunotes/core/
+│       ├── main/kotlin/com/dotnote/core/
 │       │   ├── VaultPath.kt         # vault-relative path value type ("Projects/Plan.md")
 │       │   ├── VaultFs.kt           # file-system interface + FsEntry (§7)
 │       │   ├── FileVaultFs.kt       # VaultFs over java.io.File (§7.1)
@@ -100,8 +100,8 @@ kunotes-android/
 │       │   └── GitConflicts.kt      # conflict copies "Plan (conflict 2026-10-10).md"
 │       └── test/kotlin/…            # unit tests; fixtures in test/resources
 └── app/                             # the Android app
-    └── src/main/kotlin/com/kunotes/
-        ├── KuNotesApp.kt            # Application; builds AppContainer
+    └── src/main/kotlin/com/dotnote/
+        ├── DotnoteApp.kt            # Application; builds AppContainer
         ├── AppContainer.kt          # creates and holds the stores
         ├── MainActivity.kt          # single activity, NavHost
         ├── vault/
@@ -117,7 +117,7 @@ kunotes-android/
         │   ├── SyncWorker.kt        # WorkManager job
         │   └── TokenStore.kt        # Keystore-encrypted access token
         └── ui/
-            ├── theme/               # Color, Type, Shape, Spacing, KuNotesTheme (from DotlineTheme.kt)
+            ├── theme/               # Color, Type, Shape, Spacing, DotnoteTheme (from DotlineTheme.kt)
             ├── dotline/             # design-system components (SPEC §3): ListRow, BottomSheet, …
             ├── navigation/          # routes, BottomNav host
             ├── welcome/             # 1.1, 1.2
@@ -142,7 +142,7 @@ The right-hand comments name the desktop file each `:core` file ports. Port the 
 
 1. **Group UI by feature** (`ui/files/`, `ui/editor/`). The only shared UI folder is `ui/dotline/`, which holds the design-system components from SPEC §3 and nothing else.
 2. **One main type per file, named after the file:** `VaultStore.kt` → `VaultStore`, `FileTreeScreen.kt` → `FileTreeScreen`.
-3. **At most two folder levels under `com/kunotes/`** (`ui/editor/live/` is the deepest).
+3. **At most two folder levels under `com/dotnote/`** (`ui/editor/live/` is the deepest).
 4. **Every file starts with a short KDoc comment** saying what it's for.
 5. **Keep files under ~400 lines.** Past that, split by responsibility.
 6. **Private by default.** `internal` for module helpers, `public` only for what another module needs.
@@ -228,13 +228,13 @@ Secrets (git token, wrapped vault key) are **not** in `Settings`; see §8.3 and 
 
 ## 5. Theme and design system
 
-- `ui/theme/` is `docs/ui/design-system/compose/DotlineTheme.kt` split into `Color.kt`, `Type.kt`, `DotlineRadius.kt`, `Spacing.kt`, `KuNotesTheme.kt`. `tokens.json` is the source of truth; if a token changes, change it there first.
-- `KuNotesTheme` provides `LocalDotlineColors`, `LocalDotlineType`, `LocalDotlineSpacing` and maps onto `MaterialTheme` (`darkColorScheme(background = Bg, surface = Surface, …)`, SPEC §2).
-- Fonts in `res/font`: Doto, Space Grotesk, Space Mono (TTF, not woff2).
-- **Dark and light are both supported** and follow the phone's setting (`KuNotesTheme(dark = isSystemInDarkTheme())`); a System / Light / Dark choice in Settings comes later. Dark is the design reference: every screen is designed dark first, then checked in light. The window background before Compose draws comes from `res/values{,-night}/`, and system-bar icons follow the theme (`SystemBarStyle.auto`). Every component `@Preview` is shown in both themes.
+- `ui/theme/` is `docs/ui/design-system/compose/DotlineTheme.kt` split into `Color.kt`, `Type.kt`, `DotlineRadius.kt`, `Spacing.kt`, `DotnoteTheme.kt`. `tokens.json` is the source of truth; if a token changes, change it there first.
+- `DotnoteTheme` provides `LocalDotlineColors`, `LocalDotlineType`, `LocalDotlineSpacing` and maps onto `MaterialTheme` (`darkColorScheme(background = Bg, surface = Surface, …)`, SPEC §2).
+- Fonts in `res/font`: Doto, Geist, Geist Mono (variable TTF, not woff2).
+- **Dark and light are both supported** and follow the phone's setting (`DotnoteTheme(dark = isSystemInDarkTheme())`); a System / Light / Dark choice in Settings comes later. Dark is the design reference: every screen is designed dark first, then checked in light. The window background before Compose draws comes from `res/values{,-night}/`, and system-bar icons follow the theme (`SystemBarStyle.auto`). Every component `@Preview` is shown in both themes.
 - Rules enforced in review: red (`accent`) at most once or twice per screen; Doto never under 24 sp; `tonalElevation = 0` and `shadowElevation = 0` everywhere; touch targets ≥ 48 dp; press = scale 0.97 in 120–160 ms, no bounce.
-- Icons: 24 dp line icons, 1.5 dp stroke, square caps, as `ImageVector`s in `ui/dotline/DotlineIcons.kt` (path data copied from the mockups). No filled icons, no emoji.
-- Components live in `ui/dotline/` (SPEC §3), one per file, each with dark and light `@Preview`s. Press feedback (`pressScale`) and the focus ring (`focusRing`) are shared in `Interaction.kt`. A debug-only gallery (`adb shell am start -n com.kunotes.android/com.kunotes.gallery.GalleryActivity`) shows them all.
+- Icons: 24 dp Lucide line icons, 2 dp stroke, round caps, as `ImageVector`s in `ui/dotline/DotlineIcons.kt` (path data copied from lucide-static). No filled icons, no emoji.
+- Components live in `ui/dotline/` (SPEC §3), one per file, each with dark and light `@Preview`s. Press feedback (`pressScale`) and the focus ring (`focusRing`) are shared in `Interaction.kt`. A debug-only gallery (`adb shell am start -n com.dotnote.android/com.dotnote.gallery.GalleryActivity`) shows them all.
 
 ---
 
@@ -254,7 +254,7 @@ Note actions, folder actions, new item, rename, move, change vault, vault action
 
 One `EditorScreen` with a `SegmentedControl` (LIVE | SOURCE | PREVIEW) over the same buffer.
 
-**Source.** `BasicTextField` in Space Mono 13/24 with a line-number gutter. Styling comes from `:core` `Live.spans(text)` mapped to `SpanStyle`s (markers `ink-faint`, heading text bold, code muted). Markers are never hidden.
+**Source.** `BasicTextField` in Geist Mono 13/24 with a line-number gutter. Styling comes from `:core` `Live.spans(text)` mapped to `SpanStyle`s (markers `ink-faint`, heading text bold, code muted). Markers are never hidden.
 
 **Live.** Same field and same spans, plus `:core` `LiveView`: on every line except the one(s) holding the selection, marker characters are hidden and the line is styled like Preview (H1 30/36 bold, H2 22/28 semibold, body 16/26, inline code on `surface-raised`). Task boxes toggle on tap. The caret is a 2 dp `accent` bar.
 
@@ -311,8 +311,8 @@ interface VaultFs {
 
 Desktop writes a hidden temp file then renames it over the target. Android:
 
-- **`FileVaultFs`:** same as desktop: write `.Name.md.kunotes.tmp`, `fsync`, `renameTo`.
-- **`SafVaultFs`:** SAF can't rename over an existing document, so: write `.Name.md.kunotes.tmp` fully and close it; rename the original to `.Name.md.kunotes.bak`; rename the temp to `Name.md`; delete the `.bak`. Every step leaves either the old or the new file under a name we can recover. On vault open, a recovery pass fixes leftovers (a `.bak` with no target → rename back; a stray `.tmp` → delete). All temp names start with `.`, so the tree never shows them and the desktop `.gitignore` (`.*.kunotes.tmp`) already ignores the temp.
+- **`FileVaultFs`:** same as desktop: write `.Name.md.dotnote.tmp`, `fsync`, `renameTo`.
+- **`SafVaultFs`:** SAF can't rename over an existing document, so: write `.Name.md.dotnote.tmp` fully and close it; rename the original to `.Name.md.dotnote.bak`; rename the temp to `Name.md`; delete the `.bak`. Every step leaves either the old or the new file under a name we can recover. On vault open, a recovery pass fixes leftovers (a `.bak` with no target → rename back; a stray `.tmp` → delete). All temp names start with `.`, so the tree never shows them and the desktop `.gitignore` (`.*.dotnote.tmp`) already ignores the temp.
 
 Line endings: the editor works on `\n` text; `LineEnding.detect` on load and `apply` on save, so `\r\n` files stay `\r\n`.
 
@@ -345,12 +345,12 @@ The editor saves 500 ms after the last edit (desktop `SAVE_DELAY`) through `FsOp
 
 ### 8.1 Format (must match desktop `lock.rs`)
 
-- Vault key: a random age X25519 identity, stored ASCII-armored and encrypted with the vault password (age **scrypt** recipient) in `.kunotes-lock.age` at the vault root.
+- Vault key: a random age X25519 identity, stored ASCII-armored and encrypted with the vault password (age **scrypt** recipient) in `.dotnote-lock.age` at the vault root.
 - A locked note is `Name.md.age`: the note text encrypted to the vault key's recipient, **ASCII-armored** (git sees text).
 - Minimum password length 8 characters (`MIN_PASSWORD_LEN`). Same error texts as desktop.
 - **scrypt memory.** scrypt work factor n uses 2^n KiB of memory. The app sets `android:largeHeap="true"` (heap 192 → 512 MiB on the test emulator; 2^18 failed with OutOfMemory without it). Phase 0 timings on the emulator: unlock at 2^16 ≈ 0.3 s, 2^17 ≈ 0.6 s, 2^18 ≈ 1.5 s. Unlock accepts up to 2^20. New keys made on the phone use the factor chosen in Phase 8 (see Q7).
-- Changing the password rewrites only `.kunotes-lock.age`; locked notes don't change.
-- Compatibility test: `:core` tests decrypt fixture files made by desktop KuNotes, and desktop-made files decrypt files made by `:core` (checked with the `age` CLI).
+- Changing the password rewrites only `.dotnote-lock.age`; locked notes don't change.
+- Compatibility test: `:core` tests decrypt fixture files made by desktop Dotnote, and desktop-made files decrypt files made by `:core` (checked with the `age` CLI).
 
 ### 8.2 `VaultLock`
 
@@ -422,5 +422,5 @@ Each is answered in the Phase 0 spike or before the phase that needs it. Record 
 - **Q3. kage compatibility.** ✅ kage 0.8 does scrypt and armor. Desktop-made key + note decrypt in JVM tests and on the emulator (bytes match); a Kotlin-made vault opens in desktop `kunotes-core`. Follow-up in Q7.
 - **Q4. JGit on Android.** ✅ JGit 7 crashes on API 30 (`InputStream.readNBytes`, Java 11). JGit 5.13.5 works: two-device sync through a bare repo with a conflict copy passes on the emulator. HTTPS token auth still to try against a real host (Phase 9).
 - **Q5. SAF performance.** ✅ Measured on the API 30 emulator: a full scan of 2,008 notes in 41 folders takes 0.7–8 s (off the main thread). So scans never overlap (one queued rescan at most), polling waits at least 3× the last scan time (10 s minimum), and character counts are read only for notes visible in the tree (cached by modification time). A faster scan (only expanded folders) is a later optimization if real vaults need it.
-- **Q6. Package and application id.** ✅ Decided: application id `com.kunotes.android`. Kotlin packages stay under `com.kunotes` (`com.kunotes.core`, `com.kunotes.ui.theme`, …), and the `:app` namespace is `com.kunotes`.
-- **Q7. scrypt work factor across devices.** Desktop's `age` crate picks the factor by timing the computer (~1 s), so a fast desktop may write 2^19–2^20, which needs 512 MiB–1 GiB to unlock: more than a phone gives an app even with `largeHeap`. Recommended fix on desktop: pin the factor (e.g. 18) when saving `.kunotes-lock.age`. Android side: ✅ new keys made on the phone use 2^17 (128 MiB, ~0.6 s on the emulator; `VaultLock.NEW_KEY_WORK_FACTOR`); still to confirm on a low-end phone.
+- **Q6. Package and application id.** ✅ Decided: application id `com.dotnote.android`. Kotlin packages stay under `com.dotnote` (`com.dotnote.core`, `com.dotnote.ui.theme`, …), and the `:app` namespace is `com.dotnote`.
+- **Q7. scrypt work factor across devices.** Desktop's `age` crate picks the factor by timing the computer (~1 s), so a fast desktop may write 2^19–2^20, which needs 512 MiB–1 GiB to unlock: more than a phone gives an app even with `largeHeap`. Recommended fix on desktop: pin the factor (e.g. 18) when saving `.dotnote-lock.age`. Android side: ✅ new keys made on the phone use 2^17 (128 MiB, ~0.6 s on the emulator; `VaultLock.NEW_KEY_WORK_FACTOR`); still to confirm on a low-end phone.

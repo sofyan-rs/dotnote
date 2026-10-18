@@ -1,6 +1,6 @@
 # Contributing
 
-How to set up, build, and work on KuNotes for Android. Read [ARCHITECTURE.md](ARCHITECTURE.md) for the design and [ui/SPEC.md](ui/SPEC.md) for the screens before a non-trivial change.
+How to set up, build, and work on Dotnote for Android. Read [ARCHITECTURE.md](ARCHITECTURE.md) for the design and [ui/SPEC.md](ui/SPEC.md) for the screens before a non-trivial change.
 
 ---
 
@@ -10,7 +10,7 @@ How to set up, build, and work on KuNotes for Android. Read [ARCHITECTURE.md](AR
 - **JDK 17** for command-line builds (`java -version`). Set it as the Gradle JDK in Android Studio too.
 - **Android SDK** with platform 37 (compile) and 36, plus current build-tools (SDK Manager). `ANDROID_HOME` should point at it (on macOS usually `~/Library/Android/sdk`).
 - A device or emulator on Android 8.0+ (API 26). Test on at least one recent Android (API 34+) and one old one (API 26–29), since SAF and the Photo Picker behave differently.
-- Optional, for lock compatibility checks: the [`age`](https://age-encryption.org) CLI and a desktop KuNotes build.
+- Optional, for lock compatibility checks: the [`age`](https://age-encryption.org) CLI and a desktop Dotnote build.
 
 No global Gradle install is needed: always use the wrapper (`./gradlew`).
 
@@ -28,7 +28,7 @@ No global Gradle install is needed: always use the wrapper (`./gradlew`).
 ./gradlew spotlessCheck              # ktlint formatting (spotlessApply to fix)
 ```
 
-The debug build also has a spike screen that runs the Phase 0 checks (desktop-locked note, JGit sync, Live field) on the device: `adb shell am start -n com.kunotes.android/com.kunotes.spike.SpikeActivity`. Its code lives in `app/src/debug/` and never ships in release builds.
+The debug build also has a spike screen that runs the Phase 0 checks (desktop-locked note, JGit sync, Live field) on the device: `adb shell am start -n com.dotnote.android/com.dotnote.spike.SpikeActivity`. Its code lives in `app/src/debug/` and never ships in release builds.
 
 For manual testing, copy desktop's `fixtures/sample-vault/` (from the kunotes-gpui repo) onto the device, e.g. `adb push sample-vault /sdcard/Documents/`, and open it with "Open a folder". `Example.md` covers every preview element.
 
@@ -139,4 +139,4 @@ Every bug fix in `:core` gets a regression test. New format transforms need test
 
 ## 9. Scope guard
 
-KuNotes is intentionally minimal: **open a folder, browse it, edit markdown.** Proposals for wikilinks, backlinks, tags, graph, plugins, or a sync service start as a discussion issue, not a PR. Anything that would make a vault look different to desktop KuNotes needs a matching desktop change first.
+Dotnote is intentionally minimal: **open a folder, browse it, edit markdown.** Proposals for wikilinks, backlinks, tags, graph, plugins, or a sync service start as a discussion issue, not a PR. Anything that would make a vault look different to desktop Dotnote needs a matching desktop change first.

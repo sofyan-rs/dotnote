@@ -3,7 +3,7 @@ Dotline is a monochrome, dot-matrix design system for mobile apps. Everything is
 ## Principles
 
 - **Less, then less again.** Show one idea per screen. If an element doesn't help someone act, remove it.
-- **Red is a signal, not a colour.** `accent` appears at most once or twice per screen: the record button, the active-tab dot, a switch that is on, a destructive action.
+- **Red is a signal, not a colour.** `accent` appears at most once or twice per screen: the record button, the current-note dot, a destructive action.
 - **Numbers are the hero.** Readouts (time, battery, steps) are set large in `dot-l` / `dot-xl`; their labels stay small in `label`.
 - **Honest, mechanical feel.** Flat surfaces, hairlines, dots and pills. No gradients, no drop shadows, no glass.
 
@@ -28,8 +28,8 @@ Dotline is a monochrome, dot-matrix design system for mobile apps. Everything is
 ## Type
 
 - `dot-xl` — lock-screen clock and one hero numeral. `dot-l` — widget values. `dot-m` — screen titles in capitals. Never set paragraphs or anything under 24px in Doto; it is for display only.
-- `title`, `headline`, `body`, `body-s` (Space Grotesk) carry all reading text. Row titles are `headline`, subtitles `body-s` in `ink-muted`.
-- `label` (Space Mono, uppercase, +0.12em tracking) for overlines, widget labels, chips and tabs. `data` for readouts, status-bar text and row values.
+- `title`, `headline`, `body`, `body-s` (Geist) carry all reading text. Row titles are `headline`, subtitles `body-s` in `ink-muted`.
+- `label` (Geist Mono, uppercase, +0.12em tracking) for overlines, widget labels, chips and tabs. `data` for readouts, status-bar text and row values.
 
 ## Layout & shape
 
@@ -50,7 +50,7 @@ Quick and mechanical: 120–160ms ease for presses and toggles, buttons scale to
 
 ## Iconography
 
-24px line icons on a 24px grid, 1.5px stroke (`stroke`), square caps and mitred joins, drawn in `currentColor` so they follow `ink` / `ink-faint`. Shapes stay geometric — circles, squares, straight lines. The components carry a small built-in set (`Dotline.glyphs`: home, grid, circle, sliders, bell); extend it in the same style. No filled or duotone icons, no emoji.
+24px [Lucide](https://lucide.dev) line icons on a 24px grid, 2px stroke (`stroke`), round caps and joins, drawn in `currentColor` so they follow `ink` / `ink-faint`. The components carry a small built-in set (`Dotline.glyphs`: home, grid, circle, sliders, bell); extend it in the same style. No filled or duotone icons, no emoji.
 
 ## Brand mark
 

@@ -1,12 +1,12 @@
-# KuNotes for Android
+# Dotnote for Android
 
-The phone version of [KuNotes](https://github.com/sofyan-rs/kunotes-gpui): a minimal markdown vault app in the style of Obsidian. Pick a folder, browse it, and edit plain `.md` files. Files on disk are the only source of truth, so there's no database and no lock-in, and the same vault opens in desktop KuNotes.
+The phone version of [Dotnote](https://github.com/sofyan-rs/kunotes-gpui): a minimal markdown vault app in the style of Obsidian. Pick a folder, browse it, and edit plain `.md` files. Files on disk are the only source of truth, so there's no database and no lock-in, and the same vault opens in desktop Dotnote.
 
 Built with **Kotlin + Jetpack Compose**, styled with the **Dotline** design system: monochrome, dark first, one red signal colour, dot-matrix display type.
 
 ## Download
 
-Get the latest APK from [Releases](https://github.com/sofyan-rs/kunotes-android/releases/latest). Most phones need `arm64-v8a`; if unsure, take `universal`. Android 8.0 or newer.
+Get the latest APK from [Releases](https://github.com/sofyan-rs/dotnote/releases/latest). Most phones need `arm64-v8a`; if unsure, take `universal`. Android 8.0 or newer.
 
 ## Screenshots
 
@@ -30,7 +30,7 @@ Get the latest APK from [Releases](https://github.com/sofyan-rs/kunotes-android/
 - **Autosave** with safe writes. No save button.
 - **Open notes** row: the mobile form of desktop tabs, with pinning.
 - **Quick switcher:** find a note by name, or create it.
-- **Locked notes:** encrypted with [age](https://age-encryption.org), one password per vault, auto-lock after 5 minutes, optional fingerprint unlock. Compatible with desktop KuNotes.
+- **Locked notes:** encrypted with [age](https://age-encryption.org), one password per vault, auto-lock after 5 minutes, optional fingerprint unlock. Compatible with desktop Dotnote.
 - **Git sync (optional):** sync a vault with your own repository; a note changed on two devices keeps both versions.
 
 Out of scope, same as desktop: wikilinks, backlinks, graph view, tags, plugins.

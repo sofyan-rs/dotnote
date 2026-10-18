@@ -2,7 +2,7 @@
 <resources>
     <!-- Only the window behind Compose (seen for a moment at launch).
          Everything visible is styled in ui/theme/. values-night/ has the dark version. -->
-    <style name="Theme.KuNotes" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.Dotnote" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Debug builds only: the Phase 0 spike screen and the component gallery. Launch with
-     adb shell am start -n com.kunotes.android/com.kunotes.spike.SpikeActivity
-     adb shell am start -n com.kunotes.android/com.kunotes.gallery.GalleryActivity -->
+     adb shell am start -n com.dotnote.android/com.dotnote.spike.SpikeActivity
+     adb shell am start -n com.dotnote.android/com.dotnote.gallery.GalleryActivity -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity
-            android:name="com.kunotes.spike.SpikeActivity"
+            android:name="com.dotnote.spike.SpikeActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.kunotes.gallery.GalleryActivity"
+            android:name="com.dotnote.gallery.GalleryActivity"
             android:exported="true" />
     </application>
 </manifest>

@@ -5,13 +5,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".KuNotesApp"
+        android:name=".DotnoteApp"
         android:allowBackup="false"
         android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.KuNotes">
+        android:theme="@style/Theme.Dotnote">
 
         <activity
             android:name=".MainActivity"

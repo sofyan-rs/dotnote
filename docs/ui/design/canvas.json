@@ -39,7 +39,7 @@
   ],
   "launch": {"view": "canvas"},
   "notes": {
-    "title": {"kind": "title1", "maxW": 2740, "text": "KuNotes for Android", "w": 240, "x": 0, "y": -620},
+    "title": {"kind": "title1", "maxW": 2740, "text": "Dotnote for Android", "w": 240, "x": 0, "y": -620},
     "r1": {"kind": "title1", "maxW": 1800, "text": "1 · First launch", "x": 0, "y": -300},
     "r2": {"kind": "title1", "maxW": 2740, "text": "2 · Files", "x": 0, "y": 944},
     "r3": {"kind": "title1", "maxW": 1800, "text": "3 · Editor", "x": 0, "y": 2188},
@@ -75,5 +75,5 @@
     "Git-Sync.dc.html"
   ],
   "pages": [],
-  "title": "KuNotes Mobile"
+  "title": "Dotnote Mobile"
 }

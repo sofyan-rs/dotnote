@@ -5,7 +5,7 @@
 //   space_mono_regular.ttf, space_mono_bold.ttf               (Google Fonts: Space Mono)
 // Android res/font can't use .woff2, so download the TTF versions.
 
-package com.kunotes.ui.theme // change to your package
+package com.dotnote.ui.theme // change to your package
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-// import com.kunotes.R
+// import com.dotnote.R
 
 // ---------- Colour ----------
 
